@@ -45,8 +45,6 @@ typedef struct TLE {
 } TLE;
 ```
 
-<!-- `NORAD_ID`unsigned 16 bits integer, max value of 65535, the latest is 59681 -->
-
 ## Capacities
 
 - Opening a file containing several entries
