@@ -8,52 +8,46 @@ The only compatible format is the 3LE format.
 
 [TLEs Wikipedia article](https://en.wikipedia.org/wiki/Two-line_element_set#Format) | [Celestrak (to get the sets)](https://celestrak.org/NORAD/elements/)
 
-
-
 ## Data representation
 
 ```c
 typedef struct TLE {
-	string name[NAME_LENGTH];
+    string name[NAME_LENGTH];
 
-	// First line
+    // First line
 
-	uint16_t NORAD_ID;
-	char Classification;
+    uint32_t NORAD_ID;
+    char Classification;
 
-	uint8_t COSPAR_YR: 7; // Max value : 99
-	uint16_t COSPAR_LN: 10; // Max value : 999
-	string COSPAR_OBJ_ID[LAUNCH_PART_LENGTH];
+    uint8_t COSPAR_YR: 7; // Max value : 99
+    uint16_t COSPAR_LN: 10;
+    string COSPAR_OBJ_ID[LAUNCH_PART_LENGTH];
 
-	uint8_t EPOCH_YR: 7; // Max value : 99
-	double EPOCH;
+    uint8_t EPOCH_YR: 7; // Max value : 99
+    double EPOCH;
 
-	double FIRST_DERIV_MEAN_MOTION;
-	double SECOND_DERIV_MEAN_MOTION;
+    double FIRST_DERIV_MEAN_MOTION;
+    double SECOND_DERIV_MEAN_MOTION;
 
-	double B_STAR;
+    double B_STAR;
 
-	// Second line
+    // Second line
 
-	float Inclination;
-	float AscNodeLong;
-	float Eccentricity;
-	float PeriArgument;
-	float MeanAnomaly;
+    float Inclination;
+    float AscNodeLong;
+    float Eccentricity;
+    float PeriArgument;
+    float MeanAnomaly;
 
-	double MeanMotion;
+    double MeanMotion;
+
+    uint32_t Revolutions;
 } TLE;
 ```
 
+<!-- `NORAD_ID`unsigned 16 bits integer, max value of 65535, the latest is 59681 -->
 
-
-`NORAD_ID`unsigned 16 bits integer, max value of 65535, the latest is 59681
-
-
-
-## Capacities :
-
-
+## Capacities
 
 - Opening a file containing several entries
 
