@@ -11,7 +11,7 @@
 
 #define CHECKSUM_MODULO 10
 
-string* filename = "TLEs/active.tle";
+string* filename = "TLEs/stations.tle";
 uint32_t lookingFor = 25544;
 
 // void InterpretArgs(uint8_t n, char** args) {
