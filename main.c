@@ -124,6 +124,7 @@ void PrintTle(TLE TLE_OBJECT) {
 int32_t main() {
 
 	ClearScreen();
+	MoveTo(0, 0);
 
 	const bool ReadingFile = false;
 
@@ -155,8 +156,10 @@ int32_t main() {
 
 		while (true) {
 			ClearScreen();
+			MoveTo(0, 0);
 			PrintTle(CurrentEntry);
-			Sleep(250);
+			fflush(stdout);
+			usleep(1000000);
 		}
 
 	} else {
