@@ -115,9 +115,10 @@ void PrintTle(TLE TLE_OBJECT) {
 
 	printf("------------------------------- CURRENTLY -------------------------------\n");
 
-	printf("Current Mean Anomaly : %.4lf degs\n", Current_MA);
-	printf("Current Alt : %llu m\n", Current_Alt);
-	printf("Current Speed : %.4lf m/s\n", Current_Spd);
+	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon+1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
+	printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
+	printf("ALTITUDE : %llu m\n", Current_Alt);
+	printf("SPEED : %.4lf m/s\n", Current_Spd);
 }
 
 int32_t main() {
