@@ -28,7 +28,7 @@ bool SupportsAnsi() {
 
 void ClearScreen() {
 	if (SupportsAnsi()) {
-		//printf("\x1B[2J\x1B[H");
+		printf("\x1B[2J\x1B[H");
 		MoveTo(0, 0);
 	} else {
 		system(CLEAR_CMD);
