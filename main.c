@@ -124,12 +124,11 @@ void PrintTle(TLE TLE_OBJECT) {
 int32_t main() {
 
 	ClearScreen();
-	MoveTo(0, 0);
 
 	const bool ReadingFile = false;
 
-	string* filename = "TLEs/stations.tle";
-	const uint32_t lookingFor = 25544;
+	string* filename = "TLEs/galileo.tle";
+	const uint32_t lookingFor = 59600;
 
 	if (!ReadingFile) {
 
@@ -156,9 +155,7 @@ int32_t main() {
 
 		while (true) {
 			ClearScreen();
-			MoveTo(0, 0);
 			PrintTle(CurrentEntry);
-			fflush(stdout);
 			usleep(1000000);
 		}
 
