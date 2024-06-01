@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"stdint.h": "c",
+			"math.h": "c",
+			"file.h": "c",
+			"tle_parser.h": "c"
+		}
+	}
+}

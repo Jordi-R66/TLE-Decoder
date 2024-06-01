@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"stdint.h": "c"
+	},
+	"python.analysis.typeCheckingMode": "off",
+	"python.analysis.autoImportCompletions": true
+}
