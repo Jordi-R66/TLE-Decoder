@@ -1,7 +1,7 @@
 #include <math.h>
 #include "Common.h"
 
-#define EARTH_SIDEREAL_DAY 86164.096
+#define EARTH_SIDEREAL_DAY 86400.0 //86164.096
 
 #define G 6.67428E-11
 #define EARTH_MASS 5.9722E24
