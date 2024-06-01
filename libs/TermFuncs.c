@@ -37,7 +37,7 @@ void ClearScreen() {
 }
 
 void MoveTo(int x, int y) {
-	if (supportsAnsi()) {
+	if (SupportsAnsi()) {
 		printf("\033[%d;%dH", y, x);
 	}
 }
