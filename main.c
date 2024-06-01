@@ -11,6 +11,26 @@
 
 #define CHECKSUM_MODULO 10
 
+string* filename = "TLEs/active.tle";
+uint32_t lookingFor = 25544;
+
+// void InterpretArgs(uint8_t n, char** args) {
+// 	if (n == 5) {
+// 		for (uint8_t i=0; i<n; i++) {
+// 			printf("%s\n", args[i]);
+// 			if (!strcmp(args[i], "-s")) {
+// 				strcpy(filename, args[i+1]);
+// 			} else if (!strcmp(args[i], "-u")) {
+// 				lookingFor = strint(args[i+1]);
+// 			}
+// 		}
+
+// 		printf("%s\n%u\n\n", filename, lookingFor);
+// 	} else {
+// 		exit(-1);
+// 	}
+// }
+
 int32_t checksum_algorithm(string *line, int32_t modulo) {
 
 	int32_t checksum = 0;
@@ -121,14 +141,12 @@ void PrintTle(TLE TLE_OBJECT) {
 	printf("SPEED : %.4lf m/s\n", Current_Spd);
 }
 
-int32_t main() {
+int32_t main(uint8_t argc, char *argv[]) {
+	// InterpretArgs(argc, argv);
 
-	ClearScreen();
+	clear();
 
 	const bool ReadingFile = false;
-
-	string* filename = "TLEs/galileo.tle";
-	const uint32_t lookingFor = 59600;
 
 	if (!ReadingFile) {
 
@@ -154,7 +172,7 @@ int32_t main() {
 		}
 
 		while (true) {
-			ClearScreen();
+			clear();
 			PrintTle(CurrentEntry);
 			usleep(1000000);
 		}

@@ -1,7 +1,6 @@
 #include "TermFuncs.h"
 
-void ClearScreen() {
+void clear(void) {
 	system(CLEAR_CMD);
-
 	return;
 }
