@@ -4,7 +4,16 @@ from os import path, mkdir, system
 from sys import platform
 from json import loads
 
-EXEC_EXT: str = ".exe" if platform == "win32" else ""
+EXTS: dict[str: str] = {
+	"default": "",
+	"win32": ".exe",
+	"linux": ".elf",
+}
+
+if platform not in ("win32", "linux"):
+	platform = "default"
+
+EXEC_EXT: str = EXTS[platform]
 
 def compile(compiler: str, compiler_args: list[str], output: str, sources: list[str], use_math: bool=True):
 	sources_string: str = " ".join(sources)
