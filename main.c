@@ -1,10 +1,10 @@
 #include <time.h>
-#include <windows.h>
 
 #include "libs/TLE_PARSER.h"
 #include "libs/OrbMaths.h"
 #include "libs/TLE_Files.h"
 #include "libs/TimeFuncs.h"
+#include "libs/TermFuncs.h"
 #include "libs/Algos.h"
 
 #include "libs/Common.h"
@@ -123,7 +123,7 @@ void PrintTle(TLE TLE_OBJECT) {
 
 int32_t main() {
 
-	system("clear");
+	ClearScreen();
 
 	const bool ReadingFile = false;
 
@@ -154,7 +154,7 @@ int32_t main() {
 		}
 
 		while (true) {
-			system("clear");
+			ClearScreen();
 			PrintTle(CurrentEntry);
 			Sleep(250);
 		}
