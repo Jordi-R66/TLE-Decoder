@@ -66,7 +66,7 @@ void PrintTle(TLE TLE_OBJECT) {
 	uint64_t Ap = Apogee(TLE_OBJECT.Eccentricity, SMA);
 	uint64_t Pe = Perigee(TLE_OBJECT.Eccentricity, SMA);
 
-	double Epoch_E = NewtonRaphson(TLE_OBJECT.MeanAnomaly*RADS2DEGS, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, TLE_OBJECT.MeanAnomaly*RADS2DEGS, 1E-6, 0xffffffffffffffffULL);
+	double Epoch_E = NewtonRaphson(TLE_OBJECT.MeanAnomaly*RADS2DEGS, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, TLE_OBJECT.MeanAnomaly*RADS2DEGS, 1E-10, 0xffffffffffffffffULL);
 
 	uint64_t Epoch_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Epoch_E);
 	uint64_t Epoch_Alt = Epoch_R-(uint64_t)EARTH_RADIUS;
@@ -99,7 +99,7 @@ void PrintTle(TLE TLE_OBJECT) {
 	Current_MA -= (double)((uint32_t)(Current_MA / (double)(2.0f*M_PI)) * 2.0f * (double)M_PI);
 	Current_MA *= RADS2DEGS;
 
-	double Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, Current_MA, 1E-8, 0xffffffffffffffffULL);
+	double Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, Current_MA, 1E-10, 0xffffffffffffffffULL);
 
 	uint64_t Current_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Current_E);
 	uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
