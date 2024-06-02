@@ -55,4 +55,4 @@ dkms.conf
 # Program Output
 *.tle_struct
 
-PythonTLE
+PythonTLE/__pycache__
