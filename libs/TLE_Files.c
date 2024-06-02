@@ -7,7 +7,7 @@ int32_t GetTLENumber(string *filename) {
 	FILE* file = fopen(filename, "r");
 	char c;
 
-	int32_t line_count = 1;
+	int32_t line_count = 0;
 
 	while (c != EOF) {
 		c = getc(file);
