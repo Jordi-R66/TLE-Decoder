@@ -50,7 +50,7 @@ typedef struct TLE {
 	float Inclination;
 	float AscNodeLong;
 	float Eccentricity;
-	float PeriArgument;
+	float PeriArg;
 	float MeanAnomaly;
 
 	double MeanMotion;

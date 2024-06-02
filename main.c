@@ -121,7 +121,7 @@ void PrintTle(TLE TLE_OBJECT) {
 	printf("INCLINATION : %.4f degs\n", TLE_OBJECT.Inclination);
 	printf("LONGITUDE OF ASC. NODE : %.4f degs\n", TLE_OBJECT.AscNodeLong);
 	printf("ECCENTRICITY : %.7f\n", TLE_OBJECT.Eccentricity);
-	printf("ARG. OF PERIGEE : %.4f degs\n", TLE_OBJECT.PeriArgument);
+	printf("ARG. OF PERIGEE : %.4f degs\n", TLE_OBJECT.PeriArg);
 	printf("MEAN ANOMALY : %.4f degs\n", TLE_OBJECT.MeanAnomaly);
 	printf("MEAN MOTION : %.8lf rev/(sid. day)\n", TLE_OBJECT.MeanMotion);
 
