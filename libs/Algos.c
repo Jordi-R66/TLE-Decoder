@@ -1,5 +1,33 @@
 #include "Algos.h"
 
+int32_t checksum_algorithm(string *line, int32_t modulo) {
+
+	int32_t checksum = 0;
+	int32_t line_length = strlen(line) + 1;
+
+	if (line_length != 69) {
+		return -1;
+	}
+
+	for (int32_t i=0; i < line_length; i++) {
+		int8_t c = line[i];
+
+		if ((c >= 48) && (c <= 57)) {
+			c -= 48;
+		} else if (c == '-') {
+			c = 1;
+		} else {
+			c = 0;
+		}
+
+		checksum += (int32_t)c;
+	}
+
+	checksum %= modulo;
+
+	return checksum;
+}
+
 double AntecedentDroite(double a, double b, double y) {
 	return (y - b) / a;
 }
