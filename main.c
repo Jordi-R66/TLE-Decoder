@@ -95,7 +95,7 @@ void PrintTle(TLE TLE_OBJECT) {
 
 	double DeltaTime = (((double)(current_year - epoch_year) * 365.25) + (double)(current_day - TLE_OBJECT.EPOCH)) * 86400.0;
 
-	double Current_MA = TLE_OBJECT.MeanAnomaly * DEGS2RADS + (double)MeanMotionPerSecond(TLE_OBJECT.MeanMotion) * DeltaTime;
+	double Current_MA = TLE_OBJECT.MeanAnomaly * DEGS2RADS + (double)AngularSpeed(TLE_OBJECT.MeanMotion) * DeltaTime;
 	Current_MA -= (double)((uint32_t)(Current_MA / (double)(2.0f*M_PI)) * 2.0f * (double)M_PI);
 	Current_MA *= RADS2DEGS;
 

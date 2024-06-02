@@ -9,7 +9,7 @@
 float OrbitalPeriod(double MeanMotion) {
 	float Period;
 
-	Period = (float)(EARTH_SIDEREAL_DAY / MeanMotion);
+	Period = (float)(EARTH_DAY_LENGTH / MeanMotion);
 
 	return Period;
 }
@@ -47,7 +47,7 @@ uint64_t Perigee(float Eccentricity, uint64_t SemiMajorAxis) {
 }
 
 uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E) {
-	return (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity * cos(E)));
+	return (uint64_t)(SemiMajorAxis * (1.0 + Eccentricity * cos(E)));
 }
 
 
@@ -55,11 +55,12 @@ uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E) {
 double KeplerEquation(double E, double e) {
 	return E - e * sin(E);
 }
+
 double KeplerPrime(double E, double e) {
 	return 1.0 - e * cos(E);
 }
 
-double MeanMotionPerSecond(double MeanMotion) {
+double AngularSpeed(double MeanMotion) {
 	return 1.0/OrbitalPeriod(MeanMotion)/(2.0*M_PI);
 }
 
