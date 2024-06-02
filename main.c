@@ -65,13 +65,14 @@ void PrintTle(TLE TLE_OBJECT) {
 
 	double Current_MA = TLE_OBJECT.MeanAnomaly * DEGS2RADS + (double)AngularSpeed(TLE_OBJECT.MeanMotion) * DeltaTime;
 	Current_MA -= (double)((uint32_t)(Current_MA / (double)(2.0f*M_PI)) * 2.0f * (double)M_PI);
-	Current_MA *= RADS2DEGS;
 
 	double Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, Current_MA, 1E-10, 0xffffffffffffffffULL);
 
 	uint64_t Current_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Current_E);
 	uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
 	double Current_Spd = OrbSpeed(Current_R, SMA);
+
+	Current_MA *= RADS2DEGS;
 
 	printf("Object name : %s \n", TLE_OBJECT.name);
 
