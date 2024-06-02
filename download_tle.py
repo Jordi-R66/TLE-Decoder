@@ -114,7 +114,7 @@ def merge_all():
 			block = lines[i*3: i*3+3]
 			NORAD_ID = int(block[2][2:7])
 			
-			if NORAD_ID not in merged_ids:
+			if (NORAD_ID not in merged_ids) and (b"UNKNOWN" not in block[0]):
 				merged_ids.append(NORAD_ID)
 				final_file.writelines(block)
 		END: int = time_ns()
