@@ -61,7 +61,7 @@ double KeplerPrime(double E, double e) {
 }
 
 double AngularSpeed(double MeanMotion) {
-	return 1.0/OrbitalPeriod(MeanMotion)/(2.0*M_PI);
+	return 1.0/(OrbitalPeriod(MeanMotion)/(2.0*M_PI));
 }
 
 double OrbSpeed(uint64_t altitude, uint64_t SemiMajorAxis) {

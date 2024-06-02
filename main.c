@@ -13,6 +13,8 @@
 string* filename = "TLEs/stations.tle";
 uint32_t lookingFor = 25544;
 
+time_t current_time;
+
 // void InterpretArgs(uint8_t n, char** args) {
 // 	if (n == 5) {
 // 		for (uint8_t i=0; i<n; i++) {
@@ -46,7 +48,7 @@ void PrintTle(TLE TLE_OBJECT) {
 	double Speed_Pe = OrbSpeed(Pe, SMA);
 	double Speed_Epoch = OrbSpeed(Epoch_R, SMA);
 
-	time_t current_time = time(NULL);
+	current_time = time(NULL);
 
 	struct tm* utc = gmtime(&current_time);
 
@@ -63,18 +65,18 @@ void PrintTle(TLE TLE_OBJECT) {
 
 	double DeltaTime = (((double)(current_year - epoch_year) * 365.25) + (double)(current_day - TLE_OBJECT.EPOCH)) * 86400.0;
 
-	double Current_MA = TLE_OBJECT.MeanAnomaly * DEGS2RADS + (double)AngularSpeed(TLE_OBJECT.MeanMotion) * DeltaTime;
-	Current_MA -= (double)((uint32_t)(Current_MA / (double)(2.0f*M_PI)) * 2.0f * (double)M_PI);
-
+	double Current_MA = TLE_OBJECT.MeanAnomaly * DEGS2RADS + ((double)AngularSpeed(TLE_OBJECT.MeanMotion) * DeltaTime);
 	double Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, Current_MA, 1E-10, 0xffffffffffffffffULL);
 
+	Current_MA *= RADS2DEGS;
+	Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
+
 	uint64_t Current_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Current_E);
+	printf("Current_R Computed\n");
 	uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
 	double Current_Spd = OrbSpeed(Current_R, SMA);
 
-	Current_MA *= RADS2DEGS;
-
-	printf("Object name : %s \n", TLE_OBJECT.name);
+	printf("Object name : %s\n", TLE_OBJECT.name);
 
 	printf("---------------------------------- TLE ----------------------------------\n");
 
@@ -143,7 +145,7 @@ int32_t main(uint8_t argc, char *argv[]) {
 		while (true) {
 			clear();
 			PrintTle(CurrentEntry);
-			usleep(1000000);
+			usleep(1000000/5);
 		}
 
 	} else {
