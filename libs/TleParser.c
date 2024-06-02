@@ -118,10 +118,10 @@ TLE parse_block(string lines[][70]) {
 		AN[i] = c;
 	}
 
-	for (uint8_t i=0; i < (ECC_LENGTH-2); i++) {
-		char c = SECOND_LINE[i+26];
+	for (uint8_t i=0; i < (ECC_LENGTH-1); i++) {
+		char c = SECOND_LINE[i+25];
 
-		ECC[i+1] = c;
+		ECC[i] = c;
 	}
 
 	for (uint8_t i=0; i < (ARG_PE_LENGTH-1); i++) {
