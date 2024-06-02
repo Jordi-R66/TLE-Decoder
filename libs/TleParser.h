@@ -58,8 +58,8 @@ typedef struct TLE {
 	uint32_t Revolutions;
 } TLE;
 
-TLE parse_tle_block(string lines[][70]);
+TLE parse_block(string lines[][70]);
 
-TLE parse_tle_lines(string NAME_LINE[25], string FIRST_LINE[70], string SECOND_LINE[70]);
+TLE parse_lines(string NAME_LINE[25], string FIRST_LINE[70], string SECOND_LINE[70]);
 
 #endif

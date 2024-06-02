@@ -84,7 +84,7 @@ TLE* GetAllTle(string *filename) {
 			j++;
 		}
 
-		TLE obj = parse_tle_lines(first_line, second_line, third_line);
+		TLE obj = parse_lines(first_line, second_line, third_line);
 		Output[block_number] = obj;
 	}
 

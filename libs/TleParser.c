@@ -4,7 +4,7 @@
 
 #define EOS '\0'
 
-TLE parse_tle_block(string lines[][70]) {
+TLE parse_block(string lines[][70]) {
 	char *endptr;
 	string *NAME_LINE = lines[0];
 	string *FIRST_LINE = lines[1];
@@ -189,7 +189,7 @@ TLE parse_tle_block(string lines[][70]) {
 	return output;
 }
 
-TLE parse_tle_lines(string NAME_LINE[25], string FIRST_LINE[70], string SECOND_LINE[70]) {
+TLE parse_lines(string NAME_LINE[25], string FIRST_LINE[70], string SECOND_LINE[70]) {
 	string lines[3][70];
 	
 	for (int8_t l=0; l<3; l++) {
@@ -202,5 +202,5 @@ TLE parse_tle_lines(string NAME_LINE[25], string FIRST_LINE[70], string SECOND_L
 	strcpy(lines[1], FIRST_LINE);
 	strcpy(lines[2], SECOND_LINE);
 
-	return parse_tle_block(lines);
+	return parse_block(lines);
 }
