@@ -9,7 +9,7 @@
 			"stdint.h": "c",
 			"math.h": "c",
 			"file.h": "c",
-			"tle_parser.h": "c"
+			"TleParser.h": "c"
 		}
 	}
 }

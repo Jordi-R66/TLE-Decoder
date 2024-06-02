@@ -1,7 +1,7 @@
 #include "CONVERSIONS.h"
 
-#ifndef __TLE_PARSER__
-#define TLE_PARSER
+#ifndef __TleParser__
+#define TleParser
 
 #define NAME_LENGTH 25
 
