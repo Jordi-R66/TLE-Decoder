@@ -75,7 +75,7 @@ string* secstohms(double secs) {
 
 	centiseconds = (uint8_t)((d_seconds - seconds) * 100);
 
-	sprintf(output, "%ud %uh %um %u.%us", days, hours, minutes, seconds, centiseconds);
+	sprintf(output, "%ud %uh %um %u.%0*us", days, hours, minutes, seconds, 2, centiseconds);
 	return output;
 }
 
