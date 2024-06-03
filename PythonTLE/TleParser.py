@@ -177,8 +177,8 @@ def parse_block(lines: list[str]) -> TLE:
 	output.EPOCH_YR = int("".join(EPOCH_YR))
 	output.EPOCH = float("".join(EPOCH_DAY))
 
-	output.FIRST_DERIV_MEAN_MOTION = float("".join(DERIV_1))
-	output.SECOND_DERIV_MEAN_MOTION = strtoscinotd("".join(DERIV_2))
+	output.FIRST_DERIV_MEAN_MOTION = float("".join(DERIV_1)) * 2
+	output.SECOND_DERIV_MEAN_MOTION = strtoscinotd("".join(DERIV_2)) * 6
 	output.B_STAR = strtoscinotd("".join(BSTAR))
 
 	output.Inclination = float("".join(INCLI))

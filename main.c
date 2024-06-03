@@ -10,7 +10,7 @@
 
 #define CHECKSUM_MODULO 10
 
-string* filename = "TLEs/stations.tle";
+string* filename = "TLEs/active.tle";
 uint32_t lookingFor = 25544;
 
 time_t current_time;
@@ -35,6 +35,7 @@ time_t current_time;
 void PrintTle(TLE TLE_OBJECT) {
 	float OrbPeriod = OrbitalPeriod(TLE_OBJECT.MeanMotion);
 	uint64_t SMA = SemiMajorAxis(OrbPeriod);
+	double n = AngularSpeed(SMA);
 
 	uint64_t Ap = Apogee(TLE_OBJECT.Eccentricity, SMA);
 	uint64_t Pe = Perigee(TLE_OBJECT.Eccentricity, SMA);
@@ -65,14 +66,13 @@ void PrintTle(TLE TLE_OBJECT) {
 
 	double DeltaTime = (((double)(current_year - epoch_year) * 365.25) + (double)(current_day - TLE_OBJECT.EPOCH)) * 86400.0;
 
-	double Current_MA = TLE_OBJECT.MeanAnomaly * DEGS2RADS + ((double)AngularSpeed(TLE_OBJECT.MeanMotion) * DeltaTime);
+	double Current_MA = TLE_OBJECT.MeanAnomaly * DEGS2RADS + (n * DeltaTime);
 	double Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, Current_MA, 1E-10, 0xffffffffffffffffULL);
 
 	Current_MA *= RADS2DEGS;
 	Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
 
 	uint64_t Current_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Current_E);
-	printf("Current_R Computed\n");
 	uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
 	double Current_Spd = OrbSpeed(Current_R, SMA);
 

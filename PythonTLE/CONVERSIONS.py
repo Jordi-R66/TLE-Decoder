@@ -34,6 +34,6 @@ def secstohms(secs: float) -> str:
 
 	centiseconds = int((d_seconds - seconds) * 100);
 
-	output = f"{days}d {hours}h {minutes}m {seconds}.{centiseconds}s"
+	output = f"{days:0>2}d {hours:0>2}h {minutes:0>2}m {seconds:0>2}.{centiseconds:0>2}s"
 
 	return output

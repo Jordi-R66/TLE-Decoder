@@ -15,29 +15,29 @@ if platform == "win32":
 else:
 	CLEAR_CMD = "clear"
 
-filename: str = "TLEs/merged.tle"
+filename: str = "TLEs/active.tle"
 lookingFor: int = 25544
 
 def PrintTle(TLE_OBJECT: TLE = None) -> None:
-	if TLE_OBJECT:
-		OrbPeriod = OrbitalPeriod(TLE_OBJECT.MeanMotion)
-		SMA = SemiMajorAxis(OrbPeriod)
+	OrbPeriod = OrbitalPeriod(TLE_OBJECT.MeanMotion)
+	SMA = SemiMajorAxis(OrbPeriod)
+	n = AngularSpeed(SMA)
 
-		Ap = Apogee(TLE_OBJECT.Eccentricity, SMA)
-		Pe = Perigee(TLE_OBJECT.Eccentricity, SMA)
+	Ap = Apogee(TLE_OBJECT.Eccentricity, SMA)
+	Pe = Perigee(TLE_OBJECT.Eccentricity, SMA)
 
-		Epoch_E = NewtonRaphson(radians(TLE_OBJECT.MeanAnomaly), TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, radians(TLE_OBJECT.MeanAnomaly), 1e-10, 0xffffffffffffffff)
+	Epoch_E = NewtonRaphson(radians(TLE_OBJECT.MeanAnomaly), TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, radians(TLE_OBJECT.MeanAnomaly), 1e-10, 0xffffffffffffffff)
 
-		Epoch_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Epoch_E)
-		Epoch_Alt = Epoch_R - EARTH_RADIUS
+	Epoch_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Epoch_E)
+	Epoch_Alt = Epoch_R - EARTH_RADIUS
 
-		Speed_Ap = OrbSpeed(Ap, SMA)
-		Speed_Pe = OrbSpeed(Pe, SMA)
-		Speed_Epoch = OrbSpeed(Epoch_R, SMA)
+	Speed_Ap = OrbSpeed(Ap, SMA)
+	Speed_Pe = OrbSpeed(Pe, SMA)
+	Speed_Epoch = OrbSpeed(Epoch_R, SMA)
 
 	utc = datetime.now(UTC)
 	current_year = utc.year
-	current_day = ((utc - datetime(current_year,1,1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 + utc.microsecond/86400000000
+	current_day = ((utc - datetime(current_year,1,1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 #+ utc.microsecond/86400000000
 
 	epoch_year = TLE_OBJECT.EPOCH_YR
 
@@ -48,7 +48,7 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 
 	DeltaTime = ((current_year - epoch_year) * 365.25 + (current_day - TLE_OBJECT.EPOCH)) * 86400
 
-	Current_MA = radians(TLE_OBJECT.MeanAnomaly) + AngularSpeed(TLE_OBJECT.MeanMotion) * DeltaTime
+	Current_MA = radians(TLE_OBJECT.MeanAnomaly) + n * DeltaTime
 
 	Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, 1e-10, 0xffffffffffffffff)
 
@@ -94,7 +94,7 @@ def main() -> int:
 	AllObjs: list[TLE] = GetAllTle(filename)
 	block_quant: int = len(AllObjs)
 
-	print(f"{block_quant} entries loadedLooping to find {lookingFor:0>2}\n\n")
+	print(f"{block_quant} entries loaded\nLooping to find {lookingFor:0>2}\n\n")
 
 	CurrentEntry: TLE = TLE()
 	found: bool = False

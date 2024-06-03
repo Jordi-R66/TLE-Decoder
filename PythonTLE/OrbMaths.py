@@ -2,12 +2,12 @@ from math import *
 
 EARTH_DAY_LENGTH: float = 86400
 
-G: float = 6.67428e-11
+G: float = 6.67428e-11#428e-11
 EARTH_MASS: float = 5.9722e24
 POLAR_RADIUS: int = 6356752
 EQUATORIAL_RADIUS: int = 6378137
 
-EARTH_RADIUS: float = (2*EQUATORIAL_RADIUS + POLAR_RADIUS)//3
+EARTH_RADIUS: float = 6371000#(2*EQUATORIAL_RADIUS + POLAR_RADIUS)//3
 
 EARTH_MU: int = int(G*EARTH_MASS)
 
@@ -46,7 +46,7 @@ def Perigee(Eccentricity: float, SMA: int) -> int:
 def OrbAlt(Eccentricity: float, SMA: int, E: float) -> int:
 	OrbAlt: int = 0
 
-	OrbAlt = int(SMA * (1 + Eccentricity * cos(E)))
+	OrbAlt = int(SMA * (1 - Eccentricity * cos(E)))
 
 	return OrbAlt
 
@@ -58,8 +58,8 @@ def KeplerEquation(E: float, e: float) -> float:
 def KeplerPrime(E: float, e: float) -> float:
 	return 1 - e*cos(E)
 
-def AngularSpeed(MeanMotion: float) -> float:
-	return 1/(OrbitalPeriod(MeanMotion)/(2*pi))
+def AngularSpeed(SMA: int) -> float:
+	return sqrt(EARTH_MU/SMA**3)
 
 def OrbSpeed(altitude: int, SMA: int) -> float:
 	speed: float = 0.0

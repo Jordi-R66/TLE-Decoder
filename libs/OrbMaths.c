@@ -47,7 +47,7 @@ uint64_t Perigee(float Eccentricity, uint64_t SemiMajorAxis) {
 }
 
 uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E) {
-	return (uint64_t)(SemiMajorAxis * (1.0 + Eccentricity * cos(E)));
+	return (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity * cos(E)));
 }
 
 
@@ -60,8 +60,8 @@ double KeplerPrime(double E, double e) {
 	return 1.0 - e * cos(E);
 }
 
-double AngularSpeed(double MeanMotion) {
-	return 1.0/(OrbitalPeriod(MeanMotion)/(2.0*M_PI));
+double AngularSpeed(double SemiMajorAxis) {
+	return sqrt(EARTH_MU/pow(SemiMajorAxis, 3));
 }
 
 double OrbSpeed(uint64_t altitude, uint64_t SemiMajorAxis) {

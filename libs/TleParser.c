@@ -173,8 +173,8 @@ TLE parse_block(string lines[][70]) {
 	output.EPOCH_YR = (uint8_t)strint(EPOCH_YR);
 	output.EPOCH = strtod(EPOCH_DAY, &endptr);
 
-	output.FIRST_DERIV_MEAN_MOTION = strtod(DERIV_1, &endptr);
-	output.SECOND_DERIV_MEAN_MOTION = strtoscinotd(DERIV_2);
+	output.FIRST_DERIV_MEAN_MOTION = strtod(DERIV_1, &endptr) * 2.0;
+	output.SECOND_DERIV_MEAN_MOTION = strtoscinotd(DERIV_2) * 6.0;
 	output.B_STAR = strtoscinotd(BSTAR);
 
 	output.Inclination = strtof(INCLI, &endptr);

@@ -10,7 +10,7 @@
 // #define EARTH_RADIUS ((2*EQUATORIAL_RADIUS + POLAR_RADIUS)/3) /*6371000*/
 #define EARTH_RADIUS 6371000
 
-#define EARTH_MU (uint64_t)(G*EARTH_MASS)
+#define EARTH_MU (G*EARTH_MASS)
 
 #undef M_PI
 #define M_PI 3.141592653589793
@@ -29,7 +29,7 @@ uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E);
 double KeplerEquation(double E, double e);
 double KeplerPrime(double E, double e);
 
-double AngularSpeed(double MeanMotion);
+double AngularSpeed(double SemiMajorAxis);
 
 double OrbSpeed(uint64_t altitude, uint64_t SemiMajorAxis);
 double Lorentz(double speed);
