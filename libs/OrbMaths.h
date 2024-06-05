@@ -30,6 +30,7 @@ double KeplerEquation(double E, double e);
 double KeplerPrime(double E, double e);
 
 double AngularSpeed(double SemiMajorAxis);
+double TrueAnomaly(float Eccentricity, double EccentricAnomaly);
 
 double OrbSpeed(uint64_t altitude, uint64_t SemiMajorAxis);
 double Lorentz(double speed);
