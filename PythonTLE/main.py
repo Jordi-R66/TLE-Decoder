@@ -37,7 +37,7 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 
 	utc = datetime.now(UTC)
 	current_year = utc.year
-	current_day = ((utc - datetime(current_year,1,1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 #+ utc.microsecond/86400000000
+	current_day = ((utc - datetime(current_year,1,1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 + utc.microsecond/86400000000
 
 	epoch_year = TLE_OBJECT.EPOCH_YR
 
@@ -82,7 +82,7 @@ Apogee : {int(Ap-EARTH_RADIUS):_} m | Perigee : {int(Pe-EARTH_RADIUS):_} m | Epo
 Speed @ Ap : {Speed_Ap:.4f} m/s | Pe : {Speed_Pe:.4f} m/s | Ep : {Speed_Epoch:.4f} m/s 
 ------------------------------- CURRENTLY -------------------------------
 DATE (UTC) : {utc.day:0>2}/{utc.month:0>2}/{utc.year:0>4} {utc.hour:0>2}:{utc.minute:0>2}:{utc.second:0>2}.{utc.microsecond:0>6}
-MEAN ANOMALY : {Current_MA:.4f} degs
+MEAN ANOMALY : {Current_MA:.4f} ({degrees(n * DeltaTime)}) degs
 ALTITUDE : {int(Current_Alt):_} m
 SPEED : {Current_Spd:.4f} m/s""".replace("_", " ")
 	
