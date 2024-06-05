@@ -63,6 +63,7 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 	Current_MA %= 360.0
 
 	Current_TA = degrees(Current_TA)
+	Current_TA %= 360.0
 
 	output = f"""Object name : {TLE_OBJECT.name}
 ---------------------------------- TLE ----------------------------------

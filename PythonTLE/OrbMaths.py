@@ -63,14 +63,29 @@ def KeplerPrime(E: float, e: float) -> float:
 def AngularSpeed(SMA: int) -> float:
 	return sqrt(EARTH_MU/SMA**3)
 
-def Beta(Eccentricity: float) -> float:
-	return Eccentricity/(1+sqrt(1-Eccentricity**2))
+def TrueAnomaly(Eccentricity: float, EccentricAnomaly: float) -> float:
+	return 2 * atan(sqrt((1+Eccentricity)/(1-Eccentricity) * tan(EccentricAnomaly/2)))
+
+# def Beta(Eccentricity: float) -> float:
+# 	return Eccentricity/(1+sqrt(1-Eccentricity**2))
 
 # def TrueAnomaly(Eccentricity: float, EccentricAnomaly: float) -> float:
-# 	return 2 * atan(sqrt((1+Eccentricity)/(1-Eccentricity) * tan(EccentricAnomaly/2)))
+# 	return EccentricAnomaly + 2 * atan((Beta(Eccentricity) * sin(EccentricAnomaly))/(1 - Beta(Eccentricity) * cos(EccentricAnomaly)))
 
-def TrueAnomaly(Eccentricity: float, EccentricAnomaly: float) -> float:
-	return EccentricAnomaly + 2 * atan((Beta(Eccentricity) * sin(EccentricAnomaly))/(1 - Beta(Eccentricity) * cos(EccentricAnomaly)))
+# def SIN_TA(Eccentricity: float, EccentricAnomaly: float) -> float:
+# 	A = sqrt(1-Eccentricity**2) * sin(EccentricAnomaly)
+# 	B = KeplerPrime(EccentricAnomaly, Eccentricity)
+
+# 	return A/B
+
+# def COS_TA(Eccentricity: float, EccentricAnomaly: float) -> float:
+# 	A = cos(EccentricAnomaly) - Eccentricity
+# 	B = KeplerPrime(EccentricAnomaly, Eccentricity)
+
+# 	return A/B
+
+# def TrueAnomaly(Eccentricity: float, EccentricAnomaly: float) -> float:
+# 	return atan(SIN_TA(Eccentricity, EccentricAnomaly)/COS_TA(Eccentricity, EccentricAnomaly))
 
 
 
