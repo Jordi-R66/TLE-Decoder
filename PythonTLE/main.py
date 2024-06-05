@@ -18,6 +18,8 @@ else:
 filename: str = "TLEs/active.tle"
 lookingFor: int = 25544
 
+EccentricAnomalyTolerance: float = 1e-15
+
 def PrintTle(TLE_OBJECT: TLE = None) -> None:
 	OrbPeriod = OrbitalPeriod(TLE_OBJECT.MeanMotion)
 	SMA = SemiMajorAxis(OrbPeriod)
@@ -26,9 +28,10 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 	Ap = Apogee(TLE_OBJECT.Eccentricity, SMA)
 	Pe = Perigee(TLE_OBJECT.Eccentricity, SMA)
 
-	Epoch_E = NewtonRaphson(radians(TLE_OBJECT.MeanAnomaly), TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, radians(TLE_OBJECT.MeanAnomaly), 1e-10, 0xffffffffffffffff)
+	Epoch_E = NewtonRaphson(radians(TLE_OBJECT.MeanAnomaly), TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, radians(TLE_OBJECT.MeanAnomaly), EccentricAnomalyTolerance, 0xffffffffffffffff)
+	Epoch_TA = TrueAnomaly(TLE_OBJECT.Eccentricity, Epoch_E)
 
-	Epoch_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Epoch_E)
+	Epoch_R = OrbAltTA(TLE_OBJECT.Eccentricity, SMA, Epoch_TA)
 	Epoch_Alt = Epoch_R - EARTH_RADIUS
 
 	Speed_Ap = OrbSpeed(Ap, SMA)
@@ -37,7 +40,7 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 
 	utc = datetime.now(UTC)
 	current_year = utc.year
-	current_day = ((utc - datetime(current_year,1,1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 + utc.microsecond/86400000000
+	current_day = ((utc - datetime(current_year, 1, 1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 + utc.microsecond/86400000000
 
 	epoch_year = TLE_OBJECT.EPOCH_YR
 
@@ -49,15 +52,17 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 	DeltaTime = ((current_year - epoch_year) * 365.25 + (current_day - TLE_OBJECT.EPOCH)) * 86400
 
 	Current_MA = radians(TLE_OBJECT.MeanAnomaly) + n * DeltaTime
+	Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, EccentricAnomalyTolerance, 0xffffffffffffffff)
+	Current_TA = TrueAnomaly(TLE_OBJECT.Eccentricity, Current_E)
 
-	Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, 1e-10, 0xffffffffffffffff)
+	Current_R = OrbAltTA(TLE_OBJECT.Eccentricity, SMA, Current_TA)
+	Current_Alt = Current_R - EARTH_RADIUS
+	Current_Spd = OrbSpeed(Current_R, SMA)
 
 	Current_MA = degrees(Current_MA)
 	Current_MA %= 360.0
 
-	Current_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Current_E)
-	Current_Alt = Current_R - EARTH_RADIUS
-	Current_Spd = OrbSpeed(Current_R, SMA)
+	Current_TA = degrees(Current_TA)
 
 	output = f"""Object name : {TLE_OBJECT.name}
 ---------------------------------- TLE ----------------------------------
@@ -82,7 +87,8 @@ Apogee : {int(Ap-EARTH_RADIUS):_} m | Perigee : {int(Pe-EARTH_RADIUS):_} m | Epo
 Speed @ Ap : {Speed_Ap:.4f} m/s | Pe : {Speed_Pe:.4f} m/s | Ep : {Speed_Epoch:.4f} m/s 
 ------------------------------- CURRENTLY -------------------------------
 DATE (UTC) : {utc.day:0>2}/{utc.month:0>2}/{utc.year:0>4} {utc.hour:0>2}:{utc.minute:0>2}:{utc.second:0>2}.{utc.microsecond:0>6}
-MEAN ANOMALY : {Current_MA:.4f} ({degrees(n * DeltaTime)}) degs
+MEAN ANOMALY : {Current_MA:.4f} ({degrees(n * DeltaTime):.4f}) degs
+TRUE ANOMALY : {Current_TA:.4f} degs
 ALTITUDE : {int(Current_Alt):_} m
 SPEED : {Current_Spd:.4f} m/s""".replace("_", " ")
 	

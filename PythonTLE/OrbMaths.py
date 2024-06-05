@@ -50,6 +50,8 @@ def OrbAlt(Eccentricity: float, SMA: int, E: float) -> int:
 
 	return OrbAlt
 
+def OrbAltTA(Eccentricity: float, SMA: int, TrueAnomaly: float) -> float:
+	return SMA * (1-Eccentricity**2) / (1+Eccentricity * cos(TrueAnomaly))
 
 
 def KeplerEquation(E: float, e: float) -> float:
@@ -60,6 +62,11 @@ def KeplerPrime(E: float, e: float) -> float:
 
 def AngularSpeed(SMA: int) -> float:
 	return sqrt(EARTH_MU/SMA**3)
+
+def TrueAnomaly(Eccentricity: float, EccentricAnomaly: float) -> float:
+	return 2 * atan(sqrt((1+Eccentricity)/(1-Eccentricity) * tan(EccentricAnomaly/2)))
+
+
 
 def OrbSpeed(altitude: int, SMA: int) -> float:
 	speed: float = 0.0
