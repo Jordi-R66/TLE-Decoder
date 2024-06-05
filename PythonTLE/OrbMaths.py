@@ -29,19 +29,19 @@ def SemiMajorAxis(Period: float) -> int:
 
 
 
-def Apogee(Eccentricity: float, SMA: int) -> int:
-	Apogee: int = 0
+def Apoapsis(Eccentricity: float, SMA: int) -> int:
+	Apoapsis: int = 0
 
-	Apogee = int(SMA * (1 + Eccentricity))
+	Apoapsis = int(SMA * (1 + Eccentricity))
 
-	return Apogee
+	return Apoapsis
 
-def Perigee(Eccentricity: float, SMA: int) -> int:
-	Perigee: int = 0
+def Periapsis(Eccentricity: float, SMA: int) -> int:
+	Periapsis: int = 0
 
-	Perigee = int(SMA * (1 - Eccentricity))
+	Periapsis = int(SMA * (1 - Eccentricity))
 
-	return Perigee
+	return Periapsis
 
 def OrbAlt(Eccentricity: float, SMA: int, E: float) -> int:
 	OrbAlt: int = 0

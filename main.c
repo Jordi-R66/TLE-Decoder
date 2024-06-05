@@ -37,8 +37,8 @@ void PrintTle(TLE TLE_OBJECT) {
 	uint64_t SMA = SemiMajorAxis(OrbPeriod);
 	double n = AngularSpeed(SMA);
 
-	uint64_t Ap = Apogee(TLE_OBJECT.Eccentricity, SMA);
-	uint64_t Pe = Perigee(TLE_OBJECT.Eccentricity, SMA);
+	uint64_t Ap = Apoapsis(TLE_OBJECT.Eccentricity, SMA);
+	uint64_t Pe = Periapsis(TLE_OBJECT.Eccentricity, SMA);
 
 	double Epoch_E = NewtonRaphson(TLE_OBJECT.MeanAnomaly*DEGS2RADS, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, TLE_OBJECT.MeanAnomaly*DEGS2RADS, 1E-10, 0xffffffffffffffffULL);
 
@@ -93,7 +93,7 @@ void PrintTle(TLE TLE_OBJECT) {
 	printf("INCLINATION : %.4f degs\n", TLE_OBJECT.Inclination);
 	printf("LONGITUDE OF ASC. NODE : %.4f degs\n", TLE_OBJECT.AscNodeLong);
 	printf("ECCENTRICITY : %.7f\n", TLE_OBJECT.Eccentricity);
-	printf("ARG. OF PERIGEE : %.4f degs\n", TLE_OBJECT.PeriArg);
+	printf("ARG. OF PERIAPSIS : %.4f degs\n", TLE_OBJECT.PeriArg);
 	printf("MEAN ANOMALY : %.4f degs\n", TLE_OBJECT.MeanAnomaly);
 	printf("MEAN MOTION : %.8lf rev/(sid. day)\n", TLE_OBJECT.MeanMotion);
 
@@ -101,7 +101,7 @@ void PrintTle(TLE TLE_OBJECT) {
 
 	printf("Orbital Period : %.4f secs (%s)\n", OrbPeriod, secstohms(OrbPeriod));
 	printf("Semi Major Axis : %llu m\n", SMA);
-	printf("Apogee : %llu m | Perigee : %llu m | Epoch : %llu m\n", Ap-(uint64_t)EARTH_RADIUS, Pe-(uint64_t)EARTH_RADIUS, Epoch_Alt);
+	printf("Apoapsis : %llu m | Periapsis : %llu m | Epoch : %llu m\n", Ap-(uint64_t)EARTH_RADIUS, Pe-(uint64_t)EARTH_RADIUS, Epoch_Alt);
 	printf("Speed @ Ap : %.4lf m/s | Pe : %.4lf m/s | Ep : %.4lf m/s \n", Speed_Ap, Speed_Pe, Speed_Epoch);
 
 	printf("------------------------------- CURRENTLY -------------------------------\n");

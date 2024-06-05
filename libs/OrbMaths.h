@@ -22,8 +22,8 @@ float OrbitalPeriod(double MeanMotion);
 
 uint64_t SemiMajorAxis(float Period);
 
-uint64_t Apogee(float Eccentricity, uint64_t SemiMajorAxis);
-uint64_t Perigee(float Eccentricity, uint64_t SemiMajorAxis);
+uint64_t Apoapsis(float Eccentricity, uint64_t SemiMajorAxis);
+uint64_t Periapsis(float Eccentricity, uint64_t SemiMajorAxis);
 uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E);
 
 double KeplerEquation(double E, double e);

@@ -30,20 +30,20 @@ uint64_t SemiMajorAxis(float Period) {
 
 
 
-uint64_t Apogee(float Eccentricity, uint64_t SemiMajorAxis) {
-	uint64_t Apogee = 0;
+uint64_t Apoapsis(float Eccentricity, uint64_t SemiMajorAxis) {
+	uint64_t Apoapsis = 0;
 
-	Apogee = (uint64_t)(SemiMajorAxis * (1.0f + Eccentricity));
+	Apoapsis = (uint64_t)(SemiMajorAxis * (1.0f + Eccentricity));
 
-	return Apogee;
+	return Apoapsis;
 }
 
-uint64_t Perigee(float Eccentricity, uint64_t SemiMajorAxis) {
-	uint64_t Perigee = 0;
+uint64_t Periapsis(float Eccentricity, uint64_t SemiMajorAxis) {
+	uint64_t Periapsis = 0;
 
-	Perigee = (uint64_t)(SemiMajorAxis * (1.0f - Eccentricity));
+	Periapsis = (uint64_t)(SemiMajorAxis * (1.0f - Eccentricity));
 
-	return Perigee;
+	return Periapsis;
 }
 
 uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E) {

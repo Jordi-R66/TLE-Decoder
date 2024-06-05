@@ -25,8 +25,8 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 	SMA = SemiMajorAxis(OrbPeriod)
 	n = AngularSpeed(SMA)
 
-	Ap = Apogee(TLE_OBJECT.Eccentricity, SMA)
-	Pe = Perigee(TLE_OBJECT.Eccentricity, SMA)
+	Ap = Apoapsis(TLE_OBJECT.Eccentricity, SMA)
+	Pe = Periapsis(TLE_OBJECT.Eccentricity, SMA)
 
 	Epoch_E = NewtonRaphson(radians(TLE_OBJECT.MeanAnomaly), TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, radians(TLE_OBJECT.MeanAnomaly), EccentricAnomalyTolerance, 0xffffffffffffffff)
 	Epoch_TA = TrueAnomaly(TLE_OBJECT.Eccentricity, Epoch_E)
@@ -78,13 +78,13 @@ B* = {TLE_OBJECT.B_STAR:.5e}
 INCLINATION : {TLE_OBJECT.Inclination:.4f} degs
 LONGITUDE OF ASC. NODE : {TLE_OBJECT.AscNodeLong:.4f} degs
 ECCENTRICITY : {TLE_OBJECT.Eccentricity:.7f}
-ARG. OF PERIGEE : {TLE_OBJECT.PeriArg:.4f} degs
+ARG. OF PERIAPSIS : {TLE_OBJECT.PeriArg:.4f} degs
 MEAN ANOMALY : {TLE_OBJECT.MeanAnomaly:.4f} degs
 MEAN MOTION : {TLE_OBJECT.MeanMotion:.8f} rev/(sid. day)
 -------------------------------- RESULTS --------------------------------
 Orbital Period : {OrbPeriod:.4f} secs ({secstohms(OrbPeriod)})
 Semi Major Axis : {SMA:_} m
-Apogee : {int(Ap-EARTH_RADIUS):_} m | Perigee : {int(Pe-EARTH_RADIUS):_} m | Epoch : {int(Epoch_Alt):_} m
+Apoapsis : {int(Ap-EARTH_RADIUS):_} m | Periapsis : {int(Pe-EARTH_RADIUS):_} m | Epoch : {int(Epoch_Alt):_} m
 Speed @ Ap : {Speed_Ap:.4f} m/s | Pe : {Speed_Pe:.4f} m/s | Ep : {Speed_Epoch:.4f} m/s 
 ------------------------------- CURRENTLY -------------------------------
 DATE (UTC) : {utc.day:0>2}/{utc.month:0>2}/{utc.year:0>4} {utc.hour:0>2}:{utc.minute:0>2}:{utc.second:0>2}.{utc.microsecond:0>6}
