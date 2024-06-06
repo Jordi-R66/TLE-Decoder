@@ -45,7 +45,7 @@ void PrintTle(TLE TLE_OBJECT) {
 	double Epoch_E = NewtonRaphson(TLE_OBJECT.MeanAnomaly*DEGS2RADS, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, TLE_OBJECT.MeanAnomaly*DEGS2RADS, EccentricAnomalyTolerance, 0xffffffffffffffffULL);
 	double Epoch_TA = TrueAnomaly(TLE_OBJECT.Eccentricity, Epoch_E);
 
-	uint64_t Epoch_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Epoch_E);
+	uint64_t Epoch_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Epoch_TA);
 	uint64_t Epoch_Alt = Epoch_R-(uint64_t)EARTH_RADIUS;
 
 	double Speed_Ap = OrbSpeed(Ap, SMA);

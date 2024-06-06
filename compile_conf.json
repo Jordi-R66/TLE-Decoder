@@ -1,6 +1,6 @@
 {
 	"Compiler": "gcc",
-	"Parameters": ["-O3", "-std=c17", "-m64", "-march=x86-64", "-flto"],
+	"Parameters": ["-Wall", "-O3", "-std=c17", "-m64", "-march=x86-64", "-flto"],
 	"OutputPath": "output/",
 	"OutputName": "TLE",
 	"Sources": ["libs/TLE_Files.c", "libs/OrbMaths.c", "libs/TleParser.c", "libs/CONVERSIONS.c", "libs/Algos.c", "libs/TermFuncs.c", "main.c"],
