@@ -16,7 +16,7 @@ else:
 	CLEAR_CMD = "clear"
 
 filename: str = "TLEs/active.tle"
-lookingFor: int = 25544
+lookingFor: int = 49044
 
 EccentricAnomalyTolerance: float = 1e-15
 

@@ -2,12 +2,12 @@ from math import *
 
 EARTH_DAY_LENGTH: float = 86400
 
-G: float = 6.67428e-11#428e-11
+G: float = 6.67428e-11
 EARTH_MASS: float = 5.9722e24
 POLAR_RADIUS: int = 6356752
 EQUATORIAL_RADIUS: int = 6378137
 
-EARTH_RADIUS: float = 6371000#(2*EQUATORIAL_RADIUS + POLAR_RADIUS)//3
+EARTH_RADIUS: float = (2*EQUATORIAL_RADIUS + POLAR_RADIUS)//3
 
 EARTH_MU: int = int(G*EARTH_MASS)
 
@@ -54,6 +54,7 @@ def OrbAltTA(Eccentricity: float, SMA: int, TrueAnomaly: float) -> float:
 	return SMA * (1-Eccentricity**2) / (1+Eccentricity * cos(TrueAnomaly))
 
 
+
 def KeplerEquation(E: float, e: float) -> float:
 	return E - e*sin(E)
 
@@ -64,10 +65,19 @@ def AngularSpeed(SMA: int) -> float:
 	return sqrt(EARTH_MU/SMA**3)
 
 def TrueAnomaly(Eccentricity: float, EccentricAnomaly: float) -> float:
-	return 2 * atan(sqrt((1+Eccentricity)/(1-Eccentricity) * tan(EccentricAnomaly/2)))
+	return 2 * atan(sqrt((1+Eccentricity)/(1-Eccentricity)) * tan(EccentricAnomaly/2))
 
 # def Beta(Eccentricity: float) -> float:
 # 	return Eccentricity/(1+sqrt(1-Eccentricity**2))
+
+# def TrueAnomaly(Eccentricity: float, EccentricAnomaly: float) -> float:
+# 	A: float = 1+Eccentricity
+# 	B: float = 1-Eccentricity
+# 	C: float = tan(EccentricAnomaly/2)
+
+# 	print(A * C/B)
+
+# 	return sqrt(A * C/B)
 
 # def TrueAnomaly(Eccentricity: float, EccentricAnomaly: float) -> float:
 # 	return EccentricAnomaly + 2 * atan((Beta(Eccentricity) * sin(EccentricAnomaly))/(1 - Beta(Eccentricity) * cos(EccentricAnomaly)))
