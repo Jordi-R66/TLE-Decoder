@@ -40,7 +40,7 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 
 	utc = datetime.now(UTC)
 	current_year = utc.year
-	current_day = ((utc - datetime(current_year, 1, 1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 + utc.microsecond/86400000000
+	current_day = ((utc - datetime(current_year, 1, 1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 #+ utc.microsecond/86400000000
 
 	epoch_year = TLE_OBJECT.EPOCH_YR
 
@@ -116,7 +116,7 @@ def main() -> int:
 		while True:
 			system(CLEAR_CMD)
 			PrintTle(CurrentEntry)
-			sleep(1/5)
+			sleep(1/15)
 
 	return 0
 
