@@ -25,6 +25,7 @@ uint64_t SemiMajorAxis(float Period);
 uint64_t Apoapsis(float Eccentricity, uint64_t SemiMajorAxis);
 uint64_t Periapsis(float Eccentricity, uint64_t SemiMajorAxis);
 uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E);
+uint64_t OrbAltTA(float Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly);
 
 double KeplerEquation(double E, double e);
 double KeplerPrime(double E, double e);

@@ -16,7 +16,7 @@ else:
 	CLEAR_CMD = "clear"
 
 filename: str = "TLEs/active.tle"
-lookingFor: int = 49044
+lookingFor: int = 25544
 
 EccentricAnomalyTolerance: float = 1e-15
 
@@ -88,7 +88,7 @@ Apoapsis : {int(Ap-EARTH_RADIUS):_} m | Periapsis : {int(Pe-EARTH_RADIUS):_} m |
 Speed @ Ap : {Speed_Ap:.4f} m/s | Pe : {Speed_Pe:.4f} m/s | Ep : {Speed_Epoch:.4f} m/s 
 ------------------------------- CURRENTLY -------------------------------
 DATE (UTC) : {utc.day:0>2}/{utc.month:0>2}/{utc.year:0>4} {utc.hour:0>2}:{utc.minute:0>2}:{utc.second:0>2}.{utc.microsecond:0>6}
-MEAN ANOMALY : {Current_MA:.4f} ({degrees(n * DeltaTime):.4f}) degs
+MEAN ANOMALY : {Current_MA:.4f} degs
 TRUE ANOMALY : {Current_TA:.4f} degs
 ALTITUDE : {int(Current_Alt):_} m
 SPEED : {Current_Spd:.4f} m/s""".replace("_", " ")

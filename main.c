@@ -41,6 +41,7 @@ void PrintTle(TLE TLE_OBJECT) {
 	uint64_t Pe = Periapsis(TLE_OBJECT.Eccentricity, SMA);
 
 	double Epoch_E = NewtonRaphson(TLE_OBJECT.MeanAnomaly*DEGS2RADS, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, TLE_OBJECT.MeanAnomaly*DEGS2RADS, 1E-10, 0xffffffffffffffffULL);
+	double Epoch_TA = TrueAnomaly(TLE_OBJECT.Eccentricity, Epoch_E);
 
 	uint64_t Epoch_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Epoch_E);
 	uint64_t Epoch_Alt = Epoch_R-(uint64_t)EARTH_RADIUS;
@@ -68,11 +69,15 @@ void PrintTle(TLE TLE_OBJECT) {
 
 	double Current_MA = TLE_OBJECT.MeanAnomaly * DEGS2RADS + (n * DeltaTime);
 	double Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, *KeplerEquation, *KeplerPrime, Current_MA, 1E-10, 0xffffffffffffffffULL);
+	double Current_TA = TrueAnomaly(TLE_OBJECT.Eccentricity, Current_E);
 
 	Current_MA *= RADS2DEGS;
 	Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
 
-	uint64_t Current_R = OrbAlt(TLE_OBJECT.Eccentricity, SMA, Current_E);
+	Current_TA *= RADS2DEGS;
+	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
+
+	uint64_t Current_R = OrbAltTA(TLE_OBJECT.Eccentricity, SMA, Current_E);
 	uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
 	double Current_Spd = OrbSpeed(Current_R, SMA);
 
@@ -108,6 +113,7 @@ void PrintTle(TLE TLE_OBJECT) {
 
 	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon+1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
 	printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
+	printf("TRUE ANOMALY ; %.4lf degs\n", Current_TA);
 	printf("ALTITUDE : %llu m\n", Current_Alt);
 	printf("SPEED : %.4lf m/s\n", Current_Spd);
 }

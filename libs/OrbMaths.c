@@ -50,6 +50,10 @@ uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E) {
 	return (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity * cos(E)));
 }
 
+uint64_t OrbAltTA(float Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly) {
+	return (uint64_t)(SemiMajorAxis * (1.0 - pow(Eccentricity, 2.0)) / (1.0 + pow(Eccentricity, 2.0) * cos(TrueAnomaly)));
+}
+
 
 
 double KeplerEquation(double E, double e) {
