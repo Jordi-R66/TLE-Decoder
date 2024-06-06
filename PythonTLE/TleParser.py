@@ -80,7 +80,7 @@ def parse_block(lines: list[str]) -> TLE:
 
 	OBJ_NAME = NAME_LINE
 
-	for i in range(NORAD_ID_LENGTH):
+	for i in range(NORAD_ID_LENGTH+1):
 		c = FIRST_LINE[i+2]
 
 		if i < 5:
