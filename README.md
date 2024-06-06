@@ -45,8 +45,16 @@ typedef struct TLE {
 } TLE;
 ```
 
-## Capacities
+<!-- ## Capacities
 
 - Opening a file containing several entries
 
-- Exporting several entries to a binary file containing the representation of the structs
+- Exporting several entries to a binary file containing the representation of the structs -->
+
+## Running the code
+
+1. Run compile.py
+
+2. Run from the root, the binary located in `output/`
+
+(Same thing for the python version but in `PythonTLE/` in lieu of `output/`)
