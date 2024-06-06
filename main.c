@@ -151,7 +151,7 @@ int32_t main(uint8_t argc, char *argv[]) {
 		}
 
 		while (true) {
-			clear();
+			//clear();
 			PrintTle(CurrentEntry);
 			usleep(1000000/15);
 		}
