@@ -6,15 +6,15 @@
 // 	return pow(x, 1.0/3.0);
 // }
 
-float OrbitalPeriod(double MeanMotion) {
-	float Period;
+double OrbitalPeriod(double MeanMotion) {
+	double Period;
 
-	Period = (float)(EARTH_DAY_LENGTH / MeanMotion);
+	Period = (double)(EARTH_DAY_LENGTH / MeanMotion);
 
 	return Period;
 }
 
-uint64_t SemiMajorAxis(float Period) {
+uint64_t SemiMajorAxis(double Period) {
 	double SMA;
 
 	SMA = cbrt(pow((Period / (2.0 * M_PI)), 2.0) * EARTH_MU);
@@ -30,7 +30,7 @@ uint64_t SemiMajorAxis(float Period) {
 
 
 
-uint64_t Apoapsis(float Eccentricity, uint64_t SemiMajorAxis) {
+uint64_t Apoapsis(double Eccentricity, uint64_t SemiMajorAxis) {
 	uint64_t Apoapsis = 0;
 
 	Apoapsis = (uint64_t)(SemiMajorAxis * (1.0f + Eccentricity));
@@ -38,7 +38,7 @@ uint64_t Apoapsis(float Eccentricity, uint64_t SemiMajorAxis) {
 	return Apoapsis;
 }
 
-uint64_t Periapsis(float Eccentricity, uint64_t SemiMajorAxis) {
+uint64_t Periapsis(double Eccentricity, uint64_t SemiMajorAxis) {
 	uint64_t Periapsis = 0;
 
 	Periapsis = (uint64_t)(SemiMajorAxis * (1.0f - Eccentricity));
@@ -46,29 +46,29 @@ uint64_t Periapsis(float Eccentricity, uint64_t SemiMajorAxis) {
 	return Periapsis;
 }
 
-uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E) {
+uint64_t OrbAlt(double Eccentricity, uint64_t SemiMajorAxis, double E) {
 	return (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity * cos(E)));
 }
 
-uint64_t OrbAltTA(float Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly) {
+uint64_t OrbAltTA(double Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly) {
 	return (uint64_t)(SemiMajorAxis * (1.0 - pow(Eccentricity, 2.0)) / (1.0 + Eccentricity * cos(TrueAnomaly)));
 }
 
 
 
-double KeplerEquation(double E, double e) {
-	return E - e * sin(E);
+double KeplerEquation(double EccentricAnomaly, double Eccentricity) {
+	return EccentricAnomaly - Eccentricity * sin(EccentricAnomaly);
 }
 
-double KeplerPrime(double E, double e) {
-	return 1.0 - e * cos(E);
+double KeplerPrime(double EccentricAnomaly, double Eccentricity) {
+	return 1.0 - Eccentricity * cos(EccentricAnomaly);
 }
 
 double AngularSpeed(double SemiMajorAxis) {
 	return sqrt(EARTH_MU/pow(SemiMajorAxis, 3));
 }
 
-double TrueAnomaly(float Eccentricity, double EccentricAnomaly) {
+double TrueAnomaly(double Eccentricity, double EccentricAnomaly) {
 	return 2.0 * atan(sqrt((1.0f+Eccentricity)/(1.0f-Eccentricity) * tan(EccentricAnomaly/2.0)));
 }
 

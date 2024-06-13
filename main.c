@@ -13,7 +13,7 @@
 string* filename = "TLEs/stations.tle";
 uint32_t lookingFor = 25544;
 
-float EccentricAnomalyTolerance = 1e-15;
+double EccentricAnomalyTolerance = 1e-15;
 
 time_t current_time;
 
@@ -35,7 +35,7 @@ time_t current_time;
 // }
 
 void PrintTle(TLE TLE_OBJECT) {
-	float OrbPeriod = OrbitalPeriod(TLE_OBJECT.MeanMotion);
+	double OrbPeriod = OrbitalPeriod(TLE_OBJECT.MeanMotion);
 	uint64_t SMA = SemiMajorAxis(OrbPeriod);
 	double n = AngularSpeed(SMA);
 
@@ -83,41 +83,43 @@ void PrintTle(TLE TLE_OBJECT) {
 	Current_TA *= RADS2DEGS;
 	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 
-	printf("Object name : %s\n", TLE_OBJECT.name);
+	printf("Epoch MA : %lf\nCurrent MA : %lf\n\n", TLE_OBJECT.MeanAnomaly, Current_MA);
 
-	printf("---------------------------------- TLE ----------------------------------\n");
+	// printf("Object name : %s\n", TLE_OBJECT.name);
 
-	printf("NORAD ID : %0*u%c\n", 5, TLE_OBJECT.NORAD_ID, TLE_OBJECT.Classification);
-	printf("COSPAR : %d %0*hu %s\n", TLE_OBJECT.COSPAR_YR, 3, TLE_OBJECT.COSPAR_LN, TLE_OBJECT.COSPAR_OBJ_ID);
-	printf("EPOCH : YEAR=20%d DAY=%.8lf\n", TLE_OBJECT.EPOCH_YR, TLE_OBJECT.EPOCH);
-	printf("TLE AGE : %s\n", secstohms(DeltaTime));
-	printf("(MEAN MOTION)' = %.8lf\n", TLE_OBJECT.FIRST_DERIV_MEAN_MOTION);
-	printf("(MEAN MOTION)'' = %.5lf\n", TLE_OBJECT.SECOND_DERIV_MEAN_MOTION);
-	printf("B* = %.5e\n", TLE_OBJECT.B_STAR);
+	// printf("---------------------------------- TLE ----------------------------------\n");
 
-	printf("\n");
+	// printf("NORAD ID : %0*u%c\n", 5, TLE_OBJECT.NORAD_ID, TLE_OBJECT.Classification);
+	// printf("COSPAR : %d %0*hu %s\n", TLE_OBJECT.COSPAR_YR, 3, TLE_OBJECT.COSPAR_LN, TLE_OBJECT.COSPAR_OBJ_ID);
+	// printf("EPOCH : YEAR=20%d DAY=%.8lf\n", TLE_OBJECT.EPOCH_YR, TLE_OBJECT.EPOCH);
+	// printf("TLE AGE : %s\n", secstohms(DeltaTime));
+	// printf("(MEAN MOTION)' = %.8lf\n", TLE_OBJECT.FIRST_DERIV_MEAN_MOTION);
+	// printf("(MEAN MOTION)'' = %.5lf\n", TLE_OBJECT.SECOND_DERIV_MEAN_MOTION);
+	// printf("B* = %.5e\n", TLE_OBJECT.B_STAR);
 
-	printf("INCLINATION : %.4f degs\n", TLE_OBJECT.Inclination);
-	printf("LONGITUDE OF ASC. NODE : %.4f degs\n", TLE_OBJECT.AscNodeLong);
-	printf("ECCENTRICITY : %.7f\n", TLE_OBJECT.Eccentricity);
-	printf("ARG. OF PERIAPSIS : %.4f degs\n", TLE_OBJECT.PeriArg);
-	printf("MEAN ANOMALY : %.4f degs\n", TLE_OBJECT.MeanAnomaly);
-	printf("MEAN MOTION : %.8lf rev/(sid. day)\n", TLE_OBJECT.MeanMotion);
+	// printf("\n");
 
-	printf("-------------------------------- RESULTS --------------------------------\n");
+	// printf("INCLINATION : %.4lf degs\n", TLE_OBJECT.Inclination);
+	// printf("LONGITUDE OF ASC. NODE : %.4f degs\n", TLE_OBJECT.AscNodeLong);
+	// printf("ECCENTRICITY : %.7lf\n", TLE_OBJECT.Eccentricity);
+	// printf("ARG. OF PERIAPSIS : %.4lf degs\n", TLE_OBJECT.PeriArg);
+	// printf("MEAN ANOMALY : %.4lf degs\n", TLE_OBJECT.MeanAnomaly);
+	// printf("MEAN MOTION : %.8lf rev/(sid. day)\n", TLE_OBJECT.MeanMotion);
 
-	printf("Orbital Period : %.4f secs (%s)\n", OrbPeriod, secstohms(OrbPeriod));
-	printf("Semi Major Axis : %llu m\n", SMA);
-	printf("Apoapsis : %llu m | Periapsis : %llu m | Epoch : %llu m\n", Ap-(uint64_t)EARTH_RADIUS, Pe-(uint64_t)EARTH_RADIUS, Epoch_Alt);
-	printf("Speed @ Ap : %.4lf m/s | Pe : %.4lf m/s | Ep : %.4lf m/s \n", Speed_Ap, Speed_Pe, Speed_Epoch);
+	// printf("-------------------------------- RESULTS --------------------------------\n");
 
-	printf("------------------------------- CURRENTLY -------------------------------\n");
+	// printf("Orbital Period : %.4lf secs (%s)\n", OrbPeriod, secstohms(OrbPeriod));
+	// printf("Semi Major Axis : %llu m\n", SMA);
+	// printf("Apoapsis : %llu m | Periapsis : %llu m | Epoch : %llu m\n", Ap-(uint64_t)EARTH_RADIUS, Pe-(uint64_t)EARTH_RADIUS, Epoch_Alt);
+	// printf("Speed @ Ap : %.4lf m/s | Pe : %.4lf m/s | Ep : %.4lf m/s \n", Speed_Ap, Speed_Pe, Speed_Epoch);
 
-	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon+1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
-	printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
-	printf("TRUE ANOMALY ; %.4lf degs\n", Current_TA);
-	printf("ALTITUDE : %llu m\n", Current_Alt);
-	printf("SPEED : %.4lf m/s\n", Current_Spd);
+	// printf("------------------------------- CURRENTLY -------------------------------\n");
+
+	// printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon+1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
+	// printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
+	// printf("TRUE ANOMALY ; %.4lf degs\n", Current_TA);
+	// printf("ALTITUDE : %llu m\n", Current_Alt);
+	// printf("SPEED : %.4lf m/s\n", Current_Spd);
 }
 
 int32_t main(uint8_t argc, char *argv[]) {
@@ -153,7 +155,7 @@ int32_t main(uint8_t argc, char *argv[]) {
 		while (true) {
 			//clear();
 			PrintTle(CurrentEntry);
-			usleep(1000000/15);
+			usleep(1000000/1 * 2);
 		}
 
 	} else {

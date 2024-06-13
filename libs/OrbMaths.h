@@ -18,20 +18,20 @@
 #define DEGS2RADS M_PI/180.0
 #define RADS2DEGS 180.0/M_PI
 
-float OrbitalPeriod(double MeanMotion);
+double OrbitalPeriod(double MeanMotion);
 
-uint64_t SemiMajorAxis(float Period);
+uint64_t SemiMajorAxis(double Period);
 
-uint64_t Apoapsis(float Eccentricity, uint64_t SemiMajorAxis);
-uint64_t Periapsis(float Eccentricity, uint64_t SemiMajorAxis);
-uint64_t OrbAlt(float Eccentricity, uint64_t SemiMajorAxis, double E);
-uint64_t OrbAltTA(float Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly);
+uint64_t Apoapsis(double Eccentricity, uint64_t SemiMajorAxis);
+uint64_t Periapsis(double Eccentricity, uint64_t SemiMajorAxis);
+uint64_t OrbAlt(double Eccentricity, uint64_t SemiMajorAxis, double E);
+uint64_t OrbAltTA(double Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly);
 
 double KeplerEquation(double E, double e);
 double KeplerPrime(double E, double e);
 
 double AngularSpeed(double SemiMajorAxis);
-double TrueAnomaly(float Eccentricity, double EccentricAnomaly);
+double TrueAnomaly(double Eccentricity, double EccentricAnomaly);
 
 double OrbSpeed(uint64_t altitude, uint64_t SemiMajorAxis);
 double Lorentz(double speed);
