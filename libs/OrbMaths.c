@@ -50,13 +50,8 @@ uint64_t OrbAlt(double Eccentricity, uint64_t SemiMajorAxis, double E) {
 	return (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity * cos(E)));
 }
 
-<<<<<<< HEAD
-uint64_t OrbAltTA(double Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly) {
-	return (uint64_t)(SemiMajorAxis * (1.0 - pow(Eccentricity, 2.0)) / (1.0 + Eccentricity * cos(TrueAnomaly)));
-=======
 uint64_t OrbAltTA(float Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly) {
 	return (uint64_t)(SemiMajorAxis * (1.0 - pow((double)Eccentricity, 2.0)) / (1.0 + (double)Eccentricity * cos(TrueAnomaly)));
->>>>>>> 474ef67e686c9ce82690cd391824b84ed4b7926d
 }
 
 
