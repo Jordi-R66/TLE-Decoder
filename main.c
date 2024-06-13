@@ -11,7 +11,7 @@
 #define CHECKSUM_MODULO 10
 
 string* filename = "TLEs/stations.tle";
-uint32_t lookingFor = 25544;
+uint32_t lookingFor = 40129;
 
 double EccentricAnomalyTolerance = 1e-15;
 
@@ -153,7 +153,7 @@ int32_t main(uint8_t argc, char *argv[]) {
 		}
 
 		while (true) {
-			//clear();
+			clear();
 			PrintTle(CurrentEntry);
 			usleep(1000000/1 * 2);
 		}
