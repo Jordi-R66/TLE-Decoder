@@ -50,8 +50,8 @@ uint64_t OrbAlt(double Eccentricity, uint64_t SemiMajorAxis, double E) {
 	return (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity * cos(E)));
 }
 
-uint64_t OrbAltTA(float Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly) {
-	return (uint64_t)(SemiMajorAxis * (1.0 - pow((double)Eccentricity, 2.0)) / (1.0 + (double)Eccentricity * cos(TrueAnomaly)));
+uint64_t OrbAltTA(double Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly) {
+	return (uint64_t)(SemiMajorAxis * (1.0 - pow(Eccentricity, 2.0)) / (1.0 + Eccentricity * cos(TrueAnomaly)));
 }
 
 
@@ -71,6 +71,8 @@ double AngularSpeed(double SemiMajorAxis) {
 double TrueAnomaly(double Eccentricity, double EccentricAnomaly) {
 	return 2.0 * atan(sqrt((1.0f+Eccentricity)/(1.0f-Eccentricity) * tan(EccentricAnomaly/2.0)));
 }
+
+
 
 double OrbSpeed(uint64_t altitude, uint64_t SemiMajorAxis) {
 	double speed;

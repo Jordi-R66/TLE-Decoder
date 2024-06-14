@@ -65,35 +65,35 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 	Current_TA = degrees(Current_TA)
 	Current_TA %= 360.0
 
-	output = f"Epoch MA : {TLE_OBJECT.MeanAnomaly}\nCurrent MA : {Current_MA}\n\n"
+	# output = f"Epoch MA : {TLE_OBJECT.MeanAnomaly}\nCurrent MA : {Current_MA}\n\n"
 
-# 	output = f"""Object name : {TLE_OBJECT.name}
-# ---------------------------------- TLE ----------------------------------
-# NORAD ID : {TLE_OBJECT.NORAD_ID:0>5}{TLE_OBJECT.Classification}
-# COSPAR : {TLE_OBJECT.COSPAR_YR} {TLE_OBJECT.COSPAR_LN:0>3} {TLE_OBJECT.COSPAR_OBJ_ID}
-# EPOCH : YEAR={epoch_year} DAY={TLE_OBJECT.EPOCH:.8f}
-# TLE AGE : {secstohms(DeltaTime)}
-# (MEAN MOTION)' = {TLE_OBJECT.FIRST_DERIV_MEAN_MOTION:.8f}
-# (MEAN MOTION)'' = {TLE_OBJECT.SECOND_DERIV_MEAN_MOTION:.5f}
-# B* = {TLE_OBJECT.B_STAR:.5e}
+	output = f"""Object name : {TLE_OBJECT.name}
+---------------------------------- TLE ----------------------------------
+NORAD ID : {TLE_OBJECT.NORAD_ID:0>5}{TLE_OBJECT.Classification}
+COSPAR : {TLE_OBJECT.COSPAR_YR} {TLE_OBJECT.COSPAR_LN:0>3} {TLE_OBJECT.COSPAR_OBJ_ID}
+EPOCH : YEAR={epoch_year} DAY={TLE_OBJECT.EPOCH:.8f}
+TLE AGE : {secstohms(DeltaTime)}
+(MEAN MOTION)' = {TLE_OBJECT.FIRST_DERIV_MEAN_MOTION:.8f}
+(MEAN MOTION)'' = {TLE_OBJECT.SECOND_DERIV_MEAN_MOTION:.5f}
+B* = {TLE_OBJECT.B_STAR:.5e}
 
-# INCLINATION : {TLE_OBJECT.Inclination:.4f} degs
-# LONGITUDE OF ASC. NODE : {TLE_OBJECT.AscNodeLong:.4f} degs
-# ECCENTRICITY : {TLE_OBJECT.Eccentricity:.7f}
-# ARG. OF PERIAPSIS : {TLE_OBJECT.PeriArg:.4f} degs
-# MEAN ANOMALY : {TLE_OBJECT.MeanAnomaly:.4f} degs
-# MEAN MOTION : {TLE_OBJECT.MeanMotion:.8f} rev/(sid. day)
-# -------------------------------- RESULTS --------------------------------
-# Orbital Period : {OrbPeriod:.4f} secs ({secstohms(OrbPeriod)})
-# Semi Major Axis : {SMA:_} m
-# Apoapsis : {int(Ap-EARTH_RADIUS):_} m | Periapsis : {int(Pe-EARTH_RADIUS):_} m | Epoch : {int(Epoch_Alt):_} m
-# Speed @ Ap : {Speed_Ap:.4f} m/s | Pe : {Speed_Pe:.4f} m/s | Ep : {Speed_Epoch:.4f} m/s 
-# ------------------------------- CURRENTLY -------------------------------
-# DATE (UTC) : {utc.day:0>2}/{utc.month:0>2}/{utc.year:0>4} {utc.hour:0>2}:{utc.minute:0>2}:{utc.second:0>2}.{utc.microsecond:0>6}
-# MEAN ANOMALY : {Current_MA:.4f} degs
-# TRUE ANOMALY : {Current_TA:.4f} degs
-# ALTITUDE : {int(Current_Alt):_} m
-# SPEED : {Current_Spd:.4f} m/s""".replace("_", " ")
+INCLINATION : {TLE_OBJECT.Inclination:.4f} degs
+LONGITUDE OF ASC. NODE : {TLE_OBJECT.AscNodeLong:.4f} degs
+ECCENTRICITY : {TLE_OBJECT.Eccentricity:.7f}
+ARG. OF PERIAPSIS : {TLE_OBJECT.PeriArg:.4f} degs
+MEAN ANOMALY : {TLE_OBJECT.MeanAnomaly:.4f} degs
+MEAN MOTION : {TLE_OBJECT.MeanMotion:.8f} rev/(sid. day)
+-------------------------------- RESULTS --------------------------------
+Orbital Period : {OrbPeriod:.4f} secs ({secstohms(OrbPeriod)})
+Semi Major Axis : {SMA:_} m
+Apoapsis : {int(Ap-EARTH_RADIUS):_} m | Periapsis : {int(Pe-EARTH_RADIUS):_} m | Epoch : {int(Epoch_Alt):_} m
+Speed @ Ap : {Speed_Ap:.4f} m/s | Pe : {Speed_Pe:.4f} m/s | Ep : {Speed_Epoch:.4f} m/s 
+------------------------------- CURRENTLY -------------------------------
+DATE (UTC) : {utc.day:0>2}/{utc.month:0>2}/{utc.year:0>4} {utc.hour:0>2}:{utc.minute:0>2}:{utc.second:0>2}.{utc.microsecond:0>6}
+MEAN ANOMALY : {Current_MA:.4f} degs
+TRUE ANOMALY : {Current_TA:.4f} degs
+ALTITUDE : {int(Current_Alt):_} m
+SPEED : {Current_Spd:.4f} m/s""".replace("_", " ")
 
 	print(output)
 
@@ -116,9 +116,9 @@ def main() -> int:
 
 	if found:
 		while True:
-			#system(CLEAR_CMD)
+			system(CLEAR_CMD)
 			PrintTle(CurrentEntry)
-			sleep(1/1 * 2)
+			sleep(1/2)
 
 	return 0
 
