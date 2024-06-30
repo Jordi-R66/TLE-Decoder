@@ -24,13 +24,13 @@ REVS_LENGTH: int = 6-1
 COSPAR_LENGTH: int = (YR_LENGTH + LAUNCH_NB_LENGTH + LAUNCH_PART_LENGTH)
 
 class TLE:
-	def __init__(self, name: str = None, NORAD_ID: int = None, Classification: str = None, COSPAR_YR: int = None, COSPAR_LN: int = None, COSPAR_OBJ_ID: str = None, EPOCH_YR: int = None, EPOCH: float = None, FIRST_DERIV_MEAN_MOTION: float = None, SECOND_DERIV_MEAN_MOTION: float = None, B_STAR: float = None, Inclination: float = None, AscNodeLong: float = None, Eccentricity: float = None, PeriArg: float = None, MeanAnomaly: float = None, MeanMotion: float = None, Revolutions: int = None):
+	def __init__(self, name: str = None, NORAD_ID: int = None, Classification: str = None, COSPAR_YR: int = None, COSPAR_LN: int = None, COSPAR_ID: str = None, EPOCH_YR: int = None, EPOCH: float = None, FIRST_DERIV_MEAN_MOTION: float = None, SECOND_DERIV_MEAN_MOTION: float = None, B_STAR: float = None, Inclination: float = None, AscNodeLong: float = None, Eccentricity: float = None, PeriArg: float = None, MeanAnomaly: float = None, MeanMotion: float = None, Revolutions: int = None):
 		self.name: str = name
 		self.NORAD_ID: int = NORAD_ID
 		self.Classification: str = Classification
 		self.COSPAR_YR: int = COSPAR_YR
 		self.COSPAR_LN: int = COSPAR_LN
-		self.COSPAR_OBJ_ID: int = COSPAR_OBJ_ID
+		self.COSPAR_ID: int = COSPAR_ID
 		self.EPOCH_YR: int = EPOCH_YR
 		self.EPOCH: float = EPOCH
 		self.FIRST_DERIV_MEAN_MOTION: float = FIRST_DERIV_MEAN_MOTION
@@ -172,7 +172,7 @@ def parse_block(lines: list[str]) -> TLE:
 
 	output.COSPAR_YR = int("".join(COSPAR_YR))
 	output.COSPAR_LN = int(int("".join(LAUNCH_NB)))
-	output.COSPAR_OBJ_ID = "".join(LAUNCH_PART)
+	output.COSPAR_ID = "".join(LAUNCH_PART)
 
 	output.EPOCH_YR = int("".join(EPOCH_YR))
 	output.EPOCH = float("".join(EPOCH_DAY))

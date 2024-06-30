@@ -168,7 +168,7 @@ TLE parse_block(string lines[][70]) {
 
 	output.COSPAR_YR = (uint8_t)strint(COSPAR_YR);
 	output.COSPAR_LN = (uint16_t)strint(LAUNCH_NB);
-	strcpy(output.COSPAR_OBJ_ID, LAUNCH_PART);
+	strcpy(output.COSPAR_ID, LAUNCH_PART);
 
 	output.EPOCH_YR = (uint8_t)strint(EPOCH_YR);
 	output.EPOCH = strtod(EPOCH_DAY, &endptr);

@@ -21,7 +21,7 @@ typedef struct TLE {
 
     uint8_t COSPAR_YR: 7; // Max value : 99
     uint16_t COSPAR_LN: 10;
-    string COSPAR_OBJ_ID[LAUNCH_PART_LENGTH];
+    string COSPAR_ID[LAUNCH_PART_LENGTH];
 
     uint8_t EPOCH_YR: 7; // Max value : 99
     double EPOCH;

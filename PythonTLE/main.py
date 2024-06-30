@@ -70,7 +70,7 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 	output = f"""Object name : {TLE_OBJECT.name}
 ---------------------------------- TLE ----------------------------------
 NORAD ID : {TLE_OBJECT.NORAD_ID:0>5}{TLE_OBJECT.Classification}
-COSPAR : {TLE_OBJECT.COSPAR_YR} {TLE_OBJECT.COSPAR_LN:0>3} {TLE_OBJECT.COSPAR_OBJ_ID}
+COSPAR : {TLE_OBJECT.COSPAR_YR} {TLE_OBJECT.COSPAR_LN:0>3} {TLE_OBJECT.COSPAR_ID}
 EPOCH : YEAR={epoch_year} DAY={TLE_OBJECT.EPOCH:.8f}
 TLE AGE : {secstohms(DeltaTime)}
 (MEAN MOTION)' = {TLE_OBJECT.FIRST_DERIV_MEAN_MOTION:.8f}
