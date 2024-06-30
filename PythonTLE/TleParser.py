@@ -56,7 +56,7 @@ def parse_block(lines: list[str]) -> TLE:
 	# 1st line
 
 	NORAD_CAT: list[str] = ["" for i in range(NORAD_ID_LENGTH)]
-	CLASSIFICATION: str = "0"
+	CLASSIFICATION: str = "\0"
 	COSPAR_YR: list[str] = ["" for i in range(YR_LENGTH)]
 	LAUNCH_NB: list[str] = ["" for i in range(LAUNCH_NB_LENGTH)]
 	LAUNCH_PART: list[str] = ["" for i in range(LAUNCH_PART_LENGTH)]

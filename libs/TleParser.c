@@ -39,7 +39,7 @@ TLE parse_block(string lines[][70]) {
 
 	// --------------------------- 1-ST LINE PARSING ---------------------------
 
-	for (int i=0; i < NAME_LENGTH; i++) {
+	for (uint8_t i=0; i < NAME_LENGTH; i++) {
 		OBJ_NAME[i] = NAME_LINE[i];
 	}
 
