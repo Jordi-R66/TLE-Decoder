@@ -46,8 +46,8 @@ uint64_t Periapsis(double Eccentricity, uint64_t SemiMajorAxis) {
 	return Periapsis;
 }
 
-uint64_t OrbAlt(double Eccentricity, uint64_t SemiMajorAxis, double E) {
-	return (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity * cos(E)));
+uint64_t OrbAlt(double Eccentricity, uint64_t SemiMajorAxis, double EccentricAnomaly) {
+	return (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity * cos(EccentricAnomaly)));
 }
 
 uint64_t OrbAltTA(double Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly) {

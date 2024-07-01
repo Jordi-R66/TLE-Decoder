@@ -2,7 +2,7 @@
 clear
 COMPILER="gcc"
 
-SOURCES="libs/TLE_Files.c libs/OrbMaths.c libs/TleParser.c libs/CONVERSIONS.c libs/Algos.c libs/TermFuncs.c main.c"
+SOURCES="libs/TleFiles.c libs/OrbMaths.c libs/TleParser.c libs/CONVERSIONS.c libs/Algos.c libs/TermFuncs.c main.c"
 
 OUTPUT_DIR="output"
 

@@ -2,7 +2,7 @@
 cls
 set COMPILER=gcc.exe
 
-set SOURCES=libs/TLE_Files.c libs/OrbMaths.c libs/TleParser.c libs/CONVERSIONS.c libs/Algos.c libs/TermFuncs.c main.c
+set SOURCES=libs/TleFiles.c libs/OrbMaths.c libs/TleParser.c libs/CONVERSIONS.c libs/Algos.c libs/TermFuncs.c main.c
 
 set OUTPUT_DIR=output/
 
