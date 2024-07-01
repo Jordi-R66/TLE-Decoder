@@ -33,7 +33,7 @@ uint64_t SemiMajorAxis(double Period) {
 uint64_t Apoapsis(double Eccentricity, uint64_t SemiMajorAxis) {
 	uint64_t Apoapsis = 0;
 
-	Apoapsis = (uint64_t)(SemiMajorAxis * (1.0f + Eccentricity));
+	Apoapsis = (uint64_t)(SemiMajorAxis * (1.0 + Eccentricity));
 
 	return Apoapsis;
 }
@@ -41,7 +41,7 @@ uint64_t Apoapsis(double Eccentricity, uint64_t SemiMajorAxis) {
 uint64_t Periapsis(double Eccentricity, uint64_t SemiMajorAxis) {
 	uint64_t Periapsis = 0;
 
-	Periapsis = (uint64_t)(SemiMajorAxis * (1.0f - Eccentricity));
+	Periapsis = (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity));
 
 	return Periapsis;
 }

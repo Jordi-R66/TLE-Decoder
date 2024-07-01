@@ -1,6 +1,6 @@
 #include "Algos.h"
 
-int32_t checksum_algorithm(string *line, int32_t modulo) {
+int32_t checksum_algorithm(string *line, int32_t modulus) {
 
 	int32_t checksum = 0;
 	int32_t line_length = strlen(line) + 1;
@@ -23,7 +23,7 @@ int32_t checksum_algorithm(string *line, int32_t modulo) {
 		checksum += (int32_t)c;
 	}
 
-	checksum %= modulo;
+	checksum %= modulus;
 
 	return checksum;
 }
@@ -38,8 +38,9 @@ double NewtonRaphson(double target, double func_param, double (*func)(double, do
 	double low_limit = target - tolerance;
 	double high_limit = target + tolerance;
 
-	for (uint64_t n=0; (n<max_iter) & !((low_limit <= func(x_guess, func_param)) & (func(x_guess, func_param) <= high_limit)); n++) {
-		double a = func_prime(x_guess, func_param), b = -func_prime(x_guess, func_param)*x_guess + func(x_guess, func_param);
+	for (uint64_t n=0; (n < max_iter) & !((low_limit <= func(x_guess, func_param)) & (func(x_guess, func_param) <= high_limit)); n++) {
+		double a = func_prime(x_guess, func_param);
+		double b = -func_prime(x_guess, func_param)*x_guess + func(x_guess, func_param);
 		x_guess = AntecedentDroite(a, b, target);
 	}
 
