@@ -65,7 +65,10 @@ def AngularSpeed(SMA: int) -> float:
 	return sqrt(EARTH_MU/SMA**3)
 
 def TrueAnomaly(Eccentricity: float, EccentricAnomaly: float) -> float:
-	return 2 * atan(sqrt((1+Eccentricity)/(1-Eccentricity)) * tan(EccentricAnomaly/2))
+	# return 2 * atan(sqrt((1+Eccentricity)/(1-Eccentricity)) * tan(EccentricAnomaly/2))
+	beta_: float = Eccentricity / (1.0 + sqrt(1.0 - Eccentricity*Eccentricity))
+	nu_: float = EccentricAnomaly + 2.0 * atan((beta_*sin(EccentricAnomaly)) / (1.0 - beta_ * cos(EccentricAnomaly)))
+	return nu_
 
 # def Beta(Eccentricity: float) -> float:
 # 	return Eccentricity/(1+sqrt(1-Eccentricity**2))

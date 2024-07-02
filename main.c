@@ -17,22 +17,22 @@ double EccentricAnomalyTolerance = 1e-15;
 
 time_t current_time;
 
-// void InterpretArgs(uint8_t n, char** args) {
-// 	if (n == 5) {
-// 		for (uint8_t i=0; i<n; i++) {
-// 			printf("%s\n", args[i]);
-// 			if (!strcmp(args[i], "-s")) {
-// 				strcpy(filename, args[i+1]);
-// 			} else if (!strcmp(args[i], "-u")) {
-// 				lookingFor = strint(args[i+1]);
-// 			}
-// 		}
+/* void InterpretArgs(uint8_t n, char** args) {
+ 	if (n == 5) {
+ 		for (uint8_t i=0; i<n; i++) {
+ 			printf("%s\n", args[i]);
+ 			if (!strcmp(args[i], "-s")) {
+ 				strcpy(filename, args[i+1]);
+ 			} else if (!strcmp(args[i], "-u")) {
+ 				lookingFor = strint(args[i+1]);
+ 			}
+ 		}
 
-// 		printf("%s\n%u\n\n", filename, lookingFor);
-// 	} else {
-// 		exit(-1);
-// 	}
-// }
+ 		printf("%s\n%u\n\n", filename, lookingFor);
+ 	} else {
+ 		exit(-1);
+ 	}
+}*/
 
 void PrintTle(TLE TLE_OBJECT) {
 	double OrbPeriod = OrbitalPeriod(TLE_OBJECT.MeanMotion);
@@ -116,7 +116,7 @@ void PrintTle(TLE TLE_OBJECT) {
 	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon+1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
 	printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
 	printf("ECC. ANOMALY : %.4lf rads\n", Current_E);
-	printf("TRUE ANOMALY ; %.4lf degs\n", Current_TA);
+	printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);
 	printf("ALTITUDE : %llu m\n", Current_Alt);
 	printf("SPEED : %.4lf m/s\n", Current_Spd);
 }

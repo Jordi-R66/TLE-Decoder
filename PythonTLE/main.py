@@ -91,6 +91,7 @@ Speed @ Ap : {Speed_Ap:.4f} m/s | Pe : {Speed_Pe:.4f} m/s | Ep : {Speed_Epoch:.4
 ------------------------------- CURRENTLY -------------------------------
 DATE (UTC) : {utc.day:0>2}/{utc.month:0>2}/{utc.year:0>4} {utc.hour:0>2}:{utc.minute:0>2}:{utc.second:0>2}.{utc.microsecond:0>6}
 MEAN ANOMALY : {Current_MA:.4f} degs
+ECC. ANOMALY : {Current_E:.4f} rads
 TRUE ANOMALY : {Current_TA:.4f} degs
 ALTITUDE : {int(Current_Alt):_} m
 SPEED : {Current_Spd:.4f} m/s""".replace("_", " ")

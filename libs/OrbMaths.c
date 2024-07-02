@@ -69,7 +69,11 @@ double AngularSpeed(double SemiMajorAxis) {
 }
 
 double TrueAnomaly(double Eccentricity, double EccentricAnomaly) {
-	return 2.0 * atan(sqrt((1.0f+Eccentricity)/(1.0f-Eccentricity) * tan(EccentricAnomaly/2.0)));
+	// return 2.0 * atan(sqrt((1.0 + Eccentricity) / (1.0 - Eccentricity)) * tan(EccentricAnomaly/2.0));
+	double beta_ = Eccentricity / (1.0 + sqrt(1.0 - Eccentricity*Eccentricity));
+	double nu_ = EccentricAnomaly + 2.0 * atan((beta_*sin(EccentricAnomaly)) / (1.0 - beta_ * cos(EccentricAnomaly)));
+
+	return nu_;
 }
 
 
