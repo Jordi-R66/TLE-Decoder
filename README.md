@@ -51,6 +51,10 @@ typedef struct TLE {
 
 - Exporting several entries to a binary file containing the representation of the structs -->
 
+## Code imprecisions
+
+There might be a small difference in the orbital speed between the Python's and C implementations. This is due to the use of the `float` type for the input `R` in the `OrbSpeed` function, thus Python version seems to be more accurate.
+
 ## Running the code
 
 1. Run compile.py
