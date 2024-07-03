@@ -6,7 +6,7 @@ double CurrentEpoch() {
 	struct tm* utc = gmtime(&current_time);
 
 	uint32_t Y = utc->tm_year + 1900;
-	uint8_t M = utc->tm_mon + 1;
+	uint32_t M = utc->tm_mon + 1;
 	uint32_t D = utc->tm_mday;
 	uint32_t h = utc->tm_hour;
 	uint32_t m = utc->tm_min;
