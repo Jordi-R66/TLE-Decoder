@@ -21,7 +21,7 @@ def GetAllTle(filename: str) -> list[TLE]:
 
 		for i in range(TLE_NUMBER):
 			j_start = 0 + BLOCK_SIZE * i
-			j_end = BLOCK_SIZE + BLOCK_SIZE * i
+			j_end = BLOCK_SIZE * (i+1)
 
 			extract = raw_content[j_start:j_end]
 
