@@ -38,7 +38,7 @@ def PrintTle(Object: TLE = None) -> None:
 	Speed_Pe: float = OrbSpeed(Pe, SMA)
 	Speed_Epoch: float = OrbSpeed(Epoch_R, SMA)
 
-	utc = datetime.now(UTC)
+	utc: datetime = datetime.now(UTC)
 	current_year = utc.year
 	current_day: float = ((utc - datetime(current_year, 1, 1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 #+ utc.microsecond/86400000000
 
@@ -49,15 +49,15 @@ def PrintTle(Object: TLE = None) -> None:
 	else:
 		epoch_year += 1900
 
-	DeltaTime = ((current_year - epoch_year) * 365.25 + (current_day - Object.EPOCH)) * 86400
+	DeltaTime: float = ((current_year - epoch_year) * 365.25 + (current_day - Object.EPOCH)) * 86400
 
-	Current_MA = radians(Object.MeanAnomaly) + n * DeltaTime
-	Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, EccentricAnomalyTolerance, 0xffffffffffffffff)
-	Current_TA = TrueAnomaly(Object.Eccentricity, Current_E)
+	Current_MA: float = radians(Object.MeanAnomaly) + n * DeltaTime
+	Current_E: float = NewtonRaphson(Current_MA, Object.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, EccentricAnomalyTolerance, 0xffffffffffffffff)
+	Current_TA: float = TrueAnomaly(Object.Eccentricity, Current_E)
 
-	Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA)
-	Current_Alt = Current_R - EARTH_RADIUS
-	Current_Spd = OrbSpeed(Current_R, SMA)
+	Current_R: float = OrbAltTA(Object.Eccentricity, SMA, Current_TA)
+	Current_Alt: float = Current_R - EARTH_RADIUS
+	Current_Spd: float = OrbSpeed(Current_R, SMA)
 
 	Current_MA = degrees(Current_MA)
 	Current_MA %= 360.0
@@ -67,7 +67,7 @@ def PrintTle(Object: TLE = None) -> None:
 
 	# output = f"Epoch MA : {Object.MeanAnomaly}\nCurrent MA : {Current_MA}\n\n"
 
-	output = f"""Object name : {Object.name}
+	output: str = f"""Object name : {Object.name}
 ---------------------------------- TLE ----------------------------------
 NORAD ID : {Object.NORAD_ID:0>5}{Object.Classification}
 COSPAR : {Object.COSPAR_YR} {Object.COSPAR_LN:0>3} {Object.COSPAR_ID}
@@ -89,7 +89,7 @@ Semi Major Axis : {SMA:_} m
 Apoapsis : {int(Ap-EARTH_RADIUS):_} m | Periapsis : {int(Pe-EARTH_RADIUS):_} m | Epoch : {int(Epoch_Alt):_} m
 Speed @ Ap : {Speed_Ap:.4f} m/s | Pe : {Speed_Pe:.4f} m/s | Ep : {Speed_Epoch:.4f} m/s 
 ------------------------------- CURRENTLY -------------------------------
-DATE (UTC) : {utc.day:0>2}/{utc.month:0>2}/{utc.year:0>4} {utc.hour:0>2}:{utc.minute:0>2}:{utc.second:0>2}.{utc.microsecond:0>6}
+DATE (UTC) : {utc.day:0>2}/{utc.month:0>2}/{utc.year:0>4} {utc.hour:0>2}:{utc.minute:0>2}:{utc.second:0>2}
 MEAN ANOMALY : {Current_MA:.4f} degs
 ECC. ANOMALY : {Current_E:.4f} rads
 TRUE ANOMALY : {Current_TA:.4f} degs
