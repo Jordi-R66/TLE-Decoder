@@ -31,5 +31,3 @@ def GetAllTle(filename: str) -> list[TLE]:
 		tle_file.close()
 
 	return Output
-
-GetAllTle("TLEs/active.tle")
