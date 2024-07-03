@@ -88,7 +88,7 @@ void PrintTle(TLE Object) {
 	printf("---------------------------------- TLE ----------------------------------\n");
 
 	printf("NORAD ID : %0*u%c\n", 5, Object.NORAD_ID, Object.Classification);
-	printf("COSPAR : %d %0*hu %s\n", Object.COSPAR_YR, 3, Object.COSPAR_LN, Object.COSPAR_ID);
+	printf("COSPAR : %0*d %0*hu %s\n", 2, Object.COSPAR_YR, 3, Object.COSPAR_LN, Object.COSPAR_ID);
 	printf("EPOCH : YEAR=20%d DAY=%.8lf\n", Object.EPOCH_YR, Object.EPOCH);
 	printf("TLE AGE : %s\n", secstohms(DeltaTime));
 	printf("(MEAN MOTION)' = %.8lf\n", Object.FIRST_DERIV_MEAN_MOTION);
