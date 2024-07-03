@@ -20,42 +20,42 @@ lookingFor: int = 25544
 
 EccentricAnomalyTolerance: float = 1e-15
 
-def PrintTle(TLE_OBJECT: TLE = None) -> None:
-	OrbPeriod = OrbitalPeriod(TLE_OBJECT.MeanMotion)
-	SMA = SemiMajorAxis(OrbPeriod)
-	n = AngularSpeed(SMA)
+def PrintTle(Object: TLE = None) -> None:
+	OrbPeriod: float = OrbitalPeriod(Object.MeanMotion)
+	SMA: int = SemiMajorAxis(OrbPeriod)
+	n: float = AngularSpeed(SMA)
 
-	Ap = Apoapsis(TLE_OBJECT.Eccentricity, SMA)
-	Pe = Periapsis(TLE_OBJECT.Eccentricity, SMA)
+	Ap: int = Apoapsis(Object.Eccentricity, SMA)
+	Pe: int = Periapsis(Object.Eccentricity, SMA)
 
-	Epoch_E = NewtonRaphson(radians(TLE_OBJECT.MeanAnomaly), TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, radians(TLE_OBJECT.MeanAnomaly), EccentricAnomalyTolerance, 0xffffffffffffffff)
-	Epoch_TA = TrueAnomaly(TLE_OBJECT.Eccentricity, Epoch_E)
+	Epoch_E: float = NewtonRaphson(radians(Object.MeanAnomaly), Object.Eccentricity, KeplerEquation, KeplerPrime, radians(Object.MeanAnomaly), EccentricAnomalyTolerance, 0xffffffffffffffff)
+	Epoch_TA: float = TrueAnomaly(Object.Eccentricity, Epoch_E)
 
-	Epoch_R = OrbAltTA(TLE_OBJECT.Eccentricity, SMA, Epoch_TA)
-	Epoch_Alt = Epoch_R - EARTH_RADIUS
+	Epoch_R: float = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA)
+	Epoch_Alt: float = Epoch_R - EARTH_RADIUS
 
-	Speed_Ap = OrbSpeed(Ap, SMA)
-	Speed_Pe = OrbSpeed(Pe, SMA)
-	Speed_Epoch = OrbSpeed(Epoch_R, SMA)
+	Speed_Ap: float = OrbSpeed(Ap, SMA)
+	Speed_Pe: float = OrbSpeed(Pe, SMA)
+	Speed_Epoch: float = OrbSpeed(Epoch_R, SMA)
 
 	utc = datetime.now(UTC)
 	current_year = utc.year
-	current_day = ((utc - datetime(current_year, 1, 1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 #+ utc.microsecond/86400000000
+	current_day: float = ((utc - datetime(current_year, 1, 1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 #+ utc.microsecond/86400000000
 
-	epoch_year = TLE_OBJECT.EPOCH_YR
+	epoch_year: int = Object.EPOCH_YR
 
-	if (TLE_OBJECT.EPOCH_YR < 57):
+	if (Object.EPOCH_YR < 57):
 		epoch_year += 2000
 	else:
 		epoch_year += 1900
 
-	DeltaTime = ((current_year - epoch_year) * 365.25 + (current_day - TLE_OBJECT.EPOCH)) * 86400
+	DeltaTime = ((current_year - epoch_year) * 365.25 + (current_day - Object.EPOCH)) * 86400
 
-	Current_MA = radians(TLE_OBJECT.MeanAnomaly) + n * DeltaTime
-	Current_E = NewtonRaphson(Current_MA, TLE_OBJECT.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, EccentricAnomalyTolerance, 0xffffffffffffffff)
-	Current_TA = TrueAnomaly(TLE_OBJECT.Eccentricity, Current_E)
+	Current_MA = radians(Object.MeanAnomaly) + n * DeltaTime
+	Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, EccentricAnomalyTolerance, 0xffffffffffffffff)
+	Current_TA = TrueAnomaly(Object.Eccentricity, Current_E)
 
-	Current_R = OrbAltTA(TLE_OBJECT.Eccentricity, SMA, Current_TA)
+	Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA)
 	Current_Alt = Current_R - EARTH_RADIUS
 	Current_Spd = OrbSpeed(Current_R, SMA)
 
@@ -65,24 +65,24 @@ def PrintTle(TLE_OBJECT: TLE = None) -> None:
 	Current_TA = degrees(Current_TA)
 	Current_TA %= 360.0
 
-	# output = f"Epoch MA : {TLE_OBJECT.MeanAnomaly}\nCurrent MA : {Current_MA}\n\n"
+	# output = f"Epoch MA : {Object.MeanAnomaly}\nCurrent MA : {Current_MA}\n\n"
 
-	output = f"""Object name : {TLE_OBJECT.name}
+	output = f"""Object name : {Object.name}
 ---------------------------------- TLE ----------------------------------
-NORAD ID : {TLE_OBJECT.NORAD_ID:0>5}{TLE_OBJECT.Classification}
-COSPAR : {TLE_OBJECT.COSPAR_YR} {TLE_OBJECT.COSPAR_LN:0>3} {TLE_OBJECT.COSPAR_ID}
-EPOCH : YEAR={epoch_year} DAY={TLE_OBJECT.EPOCH:.8f}
+NORAD ID : {Object.NORAD_ID:0>5}{Object.Classification}
+COSPAR : {Object.COSPAR_YR} {Object.COSPAR_LN:0>3} {Object.COSPAR_ID}
+EPOCH : YEAR={epoch_year} DAY={Object.EPOCH:.8f}
 TLE AGE : {secstohms(DeltaTime)}
-(MEAN MOTION)' = {TLE_OBJECT.FIRST_DERIV_MEAN_MOTION:.8f}
-(MEAN MOTION)'' = {TLE_OBJECT.SECOND_DERIV_MEAN_MOTION:.5f}
-B* = {TLE_OBJECT.B_STAR:.5e}
+(MEAN MOTION)' = {Object.FIRST_DERIV_MEAN_MOTION:.8f}
+(MEAN MOTION)'' = {Object.SECOND_DERIV_MEAN_MOTION:.5f}
+B* = {Object.B_STAR:.5e}
 
-INCLINATION : {TLE_OBJECT.Inclination:.4f} degs
-LONGITUDE OF ASC. NODE : {TLE_OBJECT.AscNodeLong:.4f} degs
-ECCENTRICITY : {TLE_OBJECT.Eccentricity:.7f}
-ARG. OF PERIAPSIS : {TLE_OBJECT.PeriArg:.4f} degs
-MEAN ANOMALY : {TLE_OBJECT.MeanAnomaly:.4f} degs
-MEAN MOTION : {TLE_OBJECT.MeanMotion:.8f} rev/(sid. day)
+INCLINATION : {Object.Inclination:.4f} degs
+LONGITUDE OF ASC. NODE : {Object.AscNodeLong:.4f} degs
+ECCENTRICITY : {Object.Eccentricity:.7f}
+ARG. OF PERIAPSIS : {Object.PeriArg:.4f} degs
+MEAN ANOMALY : {Object.MeanAnomaly:.4f} degs
+MEAN MOTION : {Object.MeanMotion:.8f} rev/(sid. day)
 -------------------------------- RESULTS --------------------------------
 Orbital Period : {OrbPeriod:.4f} secs ({secstohms(OrbPeriod)})
 Semi Major Axis : {SMA:_} m
