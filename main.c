@@ -9,11 +9,12 @@
 #include "libs/Common.h"
 
 #define CHECKSUM_MODULO 10
+#define DEFAULT_ITER 100000
 
 string* filename = "TLEs/stations.tle";
 uint32_t lookingFor = 25544;
 
-double EccentricAnomalyTolerance = 1e-15;
+double EccentricAnomalyTolerance = 1.7453292519943296e-06;
 
 time_t current_time;
 
@@ -42,7 +43,7 @@ void PrintTle(TLE Object) {
 	uint64_t Ap = Apoapsis(Object.Eccentricity, SMA);
 	uint64_t Pe = Periapsis(Object.Eccentricity, SMA);
 
-	double Epoch_E = NewtonRaphson(Object.MeanAnomaly*DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Object.MeanAnomaly*DEGS2RADS, EccentricAnomalyTolerance, 0xffffffffffffffffULL);
+	double Epoch_E = NewtonRaphson(Object.MeanAnomaly*DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Object.MeanAnomaly*DEGS2RADS, EccentricAnomalyTolerance, DEFAULT_ITER);
 	double Epoch_TA = TrueAnomaly(Object.Eccentricity, Epoch_E);
 
 	uint64_t Epoch_R = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA);
@@ -70,7 +71,7 @@ void PrintTle(TLE Object) {
 	double DeltaTime = (((double)(current_year - epoch_year) * 365.25) + (double)(current_day - Object.EPOCH)) * 86400.0;
 
 	double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
-	double Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Current_MA, EccentricAnomalyTolerance, 0xffffffffffffffffULL);
+	double Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Current_MA, EccentricAnomalyTolerance, DEFAULT_ITER);
 	double Current_TA = TrueAnomaly(Object.Eccentricity, Current_E);
 
 	uint64_t Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);

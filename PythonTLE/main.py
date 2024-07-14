@@ -18,7 +18,8 @@ else:
 filename: str = "TLEs/stations.tle"
 lookingFor: int = 25544
 
-EccentricAnomalyTolerance: float = 1e-15
+EccentricAnomalyTolerance: float = 1.7453292519943296e-06
+DEFAULT_ITER: int = 100000
 
 def PrintTle(Object: TLE = None) -> None:
 	OrbPeriod: float = OrbitalPeriod(Object.MeanMotion)
@@ -28,7 +29,7 @@ def PrintTle(Object: TLE = None) -> None:
 	Ap: int = Apoapsis(Object.Eccentricity, SMA)
 	Pe: int = Periapsis(Object.Eccentricity, SMA)
 
-	Epoch_E: float = NewtonRaphson(radians(Object.MeanAnomaly), Object.Eccentricity, KeplerEquation, KeplerPrime, radians(Object.MeanAnomaly), EccentricAnomalyTolerance, 0xffffffffffffffff)
+	Epoch_E: float = NewtonRaphson(radians(Object.MeanAnomaly), Object.Eccentricity, KeplerEquation, KeplerPrime, radians(Object.MeanAnomaly), EccentricAnomalyTolerance, DEFAULT_ITER)
 	Epoch_TA: float = TrueAnomaly(Object.Eccentricity, Epoch_E)
 
 	Epoch_R: float = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA)
@@ -40,7 +41,7 @@ def PrintTle(Object: TLE = None) -> None:
 
 	utc: datetime = datetime.now(UTC)
 	current_year = utc.year
-	current_day: float = ((utc - datetime(current_year, 1, 1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 #+ utc.microsecond/86400000000
+	current_day: float = ((utc - datetime(current_year, 1, 1, tzinfo=UTC)).days + 1) + utc.hour/24 + utc.minute/1440 + utc.second / 86400 + utc.microsecond/86400000000
 
 	epoch_year: int = Object.EPOCH_YR
 
@@ -52,7 +53,7 @@ def PrintTle(Object: TLE = None) -> None:
 	DeltaTime: float = ((current_year - epoch_year) * 365.25 + (current_day - Object.EPOCH)) * 86400
 
 	Current_MA: float = radians(Object.MeanAnomaly) + n * DeltaTime
-	Current_E: float = NewtonRaphson(Current_MA, Object.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, EccentricAnomalyTolerance, 0xffffffffffffffff)
+	Current_E: float = NewtonRaphson(Current_MA, Object.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, EccentricAnomalyTolerance, DEFAULT_ITER)
 	Current_TA: float = TrueAnomaly(Object.Eccentricity, Current_E)
 
 	Current_R: float = OrbAltTA(Object.Eccentricity, SMA, Current_TA)
