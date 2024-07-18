@@ -1,6 +1,7 @@
 from OrbMaths import *
 from TleParser import *
 from TleFiles import *
+from Ellipses import *
 from Algos import NewtonRaphson
 
 from math import degrees, radians
@@ -18,7 +19,7 @@ else:
 filename: str = "TLEs/stations.tle"
 lookingFor: int = 25544
 
-EccentricAnomalyTolerance: float = 1.7453292519943296e-06
+EccentricAnomalyTolerance: float = radians(0.0001)
 DEFAULT_ITER: int = 100000
 
 def PrintTle(Object: TLE = None) -> None:
