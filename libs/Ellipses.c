@@ -49,7 +49,7 @@ float r(float TrueAnomaly, float p, float e) {
 		perror("Eccentricity must be 0 <= e < 1");
 	}
 
-	return p / (1 + e * cos(TrueAnomaly));
+	return p / (1 + e * cosf(TrueAnomaly));
 }
 
 float InitialX_2D(float TrueAnomaly, float Dist) {
@@ -57,7 +57,7 @@ float InitialX_2D(float TrueAnomaly, float Dist) {
 		perror("Distance must be strictly higher than 0");
 	}
 
-	return Dist * cos(TrueAnomaly);
+	return Dist * cosf(TrueAnomaly);
 }
 
 float InitialY_2D(float TrueAnomaly, float Dist) {
@@ -65,13 +65,13 @@ float InitialY_2D(float TrueAnomaly, float Dist) {
 		perror("Distance must be strictly higher than 0");
 	}
 
-	return Dist * sin(TrueAnomaly);
+	return Dist * sinf(TrueAnomaly);
 }
 
 float ActualX_2D(float x, float y, float PeAng) {
-	return x * cos(PeAng) - y * sin(PeAng);
+	return x * cosf(PeAng) - y * sinf(PeAng);
 }
 
 float ActualY_2D(float x, float y, float PeAng) {
-	return x * sin(PeAng) + y * cos(PeAng);
+	return x * sinf(PeAng) + y * cosf(PeAng);
 }
