@@ -124,7 +124,7 @@ def merge_all():
 
 		print(f"{set_name}.tle merged in {exec_time/1_000_000_000:.3}s")
 	
-	print(f"All files has been merged in {total_time/1_000_000_000:.3}s")
+	print(f"All files have been merged in {total_time/1_000_000_000:.3}s")
 
 	final_file.close()
 
