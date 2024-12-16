@@ -5,7 +5,7 @@
 
 int32_t GetTLENumber(string *filename) {
 	FILE* file = fopen(filename, "r");
-	char c;
+	char c = 'a';
 
 	int32_t line_count = 0;
 
@@ -95,7 +95,7 @@ TLE* GetAllTle(string *filename) {
 
 void PrintContentAsAscii(string *filename) {
 	FILE* file = fopen(filename, "r");
-	char c;
+	char c = 'a';
 
 	while (c != EOF) {
 		c = getc(file);
