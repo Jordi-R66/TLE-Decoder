@@ -1,7 +1,5 @@
 #include "TleParser.h"
 
-#include "Common.h"
-
 #define EOS '\0'
 
 TLE parse_block(string lines[][70]) {

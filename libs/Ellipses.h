@@ -1,3 +1,4 @@
+#include "Common.h"
 
 float b(float a, float e);
 float c(float a, float e);

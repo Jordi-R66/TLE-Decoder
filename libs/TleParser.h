@@ -1,7 +1,8 @@
+#pragma once
 #include "CONVERSIONS.h"
 
 #ifndef __TleParser__
-#define TleParser
+#define __TleParser__
 
 #define NAME_LENGTH 25
 

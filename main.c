@@ -1,5 +1,3 @@
-#include <time.h>
-
 #include "libs/TleParser.h"
 #include "libs/OrbMaths.h"
 #include "libs/TleFiles.h"
@@ -122,7 +120,7 @@ void PrintTle(TLE Object) {
 	printf("SPEED : %.4lf m/s\n", Current_Spd);
 }
 
-int32_t main(uint8_t argc, char *argv[]) {
+int32_t main(int argc, char *argv[]) {
 	// InterpretArgs(argc, argv);
 
 	clear();

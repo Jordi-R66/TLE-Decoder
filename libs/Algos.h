@@ -1,3 +1,4 @@
+#pragma once
 #include "Common.h"
 
 int32_t checksum_algorithm(string *line, int32_t modulo);

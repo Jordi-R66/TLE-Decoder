@@ -1,7 +1,5 @@
 #include "Ellipses.h"
 
-#include <math.h>
-
 float b(float a, float e) {
 	if (!((0 <= e) && (e < 1))) {
 		perror("Eccentricity must be 0 <= e < 1");
