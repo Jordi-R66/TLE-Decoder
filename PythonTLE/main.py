@@ -53,6 +53,8 @@ def PrintTle(Object: TLE = None) -> None:
 
 	DeltaTime: float = ((current_year - epoch_year) * 365.25 + (current_day - Object.EPOCH)) * 86400
 
+	Current_E_Estimate: float = Current_MA + Object.Eccentricity * sin(Current_MA)
+
 	Current_MA: float = radians(Object.MeanAnomaly) + n * DeltaTime
 	Current_E: float = NewtonRaphson(Current_MA, Object.Eccentricity, KeplerEquation, KeplerPrime, Current_MA, EccentricAnomalyTolerance, DEFAULT_ITER)
 	Current_TA: float = TrueAnomaly(Object.Eccentricity, Current_E)
