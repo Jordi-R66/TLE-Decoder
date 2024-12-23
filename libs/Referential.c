@@ -114,7 +114,7 @@ void RotateCoords(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, 
 
 void RotateVector(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, Vector2D* InitVector, Vector3D* RefVector) {
 	bool MatricesOk;
-	bool VectorOk;
+	bool VectorsOk;
 
 	bool RunningCondition;
 
@@ -122,10 +122,10 @@ void RotateVector(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, 
 	MatricesOk &= (IncliRotMat->cols == 3) && (IncliRotMat->rows == 3) && (IncliRotMat->size == 9);
 	MatricesOk &= (ANRotMat->cols == 3) && (ANRotMat->rows == 3) && (ANRotMat->size == 9);
 
-	VectorOk = (InitVector->cols == 1) && (InitVector->rows == 2) && (InitVector->size == 2);
-	VectorOk &= (RefVector->cols == 1) && (RefVector->rows == 3) && (RefVector->size == 3);
+	VectorsOk = (InitVector->cols == 1) && (InitVector->rows == 2) && (InitVector->size == 2);
+	VectorsOk &= (RefVector->cols == 1) && (RefVector->rows == 3) && (RefVector->size == 3);
 
-	RunningCondition = MatricesOk && VectorOk;
+	RunningCondition = MatricesOk && VectorsOk;
 
 	if (RunningCondition) {
 		Vector3D Init3D;
@@ -152,7 +152,7 @@ void RotateVector(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, 
 
 		//printf("Vector rotation computed\n");
 	} else {
-		fprintf(stderr, "Can't Rotate coords as at least one Matrix or Coord isn't properly dimensioned\n\nMatrices properly dimensioned : %c\nVectors properly dimensioned : %c\n", MatricesOk ? 'Y' : 'N', VectorOk ? 'Y' : 'N');
+		fprintf(stderr, "Can't Rotate coords as at least one Matrix or Coord isn't properly dimensioned\n\nMatrices properly dimensioned : %c\nVectors properly dimensioned : %c\n", MatricesOk ? 'Y' : 'N', VectorsOk ? 'Y' : 'N');
 		exit(EXIT_FAILURE);
 	}
 }
