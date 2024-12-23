@@ -30,7 +30,8 @@ def PrintTle(Object: TLE = None) -> None:
 	Ap: int = Apoapsis(Object.Eccentricity, SMA)
 	Pe: int = Periapsis(Object.Eccentricity, SMA)
 
-	Epoch_E: float = NewtonRaphson(radians(Object.MeanAnomaly), Object.Eccentricity, KeplerEquation, KeplerPrime, radians(Object.MeanAnomaly), EccentricAnomalyTolerance, DEFAULT_ITER)
+	Epoch_E_Estimate: float = radians(Object.MeanAnomaly) + Object.Eccentricity * sin(radians(Object.MeanAnomaly))
+	Epoch_E: float = NewtonRaphson(radians(Object.MeanAnomaly), Object.Eccentricity, KeplerEquation, KeplerPrime, Epoch_E_Estimate, EccentricAnomalyTolerance, DEFAULT_ITER)
 	Epoch_TA: float = TrueAnomaly(Object.Eccentricity, Epoch_E)
 
 	Epoch_R: float = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA)
