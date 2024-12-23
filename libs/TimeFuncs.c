@@ -19,7 +19,7 @@ double CurrentEpoch() {
 }
 
 double JulianDay(uint32_t Y, uint32_t M, uint32_t D, uint32_t h, uint32_t m, uint32_t s) {
-	double Q = (double)D + ((double)((h-12+12)*3600 + m*60 + s))/86400.0;
+	double Q = (double)D + ((double)((h - 12 + 12) * 3600 + m * 60 + s)) / 86400.0;
 
 	double JJ;
 
@@ -28,10 +28,10 @@ double JulianDay(uint32_t Y, uint32_t M, uint32_t D, uint32_t h, uint32_t m, uin
 		M += 12;
 	}
 
-	uint8_t S = Y/100;
-	uint8_t B = 2 - S + S/4;
+	uint8_t S = Y / 100;
+	uint8_t B = 2 - S + S / 4;
 
-	JJ = (uint32_t)(365.25 * Y) + (uint32_t)(30.6001*(M+1)) + Q + B + 1720994.5;
+	JJ = (uint32_t)(365.25 * Y) + (uint32_t)(30.6001 * (M + 1)) + Q + B + 1720994.5;
 
 	return JJ;
 }

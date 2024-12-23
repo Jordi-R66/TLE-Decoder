@@ -3,7 +3,7 @@
 
 #include <sys/stat.h>
 
-int32_t GetTLENumber(string *filename) {
+int32_t GetTLENumber(string* filename) {
 	FILE* file = fopen(filename, "r");
 	char c = 'a';
 
@@ -18,10 +18,10 @@ int32_t GetTLENumber(string *filename) {
 
 	fclose(file);
 
-	return line_count/3;
+	return line_count / 3;
 }
 
-TLE* GetAllTle(string *filename) {
+TLE* GetAllTle(string* filename) {
 
 	uint32_t TLE_NUMBER = GetTLENumber(filename);
 	const uint8_t block_size = 165;
@@ -34,18 +34,18 @@ TLE* GetAllTle(string *filename) {
 		return NULL;
 	}
 
-	memset(Output, 0, sizeof(TLE)*TLE_NUMBER);
+	memset(Output, 0, sizeof(TLE) * TLE_NUMBER);
 
 	string first_line[25];
 	string second_line[70];
 	string third_line[70];
 
-	for (uint32_t block_number=0; block_number < TLE_NUMBER; block_number++) {
+	for (uint32_t block_number = 0; block_number < TLE_NUMBER; block_number++) {
 
 		uint8_t block_line = 0;
 		uint8_t j = 0;
 
-		for (uint8_t i=0; i<block_size; i++) {
+		for (uint8_t i = 0; i < block_size; i++) {
 			uint32_t pos = block_number * block_size + i;
 
 			if (i >= 25) {
@@ -66,20 +66,20 @@ TLE* GetAllTle(string *filename) {
 			}
 
 			switch (block_line) {
-				case 0:
-					first_line[j] = c;
-					break;
+			case 0:
+				first_line[j] = c;
+				break;
 
-				case 1:
-					second_line[j] = c;
-					break;
+			case 1:
+				second_line[j] = c;
+				break;
 
-				case 2:
-					third_line[j] = c;
-					break;
+			case 2:
+				third_line[j] = c;
+				break;
 
-				default:
-					break;
+			default:
+				break;
 			}
 			j++;
 		}
@@ -93,7 +93,7 @@ TLE* GetAllTle(string *filename) {
 	return Output;
 }
 
-void PrintContentAsAscii(string *filename) {
+void PrintContentAsAscii(string* filename) {
 	FILE* file = fopen(filename, "r");
 	char c = 'a';
 
@@ -110,7 +110,7 @@ void ExportToStructFile(TLE* tle_list, int32_t tle_number, string* filename) {
 	FILE* fp = fopen(filename, "wb");
 
 	if (fp != NULL) {
-		for (int32_t i=0; i<tle_number; i++) {
+		for (int32_t i = 0; i < tle_number; i++) {
 			TLE tle = tle_list[i];
 			fwrite(&tle, sizeof(TLE), 1, fp);
 		}
@@ -120,17 +120,17 @@ void ExportToStructFile(TLE* tle_list, int32_t tle_number, string* filename) {
 	return;
 }
 
-int32_t GetStructNumber(string *filename) {
+int32_t GetStructNumber(string* filename) {
 	struct stat file_status;
 
 	if (stat(filename, &file_status) < 0) {
 		exit(-1);
 	}
 
-	return file_status.st_size/sizeof(TLE);
+	return file_status.st_size / sizeof(TLE);
 }
 
-TLE* ImportFromStructFile(string* filename, int32_t *tle_number) {
+TLE* ImportFromStructFile(string* filename, int32_t* tle_number) {
 	FILE* fp = fopen(filename, "rb");
 
 	*tle_number = GetStructNumber(filename);
@@ -141,9 +141,9 @@ TLE* ImportFromStructFile(string* filename, int32_t *tle_number) {
 		exit(-1);
 	}
 
-	memset(Output, 0, sizeof(TLE)*(*tle_number));
+	memset(Output, 0, sizeof(TLE) * (*tle_number));
 
-	for (int32_t i=0; i<*tle_number; i++) {
+	for (int32_t i = 0; i < *tle_number; i++) {
 		TLE CurrentRecord;
 
 		fread(&CurrentRecord, sizeof(TLE), 1, fp);

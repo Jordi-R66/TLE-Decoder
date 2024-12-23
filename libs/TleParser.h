@@ -34,11 +34,11 @@ typedef struct TLE {
 	uint32_t NORAD_ID;
 	char Classification;
 
-	uint8_t COSPAR_YR: 7; // Max value : 99
-	uint16_t COSPAR_LN: 10;
+	uint8_t COSPAR_YR : 7; // Max value : 99
+	uint16_t COSPAR_LN : 10;
 	string COSPAR_ID[LAUNCH_PART_LENGTH];
 
-	uint8_t EPOCH_YR: 7; // Max value : 99
+	uint8_t EPOCH_YR : 7; // Max value : 99
 	double EPOCH;
 
 	double FIRST_DERIV_MEAN_MOTION;

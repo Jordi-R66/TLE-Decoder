@@ -3,10 +3,10 @@
 #define EOS '\0'
 
 TLE parse_block(string lines[][70]) {
-	char *endptr;
-	string *NAME_LINE = lines[0];
-	string *FIRST_LINE = lines[1];
-	string *SECOND_LINE = lines[2];
+	char* endptr;
+	string* NAME_LINE = lines[0];
+	string* FIRST_LINE = lines[1];
+	string* SECOND_LINE = lines[2];
 
 	// 0-th line
 
@@ -37,123 +37,127 @@ TLE parse_block(string lines[][70]) {
 
 	// --------------------------- 1-ST LINE PARSING ---------------------------
 
-	for (uint8_t i=0; i < NAME_LENGTH; i++) {
+	for (uint8_t i = 0; i < NAME_LENGTH; i++) {
 		OBJ_NAME[i] = NAME_LINE[i];
 	}
 
-	for (uint8_t i=0; i < NORAD_ID_LENGTH; i++) {
+	for (uint8_t i = 0; i < NORAD_ID_LENGTH; i++) {
 		if (i < 5) {
-			NORAD_CAT[i] = FIRST_LINE[i+2];
-		} else {
-			CLASSIFICATION = FIRST_LINE[i+2];
+			NORAD_CAT[i] = FIRST_LINE[i + 2];
+		}
+		else {
+			CLASSIFICATION = FIRST_LINE[i + 2];
 		}
 	}
 
-	for (uint8_t i=0; i < (COSPAR_LENGTH-1); i++) {
-		char c = FIRST_LINE[i+9];
+	for (uint8_t i = 0; i < (COSPAR_LENGTH - 1); i++) {
+		char c = FIRST_LINE[i + 9];
 		if (i < 2) {
 			COSPAR_YR[i] = c;
-		} else if (i < 5) {
-			LAUNCH_NB[i-2] = c;
-		} else {
-			LAUNCH_PART[i-5] = c;
+		}
+		else if (i < 5) {
+			LAUNCH_NB[i - 2] = c;
+		}
+		else {
+			LAUNCH_PART[i - 5] = c;
 		}
 	}
 
-	for (uint8_t i=0; i < (EPOCH_LENGTH + YR_LENGTH - 1); i++) {
-		char c = FIRST_LINE[i+18];
-		if (i < (YR_LENGTH-1)) {
+	for (uint8_t i = 0; i < (EPOCH_LENGTH + YR_LENGTH - 1); i++) {
+		char c = FIRST_LINE[i + 18];
+		if (i < (YR_LENGTH - 1)) {
 			EPOCH_YR[i] = c;
-		} else {
-			EPOCH_DAY[i-2] = c;
+		}
+		else {
+			EPOCH_DAY[i - 2] = c;
 		}
 	}
 
-	for (uint8_t i=0; i < (DERIV_1_LENGTH-1); i++) {
-		char c = FIRST_LINE[i+33];
+	for (uint8_t i = 0; i < (DERIV_1_LENGTH - 1); i++) {
+		char c = FIRST_LINE[i + 33];
 		DERIV_1[i] = c;
 	}
 
-	for (uint8_t i=0; i < (DERIV_2_LENGTH-1); i++) {
-		char c = FIRST_LINE[i+44];
+	for (uint8_t i = 0; i < (DERIV_2_LENGTH - 1); i++) {
+		char c = FIRST_LINE[i + 44];
 		DERIV_2[i] = c;
 	}
-	
-	for (uint8_t i=0; i < (BSTAR_LENGTH-1); i++) {
-		char c = FIRST_LINE[i+53];
+
+	for (uint8_t i = 0; i < (BSTAR_LENGTH - 1); i++) {
+		char c = FIRST_LINE[i + 53];
 		BSTAR[i] = c;
 	}
 
-	NORAD_CAT[NORAD_ID_LENGTH-1] = EOS;
-	COSPAR_YR[YR_LENGTH-1] = EOS;
-	LAUNCH_NB[LAUNCH_NB_LENGTH-1] = EOS;
-	LAUNCH_PART[LAUNCH_PART_LENGTH-1] = EOS;
-	EPOCH_YR[YR_LENGTH-1] = EOS;
-	EPOCH_DAY[EPOCH_LENGTH-1] = EOS;
-	DERIV_1[DERIV_1_LENGTH-1] = EOS;
-	DERIV_2[DERIV_2_LENGTH-1] = EOS;
-	BSTAR[BSTAR_LENGTH-1] = EOS;
+	NORAD_CAT[NORAD_ID_LENGTH - 1] = EOS;
+	COSPAR_YR[YR_LENGTH - 1] = EOS;
+	LAUNCH_NB[LAUNCH_NB_LENGTH - 1] = EOS;
+	LAUNCH_PART[LAUNCH_PART_LENGTH - 1] = EOS;
+	EPOCH_YR[YR_LENGTH - 1] = EOS;
+	EPOCH_DAY[EPOCH_LENGTH - 1] = EOS;
+	DERIV_1[DERIV_1_LENGTH - 1] = EOS;
+	DERIV_2[DERIV_2_LENGTH - 1] = EOS;
+	BSTAR[BSTAR_LENGTH - 1] = EOS;
 
 	// --------------------------- 2-ND LINE PARSING ---------------------------
 
-	for (uint8_t i=0; i < (NORAD_ID_LENGTH-1); i++) {
-		if (NORAD_CAT[i] != SECOND_LINE[i+2]) {
+	for (uint8_t i = 0; i < (NORAD_ID_LENGTH - 1); i++) {
+		if (NORAD_CAT[i] != SECOND_LINE[i + 2]) {
 			printf("%s\n%s\n", FIRST_LINE, SECOND_LINE);
 			perror("The NORAD Catalogue Number doesn't match up between line 1 and 2\n");
 			exit(0);
 		}
 	}
 
-	for (uint8_t i=0; i < (INCLINATION_LENGTH-1); i++) {
-		char c = SECOND_LINE[i+8];
+	for (uint8_t i = 0; i < (INCLINATION_LENGTH - 1); i++) {
+		char c = SECOND_LINE[i + 8];
 
 		INCLI[i] = c;
 	}
 
-	for (uint8_t i=0; i < (ASC_NODE_LENGTH-1); i++) {
-		char c = SECOND_LINE[i+17];
+	for (uint8_t i = 0; i < (ASC_NODE_LENGTH - 1); i++) {
+		char c = SECOND_LINE[i + 17];
 
 		AN[i] = c;
 	}
 
-	for (uint8_t i=0; i < (ECC_LENGTH-1); i++) {
-		char c = SECOND_LINE[i+25];
+	for (uint8_t i = 0; i < (ECC_LENGTH - 1); i++) {
+		char c = SECOND_LINE[i + 25];
 
 		ECC[i] = c;
 	}
 
-	for (uint8_t i=0; i < (ARG_PE_LENGTH-1); i++) {
-		char c = SECOND_LINE[i+34];
+	for (uint8_t i = 0; i < (ARG_PE_LENGTH - 1); i++) {
+		char c = SECOND_LINE[i + 34];
 
 		ARG_PE[i] = c;
 	}
 
-	for (uint8_t i=0; i < (MEAN_ANO_LENGTH-1); i++) {
-		char c = SECOND_LINE[i+43];
+	for (uint8_t i = 0; i < (MEAN_ANO_LENGTH - 1); i++) {
+		char c = SECOND_LINE[i + 43];
 
 		MEAN_ANO[i] = c;
 	}
 
-	for (uint8_t i=0; i < (MEAN_MOTION_LENGTH-1); i++) {
-		char c = SECOND_LINE[i+52];
+	for (uint8_t i = 0; i < (MEAN_MOTION_LENGTH - 1); i++) {
+		char c = SECOND_LINE[i + 52];
 
 		MEAN_MOTION[i] = c;
 	}
 
-	for (uint8_t i=0; i < (REVS_LENGTH - 1); i++) {
-		char c = SECOND_LINE[i+63];
+	for (uint8_t i = 0; i < (REVS_LENGTH - 1); i++) {
+		char c = SECOND_LINE[i + 63];
 
 		REVOLUTIONS[i] = c;
 	}
 
-	INCLI[INCLINATION_LENGTH-1] = EOS;
-	AN[ASC_NODE_LENGTH-1] = EOS;
+	INCLI[INCLINATION_LENGTH - 1] = EOS;
+	AN[ASC_NODE_LENGTH - 1] = EOS;
 	ECC[0] = '.';
-	ECC[ECC_LENGTH-1] = EOS;
-	ARG_PE[ARG_PE_LENGTH-1] = EOS;
-	MEAN_ANO[MEAN_ANO_LENGTH-1] = EOS;
-	MEAN_MOTION[MEAN_MOTION_LENGTH-1] = EOS;
-	REVOLUTIONS[REVS_LENGTH-1] = EOS;
+	ECC[ECC_LENGTH - 1] = EOS;
+	ARG_PE[ARG_PE_LENGTH - 1] = EOS;
+	MEAN_ANO[MEAN_ANO_LENGTH - 1] = EOS;
+	MEAN_MOTION[MEAN_MOTION_LENGTH - 1] = EOS;
+	REVOLUTIONS[REVS_LENGTH - 1] = EOS;
 
 	// ---------- Enregistrement des données dans la struct ----------
 
@@ -189,9 +193,9 @@ TLE parse_block(string lines[][70]) {
 
 TLE parse_lines(string NAME_LINE[25], string FIRST_LINE[70], string SECOND_LINE[70]) {
 	string lines[3][70];
-	
-	for (int8_t l=0; l<3; l++) {
-		for (int8_t col=0; col<70; col++) {
+
+	for (int8_t l = 0; l < 3; l++) {
+		for (int8_t col = 0; col < 70; col++) {
 			lines[l][col] = 0;
 		}
 	}

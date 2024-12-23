@@ -5,7 +5,7 @@ float b(float a, float e) {
 		perror("Eccentricity must be 0 <= e < 1");
 	}
 
-	return a * sqrt(1 - e*e);
+	return a * sqrt(1 - e * e);
 }
 
 float c(float a, float e) {
@@ -21,7 +21,7 @@ float h(float a, float e) {
 		perror("Eccentricity must be 0 <= e < 1");
 	}
 
-	return (a * (1.0f - e*e)) / e;
+	return (a * (1.0f - e * e)) / e;
 }
 
 float f(float a, float e) {
@@ -37,7 +37,7 @@ float p(float a, float e) {
 		perror("Eccentricity must be 0 <= e < 1");
 	}
 
-	return a * (1 - e*e);
+	return a * (1 - e * e);
 }
 
 // ---------------------------------------------------------------------
