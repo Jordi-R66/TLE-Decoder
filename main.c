@@ -56,7 +56,7 @@ void PrintTle(TLE Object) {
 
 	Coords2D OrbCoords2D;
 	OrbCoords2D.cols = 1;
-	OrbCoords2D.rows = 3;
+	OrbCoords2D.rows = 2;
 	allocMatrix(&OrbCoords2D);
 
 	Coords3D RefCoords3D;
@@ -66,7 +66,7 @@ void PrintTle(TLE Object) {
 
 	Vector2D OrbSpeed2D;
 	OrbSpeed2D.cols = 1;
-	OrbSpeed2D.rows = 3;
+	OrbSpeed2D.rows = 2;
 	allocMatrix(&OrbSpeed2D);
 
 	Vector3D RefSpeed3D;
@@ -173,9 +173,9 @@ void PrintTle(TLE Object) {
 	printf("------------------------------- CURRENTLY -------------------------------\n");
 
 	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon + 1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
-	/*printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
-	printf("ECC. ANOMALY : %.4lf rads\n", Current_E);
-	printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);*/
+	// printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
+	// printf("ECC. ANOMALY : %.4lf rads\n", Current_E);
+	// printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);
 	printf("X Coord : %.2lf m\tX Speed : %.2lf m/s\n", Coord3D_X, Speed3D_X);
 	printf("Y Coord : %.2lf m\tY Speed : %.2lf m/s\n", Coord3D_Y, Speed3D_Y);
 	printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);
