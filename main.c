@@ -18,20 +18,20 @@ double EccentricAnomalyTolerance = 0.0001 * DEGS2RADS;
 time_t current_time;
 
 /* void InterpretArgs(uint8_t n, char** args) {
- 	if (n == 5) {
- 		for (uint8_t i=0; i<n; i++) {
- 			printf("%s\n", args[i]);
- 			if (!strcmp(args[i], "-s")) {
- 				strcpy(filename, args[i+1]);
- 			} else if (!strcmp(args[i], "-u")) {
- 				lookingFor = strint(args[i+1]);
- 			}
- 		}
+	if (n == 5) {
+		for (uint8_t i=0; i<n; i++) {
+			printf("%s\n", args[i]);
+			if (!strcmp(args[i], "-s")) {
+				strcpy(filename, args[i+1]);
+			} else if (!strcmp(args[i], "-u")) {
+				lookingFor = strint(args[i+1]);
+			}
+		}
 
- 		printf("%s\n%u\n\n", filename, lookingFor);
- 	} else {
- 		exit(-1);
- 	}
+		printf("%s\n%u\n\n", filename, lookingFor);
+	} else {
+		exit(-1);
+	}
 }*/
 
 void PrintTle(TLE Object) {
@@ -77,12 +77,12 @@ void PrintTle(TLE Object) {
 	uint64_t Ap = Apoapsis(Object.Eccentricity, SMA);
 	uint64_t Pe = Periapsis(Object.Eccentricity, SMA);
 
-	double Epoch_E_Approx = (Object.MeanAnomaly*DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly*DEGS2RADS);
-	double Epoch_E = NewtonRaphson(Object.MeanAnomaly*DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
+	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
+	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
 	double Epoch_TA = TrueAnomaly(Object.Eccentricity, Epoch_E);
 
 	uint64_t Epoch_R = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA);
-	uint64_t Epoch_Alt = Epoch_R-(uint64_t)EARTH_RADIUS;
+	uint64_t Epoch_Alt = Epoch_R - (uint64_t)EARTH_RADIUS;
 
 	double Speed_Ap = OrbSpeed(Ap, SMA);
 	double Speed_Pe = OrbSpeed(Pe, SMA);
@@ -93,13 +93,14 @@ void PrintTle(TLE Object) {
 	struct tm* utc = gmtime(&current_time);
 
 	int32_t current_year = utc->tm_year + 1900;
-	double current_day = (double)utc->tm_yday + (double)(utc->tm_hour)/24.0 + (double)(utc->tm_min)/1440.0 + (double)(utc->tm_sec)/86400.0 + 1.0;
+	double current_day = (double)utc->tm_yday + (double)(utc->tm_hour) / 24.0 + (double)(utc->tm_min) / 1440.0 + (double)(utc->tm_sec) / 86400.0 + 1.0;
 
 	int32_t epoch_year = Object.EPOCH_YR;
 
 	if (epoch_year < 57) {
 		epoch_year += 2000;
-	} else {
+	}
+	else {
 		epoch_year += 1900;
 	}
 
@@ -146,12 +147,12 @@ void PrintTle(TLE Object) {
 
 	printf("Orbital Period : %.4lf secs (%s)\n", OrbPeriod, secstohms(OrbPeriod));
 	printf("Semi Major Axis : %llu m\n", SMA);
-	printf("Apoapsis : %llu m | Periapsis : %llu m | Epoch : %llu m\n", Ap-(uint64_t)EARTH_RADIUS, Pe-(uint64_t)EARTH_RADIUS, Epoch_Alt);
+	printf("Apoapsis : %llu m | Periapsis : %llu m | Epoch : %llu m\n", Ap - (uint64_t)EARTH_RADIUS, Pe - (uint64_t)EARTH_RADIUS, Epoch_Alt);
 	printf("Speed @ Ap : %.4lf m/s | Pe : %.4lf m/s | Ep : %.4lf m/s \n", Speed_Ap, Speed_Pe, Speed_Epoch);
 
 	printf("------------------------------- CURRENTLY -------------------------------\n");
 
-	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon+1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
+	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon + 1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
 	printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
 	printf("ECC. ANOMALY : %.4lf rads\n", Current_E);
 	printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);
@@ -168,7 +169,7 @@ void PrintTle(TLE Object) {
 	deallocMatrix(&RefSpeed3D);
 }
 
-int32_t main(int argc, char *argv[]) {
+int32_t main(int argc, char* argv[]) {
 	// InterpretArgs(argc, argv);
 
 	clear();
@@ -185,7 +186,7 @@ int32_t main(int argc, char *argv[]) {
 		TLE CurrentEntry;
 		bool found = false;
 
-		for (int32_t i=0; i<block_quant; i++) {
+		for (int32_t i = 0; i < block_quant; i++) {
 			CurrentEntry = AllObjs[i];
 			if (CurrentEntry.NORAD_ID == lookingFor) {
 				found = true;
@@ -201,10 +202,11 @@ int32_t main(int argc, char *argv[]) {
 		while (true) {
 			clear();
 			PrintTle(CurrentEntry);
-			usleep(1000000/2);
+			usleep(1000000 / 2);
 		}
 
-	} else {
+	}
+	else {
 		printf("Opening the files\n");
 		int32_t block_number = GetTLENumber(filename);
 		// printf("TLE File size : %d blocks\n", block_number);
@@ -215,10 +217,10 @@ int32_t main(int argc, char *argv[]) {
 		time(&rawtime_start);
 
 		TLE* AllObjs = GetAllTle(filename);
-		
+
 		time(&rawtime_end);
 
-		printf("Memory usage to store %d blocks : %llu bytes\nTime : %lld\n", block_number, sizeof(TLE) * block_number, rawtime_end-rawtime_start);
+		printf("Memory usage to store %d blocks : %llu bytes\nTime : %lld\n", block_number, sizeof(TLE) * block_number, rawtime_end - rawtime_start);
 		//ExportToStructFile(AllObjs, block_number, "merged.tle_struct");
 	}
 
