@@ -70,7 +70,7 @@ double AngularSpeed(double SemiMajorAxis) {
 
 double TrueAnomaly(double Eccentricity, double EccentricAnomaly) {
 	// return 2.0 * atan(sqrt((1.0 + Eccentricity) / (1.0 - Eccentricity)) * tan(EccentricAnomaly/2.0));
-	double beta_ = Eccentricity / (1.0 + sqrt(1.0 - Eccentricity*Eccentricity));
+	double beta_ = Eccentricity / (1.0 + sqrt(1.0 - pow(Eccentricity, 2.0)));
 	double nu_ = EccentricAnomaly + 2.0 * atan((beta_*sin(EccentricAnomaly)) / (1.0 - beta_ * cos(EccentricAnomaly)));
 
 	return nu_;
@@ -81,7 +81,7 @@ double TrueAnomaly(double Eccentricity, double EccentricAnomaly) {
 double OrbSpeed(uint64_t altitude, uint64_t SemiMajorAxis) {
 	double speed;
 
-	speed = sqrt(EARTH_MU * (2/((double)altitude) - 1/((double)SemiMajorAxis)));
+	speed = sqrt(EARTH_MU * (2.0/((double)altitude) - 1.0/((double)SemiMajorAxis)));
 
 	return speed;
 }
