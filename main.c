@@ -74,6 +74,8 @@ void PrintTle(TLE Object) {
 	RefSpeed3D.rows = 3;
 	allocMatrix(&RefSpeed3D);
 
+	GenRotMatrices(&ArgPeriRot, &IncliRot, &ANRot, Object.PeriArg * DEGS2RADS, Object.Inclination * DEGS2RADS, Object.AscNodeLong * DEGS2RADS);
+
 	double OrbPeriod = OrbitalPeriod(Object.MeanMotion);
 	uint64_t SMA = SemiMajorAxis(OrbPeriod);
 	double n = AngularSpeed(SMA);
@@ -223,7 +225,7 @@ int32_t main(int argc, char* argv[]) {
 		while (true) {
 			clear();
 			PrintTle(CurrentEntry);
-			usleep(1000000 / 2);
+			usleep(1000000 / 3);
 		}
 
 	}
