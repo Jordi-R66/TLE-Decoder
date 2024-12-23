@@ -35,6 +35,10 @@ time_t current_time;
 }*/
 
 void PrintTle(TLE Object) {
+
+	double Coord3D_X, Coord3D_Y, Coord3D_Z;
+	double Speed3D_X, Speed3D_Y, Speed3D_Z;
+
 	Matrix ArgPeriRot;
 	ArgPeriRot.cols = 3;
 	ArgPeriRot.rows = 3;
@@ -115,6 +119,20 @@ void PrintTle(TLE Object) {
 	uint64_t Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);
 	uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
 	double Current_Spd = OrbSpeed(Current_R, SMA);
+
+	Compute2DCoords(&OrbCoords2D, Current_R, Current_TA);
+	Compute2DSpeedVector(&OrbSpeed2D, SMA, Object.Eccentricity, Current_TA);
+
+	RotateCoords(&ArgPeriRot, &IncliRot, &ANRot, &OrbCoords2D, &RefCoords3D);
+	RotateVector(&ArgPeriRot, &IncliRot, &ANRot, &OrbSpeed2D, &RefSpeed3D);
+
+	Coord3D_X = RefCoords3D.data[0];
+	Coord3D_Y = RefCoords3D.data[1];
+	Coord3D_Z = RefCoords3D.data[2];
+
+	Speed3D_Z = RefSpeed3D.data[0];
+	Speed3D_X = RefSpeed3D.data[1];
+	Speed3D_Y = RefSpeed3D.data[2];
 
 	Current_MA *= RADS2DEGS;
 	Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
