@@ -7,6 +7,11 @@ void Compute2DCoords(Coords2D* Coords, uint64_t OrbAlt, double TrueAnomaly) {
 		// Computing X and Y coordinates on the orbit's plan
 		Coords->data[0] = (double)OrbAlt * cos(TrueAnomaly);
 		Coords->data[1] = (double)OrbAlt * sin(TrueAnomaly);
+
+		//printf("2D Coordinates computed\n");
+	} else {
+		fprintf(stderr ,"Can't compute 2D Coordinates as the Coords Matrix isn't properly dimensione\nd\n%lu rows\n%lu cols\n%lu elements", Coords->rows, Coords->cols, Coords->size);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -15,6 +20,11 @@ void Compute2DSpeedVector(Vector2D* Vector, uint64_t SMA, double Eccentricity, d
 		// Computing X and Y coordinates on the orbit's plan for the speed vector
 		Vector->data[0] = -sqrt(EARTH_MU / ((double)SMA * (1.0 - pow(Eccentricity, 2.0))) * sin(TrueAnomaly));
 		Vector->data[1] = sqrt(EARTH_MU / ((double)SMA * (1.0 - pow(Eccentricity, 2.0))) * (Eccentricity + cos(TrueAnomaly)));
+	
+		//printf("2D Vector computed\n");
+	} else {
+		perror("Can't compute 2D Vector as the Vector Matrix isn't properly dimensioned\n");
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -49,18 +59,28 @@ void GenRotMatrices(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat
 		ANRotMat->data[3] = sin(AN);
 		ANRotMat->data[4] = cos(AN);
 		ANRotMat->data[8] = 1.0;
+
+		//printf("Rotation Matrices computed\n");
+	} else {
+		perror("Can't compute Rotation Matrices as at least one Matrix isn't properly dimensioned\n");
+		exit(EXIT_FAILURE);
 	}
 }
 
 void RotateCoords(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, Coords2D* InitCoords, Coords3D* RefCoords) {
+	bool MatricesOk;
+	bool CoordsOk;
+
 	bool RunningCondition;
 
-	RunningCondition = (ArgPeriRotMat->cols == 3) && (ArgPeriRotMat->rows == 3) && (ArgPeriRotMat->size == 9);
-	RunningCondition &= (IncliRotMat->cols == 3) && (IncliRotMat->rows == 3) && (IncliRotMat->size == 9);
-	RunningCondition &= (ANRotMat->cols == 3) && (ANRotMat->rows == 3) && (ANRotMat->size == 9);
+	MatricesOk = (ArgPeriRotMat->cols == 3) && (ArgPeriRotMat->rows == 3) && (ArgPeriRotMat->size == 9);
+	MatricesOk &= (IncliRotMat->cols == 3) && (IncliRotMat->rows == 3) && (IncliRotMat->size == 9);
+	MatricesOk &= (ANRotMat->cols == 3) && (ANRotMat->rows == 3) && (ANRotMat->size == 9);
 
-	RunningCondition &= (InitCoords->cols == 1) && (InitCoords->rows == 2) && (InitCoords->size == 2);
-	RunningCondition &= (RefCoords->cols == 1) && (RefCoords->rows == 2) && (RefCoords->size == 2);
+	CoordsOk = (InitCoords->cols == 1) && (InitCoords->rows == 2) && (InitCoords->size == 2);
+	CoordsOk &= (RefCoords->cols == 1) && (RefCoords->rows == 3) && (RefCoords->size == 3);
+
+	RunningCondition = MatricesOk && CoordsOk;
 
 	if (RunningCondition) {
 		Coords3D Init3D;
@@ -84,18 +104,28 @@ void RotateCoords(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, 
 
 		deallocMatrix(&Init3D);
 		deallocMatrix(&TempRot);
+
+		//printf("Coordinates rotation computed\n");
+	} else {
+		fprintf(stderr, "Can't Rotate coords as at least one Matrix or Coord isn't properly dimensioned\n\nMatrices properly dimensioned : %c\nCoords properly dimensioned : %c\n", MatricesOk ? 'Y' : 'N', CoordsOk ? 'Y' : 'N');
+		exit(EXIT_FAILURE);
 	}
 }
 
 void RotateVector(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, Vector2D* InitVector, Vector3D* RefVector) {
+	bool MatricesOk;
+	bool VectorOk;
+
 	bool RunningCondition;
 
-	RunningCondition = (ArgPeriRotMat->cols == 3) && (ArgPeriRotMat->rows == 3) && (ArgPeriRotMat->size == 9);
-	RunningCondition &= (IncliRotMat->cols == 3) && (IncliRotMat->rows == 3) && (IncliRotMat->size == 9);
-	RunningCondition &= (ANRotMat->cols == 3) && (ANRotMat->rows == 3) && (ANRotMat->size == 9);
+	MatricesOk = (ArgPeriRotMat->cols == 3) && (ArgPeriRotMat->rows == 3) && (ArgPeriRotMat->size == 9);
+	MatricesOk &= (IncliRotMat->cols == 3) && (IncliRotMat->rows == 3) && (IncliRotMat->size == 9);
+	MatricesOk &= (ANRotMat->cols == 3) && (ANRotMat->rows == 3) && (ANRotMat->size == 9);
 
-	RunningCondition &= (InitVector->cols == 1) && (InitVector->rows == 2) && (InitVector->size == 2);
-	RunningCondition &= (RefVector->cols == 1) && (RefVector->rows == 2) && (RefVector->size == 2);
+	VectorOk = (InitVector->cols == 1) && (InitVector->rows == 2) && (InitVector->size == 2);
+	VectorOk &= (RefVector->cols == 1) && (RefVector->rows == 3) && (RefVector->size == 3);
+
+	RunningCondition = MatricesOk && VectorOk;
 
 	if (RunningCondition) {
 		Vector3D Init3D;
@@ -119,5 +149,10 @@ void RotateVector(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, 
 
 		deallocMatrix(&Init3D);
 		deallocMatrix(&TempRot);
+
+		//printf("Vector rotation computed\n");
+	} else {
+		fprintf(stderr, "Can't Rotate coords as at least one Matrix or Coord isn't properly dimensioned\n\nMatrices properly dimensioned : %c\nVectors properly dimensioned : %c\n", MatricesOk ? 'Y' : 'N', VectorOk ? 'Y' : 'N');
+		exit(EXIT_FAILURE);
 	}
 }
