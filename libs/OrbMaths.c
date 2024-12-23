@@ -21,7 +21,7 @@ uint64_t SemiMajorAxis(double Period) {
 
 	//SMA = cbrt((G * EARTH_MASS * pow(Period, 2))/(4.0*pow(M_PI, 2.0)));
 
-	if ((SMA >= 0) & (SMA <= 0xffffffffffffffffULL)) {
+	if ((SMA >= 0) & (SMA <= 0xffffffffffffffffUL)) {
 		return (uint64_t)SMA;
 	} else {
 		return 0;
