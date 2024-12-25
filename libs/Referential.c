@@ -95,7 +95,11 @@ void RotateCoords(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, 
 		allocMatrix(&TempRot);
 
 		for (size_t i = 0; i < Init3D.size; i++) {
-			Init3D.data[i] = (i < InitCoords->size) ? InitCoords->data[i] : 0.0;
+			Init3D.data[i] = 0.0;
+		}
+
+		for (size_t i = 0; i < InitCoords->size; i++) {
+			Init3D.data[i] = InitCoords->data[i];
 		}
 
 		matrixMultiplication(ANRotMat, IncliRotMat, RefCoords);
@@ -140,7 +144,11 @@ void RotateVector(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, 
 		allocMatrix(&TempRot);
 
 		for (size_t i = 0; i < Init3D.size; i++) {
-			Init3D.data[i] = (i < InitVector->size) ? InitVector->data[i] : 0.0;
+			Init3D.data[i] = 0.0;
+		}
+
+		for (size_t i = 0; i < InitVector->size; i++) {
+			Init3D.data[i] = InitVector->data[i];
 		}
 
 		matrixMultiplication(ANRotMat, IncliRotMat, RefVector);
@@ -152,7 +160,7 @@ void RotateVector(Matrix* ArgPeriRotMat, Matrix* IncliRotMat, Matrix* ANRotMat, 
 
 		//printf("Vector rotation computed\n");
 	} else {
-		fprintf(stderr, "Can't Rotate coords as at least one Matrix or Coord isn't properly dimensioned\n\nMatrices properly dimensioned : %c\nVectors properly dimensioned : %c\n", MatricesOk ? 'Y' : 'N', VectorsOk ? 'Y' : 'N');
+		fprintf(stderr, "Can't Rotate vectors as at least one Matrix or Vector isn't properly dimensioned\n\nMatrices properly dimensioned : %c\nVectors properly dimensioned : %c\n", MatricesOk ? 'Y' : 'N', VectorsOk ? 'Y' : 'N');
 		exit(EXIT_FAILURE);
 	}
 }
