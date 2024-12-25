@@ -188,6 +188,7 @@ void PrintTle(TLE Object) {
 
 	deallocMatrix(&OrbCoords2D);
 	deallocMatrix(&RefCoords3D);
+
 	deallocMatrix(&OrbSpeed2D);
 	deallocMatrix(&RefSpeed3D);
 }
