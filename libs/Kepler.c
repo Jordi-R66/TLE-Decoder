@@ -50,7 +50,7 @@ KeplerCoords2D_t ANRot2DKeplerCoords(KeplerCoords2D_t coords, double AN) {
 	return RotatedCoords;
 }
 
-KeplerCoords2D_t barycenterRelativeToFocal(double a, double e) {
+KeplerCoords2D_t baricenterRelativeToFocal(double a, double e) {
 	KeplerCoords2D_t coords;
 
 	coords.x = c(a, e);
@@ -59,12 +59,29 @@ KeplerCoords2D_t barycenterRelativeToFocal(double a, double e) {
 	return coords;
 }
 
-
-KeplerCoords2D_t FocalRelativeToBarycenter(double a, double e) {
+KeplerCoords2D_t FocalRelativeToBaricenter(double a, double e) {
 	KeplerCoords2D_t coords;
 
 	coords.x = -c(a, e);
 	coords.y = 0.0;
+
+	return coords;
+}
+
+KeplerCoords2D_t PointRelativeToBaricenter(KeplerCoords2D_t baricenterPoint, KeplerCoords2D_t point) {
+	KeplerCoords2D_t coords;
+
+	coords.x = point.x - baricenterPoint.x;
+	coords.y = point.y - baricenterPoint.y;
+
+	return coords;
+}
+
+KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2D_t point) {
+	KeplerCoords2D_t coords;
+
+	coords.x = point.x - focalPoint.x;
+	coords.y = point.y - focalPoint.y;
 
 	return coords;
 }
