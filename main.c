@@ -4,6 +4,8 @@
 #include "libs/TermFuncs.h"
 #include "libs/Algos.h"
 #include "libs/Referential.h"
+#include "libs/Kepler.h"
+#include "libs/Ellipses.h"
 
 #include "libs/Common.h"
 
@@ -182,8 +184,8 @@ void PrintTle(TLE Object) {
 	// printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);
 	/*printf("X Coord : %.2lf m\tX Speed : %.2lf m/s\n", Coord3D_X, Speed3D_X);
 	printf("Y Coord : %.2lf m\tY Speed : %.2lf m/s\n", Coord3D_Y, Speed3D_Y);
-	printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);
-	printf("ALTITUDE : %llu m\n", Current_Alt);*/
+	printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);*/
+	printf("ALTITUDE : %llu m\n", Current_Alt);
 	printf("SPEED : %.4lf m/s\n", Current_Spd);
 
 	/*
