@@ -36,6 +36,7 @@ time_t current_time;
 
 void PrintTle(TLE Object) {
 
+	/*
 	double Coord3D_X, Coord3D_Y, Coord3D_Z;
 	double Speed3D_X, Speed3D_Y, Speed3D_Z;
 
@@ -75,6 +76,7 @@ void PrintTle(TLE Object) {
 	allocMatrix(&RefSpeed3D);
 
 	GenRotMatrices(&ArgPeriRot, &IncliRot, &ANRot, Object.PeriArg * DEGS2RADS, Object.Inclination * DEGS2RADS, Object.AscNodeLong * DEGS2RADS);
+	*/
 
 	double OrbPeriod = OrbitalPeriod(Object.MeanMotion);
 	uint64_t SMA = SemiMajorAxis(OrbPeriod);
@@ -122,6 +124,7 @@ void PrintTle(TLE Object) {
 	uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
 	double Current_Spd = OrbSpeed(Current_R, SMA);
 
+	/*
 	Compute2DCoords(&OrbCoords2D, Current_R, Current_TA);
 	Compute2DSpeedVector(&OrbSpeed2D, SMA, Object.Eccentricity, Current_TA);
 
@@ -135,6 +138,7 @@ void PrintTle(TLE Object) {
 	Speed3D_Z = RefSpeed3D.data[0];
 	Speed3D_X = RefSpeed3D.data[1];
 	Speed3D_Y = RefSpeed3D.data[2];
+	*/
 
 	Current_MA *= RADS2DEGS;
 	Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
@@ -176,12 +180,13 @@ void PrintTle(TLE Object) {
 	// printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
 	// printf("ECC. ANOMALY : %.4lf rads\n", Current_E);
 	// printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);
-	printf("X Coord : %.2lf m\tX Speed : %.2lf m/s\n", Coord3D_X, Speed3D_X);
+	/*printf("X Coord : %.2lf m\tX Speed : %.2lf m/s\n", Coord3D_X, Speed3D_X);
 	printf("Y Coord : %.2lf m\tY Speed : %.2lf m/s\n", Coord3D_Y, Speed3D_Y);
 	printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);
-	printf("ALTITUDE : %llu m\n", Current_Alt);
+	printf("ALTITUDE : %llu m\n", Current_Alt);*/
 	printf("SPEED : %.4lf m/s\n", Current_Spd);
 
+	/*
 	deallocMatrix(&ArgPeriRot);
 	deallocMatrix(&IncliRot);
 	deallocMatrix(&ANRot);
@@ -191,6 +196,7 @@ void PrintTle(TLE Object) {
 
 	deallocMatrix(&OrbSpeed2D);
 	deallocMatrix(&RefSpeed3D);
+	*/
 }
 
 int32_t main(int argc, char* argv[]) {
