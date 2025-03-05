@@ -49,3 +49,22 @@ KeplerCoords2D_t ANRot2DKeplerCoords(KeplerCoords2D_t coords, double AN) {
 
 	return RotatedCoords;
 }
+
+KeplerCoords2D_t barycenterRelativeToFocal(double a, double e) {
+	KeplerCoords2D_t coords;
+
+	coords.x = c(a, e);
+	coords.y = 0.0;
+
+	return coords;
+}
+
+
+KeplerCoords2D_t FocalRelativeToBarycenter(double a, double e) {
+	KeplerCoords2D_t coords;
+
+	coords.x = -c(a, e);
+	coords.y = 0.0;
+
+	return coords;
+}

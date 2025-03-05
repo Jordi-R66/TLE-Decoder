@@ -21,3 +21,6 @@ typedef struct KeplerCoords3D KeplerVector3D_t;
 double keplerDistance(double a, double e, double E);
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E);
 KeplerCoords2D_t ANRot2DKeplerCoords(KeplerCoords2D_t coords, double AN);
+
+KeplerCoords2D_t barycenterRelativeToFocal(double a, double e);
+KeplerCoords2D_t FocalRelativeToBarycenter(double a, double e);
