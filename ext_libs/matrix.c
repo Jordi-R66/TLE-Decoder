@@ -102,6 +102,7 @@ void genIdentityMatrix(Matrix* matrix, size_t n) {
 	allocMatrix(matrix);
 }
 
+/*
 bool isInvertible(Matrix* matrix) {
 	if (matrix->rows != matrix->cols) {
 		return false;
@@ -111,3 +112,4 @@ bool isInvertible(Matrix* matrix) {
 
 	Matrix IdentityMatrix;
 }
+*/
