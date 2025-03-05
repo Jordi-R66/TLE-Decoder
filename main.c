@@ -226,7 +226,7 @@ int32_t main(int argc, char* argv[]) {
 		while (true) {
 			clear();
 			PrintTle(CurrentEntry);
-			usleep(1000000 / 3);
+			sleep(1);
 		}
 
 	}
