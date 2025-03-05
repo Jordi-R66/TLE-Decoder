@@ -12,6 +12,9 @@ KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E) {
 	coords.x = a * (cos(E) - e);
 	coords.y = b(a, e) * sin(E);
 
+	KeplerCoords2D_t focalPoint = FocalRelativeToBaricenter(a, e);
+	coords = PointRelativeToBaricenter(focalPoint, coords);
+
 	return coords;
 }
 
