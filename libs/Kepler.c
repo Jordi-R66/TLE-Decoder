@@ -11,6 +11,8 @@ KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E) {
 
 	coords.x = a * (cos(E) - e);
 	coords.y = b(a, e) * sin(E);
+
+	return coords;
 }
 
 KeplerCoords2D_t ANRot2DKeplerCoords(KeplerCoords2D_t coords, double AN) {
@@ -41,9 +43,9 @@ KeplerCoords2D_t ANRot2DKeplerCoords(KeplerCoords2D_t coords, double AN) {
 
 	KeplerCoords2D_t RotatedCoords = *(KeplerCoords2D_t*)CoordsRot.data;
 
-	freeMatrix(&ANRotMat);
-	freeMatrix(&CoordsTemp);
-	freeMatrix(&CoordsRot);
+	deallocMatrix(&ANRotMat);
+	deallocMatrix(&CoordsTemp);
+	deallocMatrix(&CoordsRot);
 
 	return RotatedCoords;
 }
