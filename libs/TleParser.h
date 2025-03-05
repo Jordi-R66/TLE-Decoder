@@ -26,7 +26,7 @@
 
 #define COSPAR_LENGTH (YR_LENGTH + LAUNCH_NB_LENGTH + LAUNCH_PART_LENGTH - 2)
 
-typedef struct TLE {
+struct TLE {
 	string name[NAME_LENGTH];
 
 	// First line
@@ -57,7 +57,9 @@ typedef struct TLE {
 	double MeanMotion;
 
 	uint32_t Revolutions;
-} TLE;
+};
+
+typedef struct TLE TLE;
 
 TLE parse_block(string lines[][70]);
 
