@@ -1,8 +1,8 @@
 {
 	"Compiler": "gcc",
-	"Parameters": ["-Wall", "-O0", "-s", "-std=c17", "-m64", "-march=x86-64", "-flto"],
+	"Parameters": ["-Wall", "-O0", "-s", "-std=c17", "-m64", "-flto"],
 	"OutputPath": "output/",
 	"OutputName": "TLE",
-	"Sources": ["libs/TleFiles.c", "libs/OrbMaths.c", "libs/TleParser.c", "libs/CONVERSIONS.c", "libs/Algos.c", "libs/TermFuncs.c", "libs/Referential.c", "ext_libs/matrix.c", "main.c"],
+	"Sources": ["libs/TleFiles.c", "libs/OrbMaths.c", "libs/TleParser.c", "libs/CONVERSIONS.c", "libs/Algos.c", "libs/TermFuncs.c", "libs/Referential.c", "ext_libs/matrix.c", "libs/Kepler.c", "libs/Ellipses.c", "main.c"],
 	"UseMath": true
 }
