@@ -12,6 +12,8 @@
 #define CHECKSUM_MODULO 10
 #define DEFAULT_ITER 100000
 
+#define CALENDAR_YEAR 365.25
+
 string* filename = "TLEs/stations.tle";
 uint32_t lookingFor = 25544;
 
@@ -114,7 +116,7 @@ void PrintTle(TLE Object) {
 		epoch_year += 1900;
 	}
 
-	double DeltaTime = (((double)(current_year - epoch_year) * 365.25) + (double)(current_day - Object.EPOCH)) * 86400.0;
+	double DeltaTime = (((double)(current_year - epoch_year) * CALENDAR_YEAR) + (double)(current_day - Object.EPOCH)) * 86400.0;
 
 	double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
 
@@ -147,6 +149,16 @@ void PrintTle(TLE Object) {
 
 	Current_TA *= RADS2DEGS;
 	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
+
+	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
+	KeplerCoords2D_t coords = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+
+	//focal = ANRot2DKeplerCoords(focal, Object.AscNodeLong);
+	//coords = ANRot2DKeplerCoords(coords, Object.AscNodeLong);
+
+	coords = PointRelativeToFocal(focal, coords);
+
+	double distance = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - EARTH_RADIUS;
 
 	printf("Object name : %s\n", Object.name);
 
