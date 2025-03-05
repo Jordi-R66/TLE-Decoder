@@ -29,19 +29,19 @@ typedef struct KeplerCoords3D KeplerVector3D_t;
 double keplerDistance(double a, double e, double E);
 
 /**
- * @brief Computes the 2D coordinates (relative to the Earth) of a point on an orbit
+ * @brief Computes the 2D coordinates (relative to the baricenter) of a point on an orbit
  * 
  * @param a Semi major axis
  * @param e Eccentricity
  * @param E Eccentric anomaly
- * @return KeplerCoords2D_t 
+ * @return KeplerCoords2D_t The coordinates of the point relative to the baricenter
  */
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E);
 
 /**
  * @brief Rotates a 2D point by a given angle in radians
  * 
- * @param coords Baricenter relative coordinates of the point around the Earth
+ * @param coords Baricenter relative coordinates of the point relative to the baricenter
  * @param AN Ascending node angle in radians
  * @return KeplerCoords2D_t The new coordinates of the point relative to the baricenter
  */
