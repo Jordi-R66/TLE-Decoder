@@ -186,6 +186,7 @@ void PrintTle(TLE Object) {
 	printf("Y Coord : %.2lf m\tY Speed : %.2lf m/s\n", Coord3D_Y, Speed3D_Y);
 	printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);*/
 	printf("ALTITUDE : %llu m\n", Current_Alt);
+	printf("ALTITUDE (kepler func) : %lf m\n", keplerDistance(SMA, Object.Eccentricity, Current_E) - (uint64_t)EARTH_RADIUS);
 	printf("SPEED : %.4lf m/s\n", Current_Spd);
 
 	/*
