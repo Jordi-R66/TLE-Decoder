@@ -15,7 +15,7 @@
 string* filename = "TLEs/stations.tle";
 uint32_t lookingFor = 25544;
 
-double EccentricAnomalyTolerance = 0.0001 * DEGS2RADS;
+double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
 time_t current_time;
 
