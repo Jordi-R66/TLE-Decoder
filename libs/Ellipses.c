@@ -9,7 +9,7 @@ double c(double a, double e) {
 }
 
 double h(double a, double e) {
-	return p(a, e) / e;
+	return f(a, e) - c(a, e);
 }
 
 double f(double a, double e) {
