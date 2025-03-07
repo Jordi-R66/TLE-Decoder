@@ -60,10 +60,6 @@ void writeFile(file_t* file) {
 		return;
 	}
 
-	for (size_t i = 0; i < file->n_columns; i++) {
-		fprintf(fp, "%s,%c", file->columnNames[i], i == file->n_columns - 1 ? '\n' : ',');
-	}
-
 	for (size_t i = 0; i < file->nextIndex; i++) {
 		record_t record = file->records[i];
 		fprintf(fp, "%d ", record.time);

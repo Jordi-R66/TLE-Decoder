@@ -16,8 +16,8 @@ struct file {
 	size_t n_records;
 	size_t nextIndex;
 
-	cstring* columnNames;
-	size_t n_columns;
+	//cstring* columnNames;
+	//size_t n_columns;
 };
 
 typedef struct file file_t;
