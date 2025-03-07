@@ -9,6 +9,8 @@
 
 #include "libs/Common.h"
 
+#include "libs/logger.h"
+
 #define CHECKSUM_MODULO 10
 #define DEFAULT_ITER 100000
 
@@ -19,6 +21,7 @@ uint32_t lookingFor = 25544;
 
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
+bool debugMode = true;
 time_t current_time;
 
 /* void InterpretArgs(uint8_t n, char** args) {
@@ -38,7 +41,7 @@ time_t current_time;
 	}
 }*/
 
-void PrintTle(TLE Object) {
+void PrintTle(TLE Object, bool debug) {
 
 	/*
 	double Coord3D_X, Coord3D_Y, Coord3D_Z;
@@ -116,103 +119,153 @@ void PrintTle(TLE Object) {
 		epoch_year += 1900;
 	}
 
-	double DeltaTime = (((double)(current_year - epoch_year) * CALENDAR_YEAR) + (double)(current_day - Object.EPOCH)) * 86400.0;
+	//double DeltaTime;
 
-	double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
+	if (!debug) {
+		double DeltaTime = (((double)(current_year - epoch_year) * CALENDAR_YEAR) + (double)(current_day - Object.EPOCH)) * 86400.0;
 
-	double Current_E_Approx = Current_MA + Object.Eccentricity * sin(Current_MA);
-	double Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Current_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
-	double Current_TA = TrueAnomaly(Object.Eccentricity, Current_E);
+		double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
 
-	uint64_t Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);
-	uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
-	double Current_Spd = OrbSpeed(Current_R, SMA);
+		double Current_E_Approx = Current_MA + Object.Eccentricity * sin(Current_MA);
+		double Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Current_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
+		double Current_TA = TrueAnomaly(Object.Eccentricity, Current_E);
 
-	/*
-	Compute2DCoords(&OrbCoords2D, Current_R, Current_TA);
-	Compute2DSpeedVector(&OrbSpeed2D, SMA, Object.Eccentricity, Current_TA);
+		uint64_t Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);
+		uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
+		double Current_Spd = OrbSpeed(Current_R, SMA);
 
-	RotateCoords(&ArgPeriRot, &IncliRot, &ANRot, &OrbCoords2D, &RefCoords3D);
-	RotateVector(&ArgPeriRot, &IncliRot, &ANRot, &OrbSpeed2D, &RefSpeed3D);
+		/*
+		Compute2DCoords(&OrbCoords2D, Current_R, Current_TA);
+		Compute2DSpeedVector(&OrbSpeed2D, SMA, Object.Eccentricity, Current_TA);
 
-	Coord3D_X = RefCoords3D.data[0];
-	Coord3D_Y = RefCoords3D.data[1];
-	Coord3D_Z = RefCoords3D.data[2];
+		RotateCoords(&ArgPeriRot, &IncliRot, &ANRot, &OrbCoords2D, &RefCoords3D);
+		RotateVector(&ArgPeriRot, &IncliRot, &ANRot, &OrbSpeed2D, &RefSpeed3D);
 
-	Speed3D_Z = RefSpeed3D.data[0];
-	Speed3D_X = RefSpeed3D.data[1];
-	Speed3D_Y = RefSpeed3D.data[2];
-	*/
+		Coord3D_X = RefCoords3D.data[0];
+		Coord3D_Y = RefCoords3D.data[1];
+		Coord3D_Z = RefCoords3D.data[2];
 
-	Current_MA *= RADS2DEGS;
-	Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
+		Speed3D_Z = RefSpeed3D.data[0];
+		Speed3D_X = RefSpeed3D.data[1];
+		Speed3D_Y = RefSpeed3D.data[2];
+		*/
 
-	Current_TA *= RADS2DEGS;
-	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
+		Current_MA *= RADS2DEGS;
+		Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
 
-	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
-	KeplerCoords2D_t coords = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+		Current_TA *= RADS2DEGS;
+		Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 
-	//focal = ANRot2DKeplerCoords(focal, Object.AscNodeLong);
-	//coords = ANRot2DKeplerCoords(coords, Object.AscNodeLong);
+		KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
+		KeplerCoords2D_t coords = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
 
-	coords = PointRelativeToFocal(focal, coords);
+		//focal = ANRot2DKeplerCoords(focal, Object.AscNodeLong);
+		//coords = ANRot2DKeplerCoords(coords, Object.AscNodeLong);
 
-	double distance = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - EARTH_RADIUS;
+		coords = PointRelativeToFocal(focal, coords);
 
-	printf("Object name : %s\n", Object.name);
+		double distance = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - EARTH_RADIUS;
 
-	printf("---------------------------------- TLE ----------------------------------\n");
+		printf("Object name : %s\n", Object.name);
 
-	printf("NORAD ID : %0*u%c\n", 5, Object.NORAD_ID, Object.Classification);
-	printf("COSPAR : %0*d %0*hu %s\n", 2, Object.COSPAR_YR, 3, Object.COSPAR_LN, Object.COSPAR_ID);
-	printf("EPOCH : YEAR=20%d DAY=%.8lf\n", Object.EPOCH_YR, Object.EPOCH);
-	printf("TLE AGE : %s\n", secstohms(DeltaTime));
-	printf("(MEAN MOTION)' = %.8lf\n", Object.FIRST_DERIV_MEAN_MOTION);
-	printf("(MEAN MOTION)'' = %.5lf\n", Object.SECOND_DERIV_MEAN_MOTION);
-	printf("B* = %.5e\n", Object.B_STAR);
+		printf("---------------------------------- TLE ----------------------------------\n");
 
-	printf("\n");
+		printf("NORAD ID : %0*u%c\n", 5, Object.NORAD_ID, Object.Classification);
+		printf("COSPAR : %0*d %0*hu %s\n", 2, Object.COSPAR_YR, 3, Object.COSPAR_LN, Object.COSPAR_ID);
+		printf("EPOCH : YEAR=20%d DAY=%.8lf\n", Object.EPOCH_YR, Object.EPOCH);
+		printf("TLE AGE : %s\n", secstohms(DeltaTime));
+		printf("(MEAN MOTION)' = %.8lf\n", Object.FIRST_DERIV_MEAN_MOTION);
+		printf("(MEAN MOTION)'' = %.5lf\n", Object.SECOND_DERIV_MEAN_MOTION);
+		printf("B* = %.5e\n", Object.B_STAR);
 
-	printf("INCLINATION : %.4lf degs\n", Object.Inclination);
-	printf("LONGITUDE OF ASC. NODE : %.4f degs\n", Object.AscNodeLong);
-	printf("ECCENTRICITY : %.7lf\n", Object.Eccentricity);
-	printf("ARG. OF PERIAPSIS : %.4lf degs\n", Object.PeriArg);
-	printf("MEAN ANOMALY : %.4lf degs\n", Object.MeanAnomaly);
-	printf("MEAN MOTION : %.8lf rev/(sid. day)\n", Object.MeanMotion);
+		printf("\n");
 
-	printf("-------------------------------- RESULTS --------------------------------\n");
+		printf("INCLINATION : %.4lf degs\n", Object.Inclination);
+		printf("LONGITUDE OF ASC. NODE : %.4f degs\n", Object.AscNodeLong);
+		printf("ECCENTRICITY : %.7lf\n", Object.Eccentricity);
+		printf("ARG. OF PERIAPSIS : %.4lf degs\n", Object.PeriArg);
+		printf("MEAN ANOMALY : %.4lf degs\n", Object.MeanAnomaly);
+		printf("MEAN MOTION : %.8lf rev/(sid. day)\n", Object.MeanMotion);
 
-	printf("Orbital Period : %.4lf secs (%s)\n", OrbPeriod, secstohms(OrbPeriod));
-	printf("Semi Major Axis : %llu m\n", SMA);
-	printf("Apoapsis : %llu m | Periapsis : %llu m | Epoch : %llu m\n", Ap - (uint64_t)EARTH_RADIUS, Pe - (uint64_t)EARTH_RADIUS, Epoch_Alt);
-	printf("Speed @ Ap : %.4lf m/s | Pe : %.4lf m/s | Ep : %.4lf m/s \n", Speed_Ap, Speed_Pe, Speed_Epoch);
+		printf("-------------------------------- RESULTS --------------------------------\n");
 
-	printf("------------------------------- CURRENTLY -------------------------------\n");
+		printf("Orbital Period : %.4lf secs (%s)\n", OrbPeriod, secstohms(OrbPeriod));
+		printf("Semi Major Axis : %llu m\n", SMA);
+		printf("Apoapsis : %llu m | Periapsis : %llu m | Epoch : %llu m\n", Ap - (uint64_t)EARTH_RADIUS, Pe - (uint64_t)EARTH_RADIUS, Epoch_Alt);
+		printf("Speed @ Ap : %.4lf m/s | Pe : %.4lf m/s | Ep : %.4lf m/s \n", Speed_Ap, Speed_Pe, Speed_Epoch);
 
-	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon + 1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
-	// printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
-	// printf("ECC. ANOMALY : %.4lf rads\n", Current_E);
-	// printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);
-	/*printf("X Coord : %.2lf m\tX Speed : %.2lf m/s\n", Coord3D_X, Speed3D_X);
-	printf("Y Coord : %.2lf m\tY Speed : %.2lf m/s\n", Coord3D_Y, Speed3D_Y);
-	printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);*/
-	printf("ALTITUDE : %llu m\n", Current_Alt);
-	printf("ALTITUDE (kepler func) : %lf m\n", keplerDistance(SMA, Object.Eccentricity, Current_E) - (uint64_t)EARTH_RADIUS);
-	printf("Altitude (via coords) : %lf m\n", distance);
-	printf("SPEED : %.4lf m/s\n", Current_Spd);
+		printf("------------------------------- CURRENTLY -------------------------------\n");
 
-	/*
-	deallocMatrix(&ArgPeriRot);
-	deallocMatrix(&IncliRot);
-	deallocMatrix(&ANRot);
+		printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon + 1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
+		// printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
+		// printf("ECC. ANOMALY : %.4lf rads\n", Current_E);
+		// printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);
+		/*printf("X Coord : %.2lf m\tX Speed : %.2lf m/s\n", Coord3D_X, Speed3D_X);
+		printf("Y Coord : %.2lf m\tY Speed : %.2lf m/s\n", Coord3D_Y, Speed3D_Y);
+		printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);*/
+		printf("ALTITUDE : %llu m\n", Current_Alt);
+		printf("ALTITUDE (kepler func) : %lf m\n", keplerDistance(SMA, Object.Eccentricity, Current_E) - (uint64_t)EARTH_RADIUS);
+		printf("Altitude (via coords) : %lf m\n", distance);
+		printf("SPEED : %.4lf m/s\n", Current_Spd);
 
-	deallocMatrix(&OrbCoords2D);
-	deallocMatrix(&RefCoords3D);
+		/*
+		deallocMatrix(&ArgPeriRot);
+		deallocMatrix(&IncliRot);
+		deallocMatrix(&ANRot);
 
-	deallocMatrix(&OrbSpeed2D);
-	deallocMatrix(&RefSpeed3D);
-	*/
+		deallocMatrix(&OrbCoords2D);
+		deallocMatrix(&RefCoords3D);
+
+		deallocMatrix(&OrbSpeed2D);
+		deallocMatrix(&RefSpeed3D);
+		*/
+	} else {
+
+		uint64_t orb_period = (uint64_t)OrbitalPeriod(Object.MeanMotion) + 2;
+		file_t file = createFileObject("log.csv", orb_period);
+
+		for (uint64_t DeltaTime = 0; DeltaTime < orb_period; DeltaTime++) {
+			double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
+
+			double Current_E_Approx = Current_MA + Object.Eccentricity * sin(Current_MA);
+			double Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Current_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
+			double Current_TA = TrueAnomaly(Object.Eccentricity, Current_E);
+
+			uint64_t Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);
+			uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
+			double Current_Spd = OrbSpeed(Current_R, SMA);
+
+			Current_MA *= RADS2DEGS;
+			Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
+
+			Current_TA *= RADS2DEGS;
+			Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
+
+			KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
+			KeplerCoords2D_t coords = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+
+			coords = PointRelativeToFocal(focal, coords);
+
+			double coordsAlt = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - (double)EARTH_RADIUS;
+			double keplerAlt = keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS;
+			double trueAnoAlt = (double)OrbAltTA(Object.Eccentricity, SMA, Current_TA) - (double)EARTH_RADIUS;
+
+			double* values = (double*)calloc(3, sizeof(double));
+			record_t record = createRecord((int32_t)DeltaTime, values, 3);
+			record.values[0] = coordsAlt;
+			record.values[1] = keplerAlt;
+			record.values[2] = trueAnoAlt;
+
+			addRecord(&file, record);
+		}
+
+		writeFile(&file);
+
+		for (size_t i = 0; i < file.n_records; i++) {
+			freeRecord(file.records[i]);
+		}
+		freeFile(&file);
+	}
 }
 
 int32_t main(int argc, char* argv[]) {
@@ -247,15 +300,18 @@ int32_t main(int argc, char* argv[]) {
 
 		while (true) {
 			clear();
-			PrintTle(CurrentEntry);
-			sleep(1);
+			PrintTle(CurrentEntry, debugMode);
+			if (!debugMode) {
+				sleep(1);
+			}
+			else {
+				break;
+			}
 		}
-
-	}
-	else {
-		printf("Opening the files\n");
-		int32_t block_number = GetTLENumber(filename);
-		// printf("TLE File size : %d blocks\n", block_number);
+	} else {
+	printf("Opening the files\n");
+	int32_t block_number = GetTLENumber(filename);
+	// printf("TLE File size : %d blocks\n", block_number);
 
 		time_t rawtime_start;
 		time_t rawtime_end;
