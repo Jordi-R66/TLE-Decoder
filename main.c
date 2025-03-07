@@ -9,7 +9,7 @@
 
 #include "libs/Common.h"
 
-#include "libs/logger.h"
+//#include "libs/logger.h"
 
 #define CHECKSUM_MODULO 10
 #define DEFAULT_ITER 100000
@@ -86,18 +86,18 @@ void PrintTle(TLE Object, bool debug) {
 	*/
 
 	double OrbPeriod = OrbitalPeriod(Object.MeanMotion);
-	uint64_t SMA = SemiMajorAxis(OrbPeriod);
+	double SMA = SemiMajorAxis(OrbPeriod);
 	double n = AngularSpeed(SMA);
 
-	uint64_t Ap = Apoapsis(Object.Eccentricity, SMA);
-	uint64_t Pe = Periapsis(Object.Eccentricity, SMA);
+	double Ap = Apoapsis(Object.Eccentricity, SMA);
+	double Pe = Periapsis(Object.Eccentricity, SMA);
 
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
 	double Epoch_TA = TrueAnomaly(Object.Eccentricity, Epoch_E);
 
-	uint64_t Epoch_R = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA);
-	uint64_t Epoch_Alt = Epoch_R - (uint64_t)EARTH_RADIUS;
+	double Epoch_R = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA);
+	double Epoch_Alt = Epoch_R - (double)EARTH_RADIUS;
 
 	double Speed_Ap = OrbSpeed(Ap, SMA);
 	double Speed_Pe = OrbSpeed(Pe, SMA);
@@ -108,7 +108,7 @@ void PrintTle(TLE Object, bool debug) {
 	struct tm* utc = gmtime(&current_time);
 
 	int32_t current_year = utc->tm_year + 1900;
-	double current_day = (double)utc->tm_yday + (double)(utc->tm_hour) / 24.0 + (double)(utc->tm_min) / 1440.0 + (double)(utc->tm_sec) / 86400.0 + 1.0;
+	double current_day = (double)utc->tm_yday + (double)(utc->tm_hour) / 24.0 + (double)(utc->tm_min) / 1440.0 + (double)(utc->tm_sec) / EARTH_DAY_LENGTH + 1.0;
 
 	int32_t epoch_year = Object.EPOCH_YR;
 
@@ -122,7 +122,7 @@ void PrintTle(TLE Object, bool debug) {
 	//double DeltaTime;
 
 	if (!debug) {
-		double DeltaTime = (((double)(current_year - epoch_year) * CALENDAR_YEAR) + (double)(current_day - Object.EPOCH)) * 86400.0;
+		double DeltaTime = (((double)(current_year - epoch_year) * CALENDAR_YEAR) + (double)(current_day - Object.EPOCH)) * EARTH_DAY_LENGTH;
 
 		double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
 
@@ -130,8 +130,8 @@ void PrintTle(TLE Object, bool debug) {
 		double Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Current_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
 		double Current_TA = TrueAnomaly(Object.Eccentricity, Current_E);
 
-		uint64_t Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);
-		uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
+		double Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);
+		double Current_Alt = Current_R - (double)EARTH_RADIUS;
 		double Current_Spd = OrbSpeed(Current_R, SMA);
 
 		/*
@@ -164,7 +164,7 @@ void PrintTle(TLE Object, bool debug) {
 
 		coords = PointRelativeToFocal(focal, coords);
 
-		double distance = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - EARTH_RADIUS;
+		double altitude = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - EARTH_RADIUS;
 
 		printf("Object name : %s\n", Object.name);
 
@@ -190,8 +190,8 @@ void PrintTle(TLE Object, bool debug) {
 		printf("-------------------------------- RESULTS --------------------------------\n");
 
 		printf("Orbital Period : %.4lf secs (%s)\n", OrbPeriod, secstohms(OrbPeriod));
-		printf("Semi Major Axis : %llu m\n", SMA);
-		printf("Apoapsis : %llu m | Periapsis : %llu m | Epoch : %llu m\n", Ap - (uint64_t)EARTH_RADIUS, Pe - (uint64_t)EARTH_RADIUS, Epoch_Alt);
+		printf("Semi Major Axis : %.0lf m\n", SMA);
+		printf("Apoapsis : %.0lf m | Periapsis : %.0lf m | Epoch : %.0lf m\n", Ap - (double)EARTH_RADIUS, Pe - (double)EARTH_RADIUS, Epoch_Alt);
 		printf("Speed @ Ap : %.4lf m/s | Pe : %.4lf m/s | Ep : %.4lf m/s \n", Speed_Ap, Speed_Pe, Speed_Epoch);
 
 		printf("------------------------------- CURRENTLY -------------------------------\n");
@@ -203,9 +203,9 @@ void PrintTle(TLE Object, bool debug) {
 		/*printf("X Coord : %.2lf m\tX Speed : %.2lf m/s\n", Coord3D_X, Speed3D_X);
 		printf("Y Coord : %.2lf m\tY Speed : %.2lf m/s\n", Coord3D_Y, Speed3D_Y);
 		printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);*/
-		printf("ALTITUDE : %llu m\n", Current_Alt);
-		printf("ALTITUDE (kepler func) : %lf m\n", keplerDistance(SMA, Object.Eccentricity, Current_E) - (uint64_t)EARTH_RADIUS);
-		printf("Altitude (via coords) : %lf m\n", distance);
+		printf("ALTITUDE : %lf m\n", Current_Alt);
+		printf("ALTITUDE (kepler func) : %lf m\n", keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS);
+		printf("Altitude (via coords) : %lf m\n", altitude);
 		printf("SPEED : %.4lf m/s\n", Current_Spd);
 
 		/*
@@ -222,7 +222,15 @@ void PrintTle(TLE Object, bool debug) {
 	} else {
 
 		uint64_t orb_period = (uint64_t)OrbitalPeriod(Object.MeanMotion) + 2;
-		file_t file = createFileObject("log.csv", orb_period);
+		FILE* fp = fopen("log.csv", "w");
+
+		if (fp == NULL) {
+			fprintf(stderr, "Error while opening the file\n");
+			exit(EXIT_FAILURE);
+			return;
+		}
+
+		fprintf(fp, "Time,altitude via coords,altitude via ecc ano,altitude via true ano\n");
 
 		for (uint64_t DeltaTime = 0; DeltaTime < orb_period; DeltaTime++) {
 			double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
@@ -231,40 +239,40 @@ void PrintTle(TLE Object, bool debug) {
 			double Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Current_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
 			double Current_TA = TrueAnomaly(Object.Eccentricity, Current_E);
 
-			uint64_t Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);
-			uint64_t Current_Alt = Current_R - (uint64_t)EARTH_RADIUS;
+			double Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);
+			double Current_Alt = Current_R - (double)EARTH_RADIUS;
 			double Current_Spd = OrbSpeed(Current_R, SMA);
 
 			Current_MA *= RADS2DEGS;
 			Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
+			Current_MA *= DEGS2RADS;
 
 			Current_TA *= RADS2DEGS;
 			Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
+			Current_TA *= DEGS2RADS;
 
 			KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
 			KeplerCoords2D_t coords = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
 
 			coords = PointRelativeToFocal(focal, coords);
 
-			double coordsAlt = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - (double)EARTH_RADIUS;
-			double keplerAlt = keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS;
-			double trueAnoAlt = (double)OrbAltTA(Object.Eccentricity, SMA, Current_TA) - (double)EARTH_RADIUS;
+			double coordsAlt = sqrt(pow(coords.x, 2) + pow(coords.y, 2));// - (double)EARTH_RADIUS;
+			double keplerAlt = keplerDistance(SMA, Object.Eccentricity, Current_E);// - (double)EARTH_RADIUS;
+			double trueAnoAlt = OrbAltTA(Object.Eccentricity, SMA, Current_TA);// - (double)EARTH_RADIUS;
 
-			double* values = (double*)calloc(3, sizeof(double));
-			record_t record = createRecord((int32_t)DeltaTime, values, 3);
-			record.values[0] = coordsAlt;
-			record.values[1] = keplerAlt;
-			record.values[2] = trueAnoAlt;
+			fprintf(fp, "%llu,%lf,%lf,%lf\n", DeltaTime, coordsAlt, keplerAlt, trueAnoAlt);
 
-			addRecord(&file, record);
+			//addRecord(&file, record);
 		}
 
-		writeFile(&file);
+		fclose(fp);
 
-		for (size_t i = 0; i < file.n_records; i++) {
-			freeRecord(file.records[i]);
-		}
-		freeFile(&file);
+		//writeFile(&file);
+
+		//for (size_t i = 0; i < file.n_records; i++) {
+			//freeRecord(file.records[i]);
+		//}
+		//freeFile(&file);
 	}
 }
 
