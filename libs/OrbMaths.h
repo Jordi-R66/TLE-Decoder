@@ -21,12 +21,12 @@
 
 double OrbitalPeriod(double MeanMotion);
 
-uint64_t SemiMajorAxis(double Period);
+double SemiMajorAxis(double Period);
 
-uint64_t Apoapsis(double Eccentricity, uint64_t SemiMajorAxis);
-uint64_t Periapsis(double Eccentricity, uint64_t SemiMajorAxis);
-uint64_t OrbAlt(double Eccentricity, uint64_t SemiMajorAxis, double EccentricAnomaly);
-uint64_t OrbAltTA(double Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly);
+double Apoapsis(double Eccentricity, double SemiMajorAxis);
+double Periapsis(double Eccentricity, double SemiMajorAxis);
+double OrbAlt(double Eccentricity, double SemiMajorAxis, double EccentricAnomaly);
+double OrbAltTA(double Eccentricity, double SemiMajorAxis, double TrueAnomaly);
 
 double KeplerEquation(double E, double e);
 double KeplerPrime(double E, double e);
@@ -34,5 +34,5 @@ double KeplerPrime(double E, double e);
 double AngularSpeed(double SemiMajorAxis);
 double TrueAnomaly(double Eccentricity, double EccentricAnomaly);
 
-double OrbSpeed(uint64_t altitude, uint64_t SemiMajorAxis);
+double OrbSpeed(double altitude, double SemiMajorAxis);
 double Lorentz(double speed);

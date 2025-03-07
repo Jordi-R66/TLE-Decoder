@@ -9,50 +9,45 @@
 double OrbitalPeriod(double MeanMotion) {
 	double Period;
 
-	Period = (double)(EARTH_DAY_LENGTH / MeanMotion);
+	Period = EARTH_DAY_LENGTH / MeanMotion;
 
 	return Period;
 }
 
-uint64_t SemiMajorAxis(double Period) {
+double SemiMajorAxis(double Period) {
 	double SMA;
 
 	SMA = cbrt(pow((Period / (2.0 * M_PI)), 2.0) * EARTH_MU);
 
 	//SMA = cbrt((G * EARTH_MASS * pow(Period, 2))/(4.0*pow(M_PI, 2.0)));
 
-	if ((SMA >= 0) & (SMA <= 0xffffffffffffffffUL)) {
-		return (uint64_t)SMA;
-	}
-	else {
-		return 0;
-	}
+	return SMA;
 }
 
 
 
-uint64_t Apoapsis(double Eccentricity, uint64_t SemiMajorAxis) {
-	uint64_t Apoapsis = 0;
+double Apoapsis(double Eccentricity, double SemiMajorAxis) {
+	double Apoapsis = 0;
 
-	Apoapsis = (uint64_t)(SemiMajorAxis * (1.0 + Eccentricity));
+	Apoapsis = SemiMajorAxis * (1.0 + Eccentricity);
 
 	return Apoapsis;
 }
 
-uint64_t Periapsis(double Eccentricity, uint64_t SemiMajorAxis) {
-	uint64_t Periapsis = 0;
+double Periapsis(double Eccentricity, double SemiMajorAxis) {
+	double Periapsis = 0;
 
-	Periapsis = (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity));
+	Periapsis = SemiMajorAxis * (1.0 - Eccentricity);
 
 	return Periapsis;
 }
 
-uint64_t OrbAlt(double Eccentricity, uint64_t SemiMajorAxis, double EccentricAnomaly) {
-	return (uint64_t)(SemiMajorAxis * (1.0 - Eccentricity * cos(EccentricAnomaly)));
+double OrbAlt(double Eccentricity, double SemiMajorAxis, double EccentricAnomaly) {
+	return SemiMajorAxis * (1.0 - Eccentricity * cos(EccentricAnomaly));
 }
 
-uint64_t OrbAltTA(double Eccentricity, uint64_t SemiMajorAxis, double TrueAnomaly) {
-	return (uint64_t)(SemiMajorAxis * (1.0 - pow(Eccentricity, 2.0)) / (1.0 + Eccentricity * cos(TrueAnomaly)));
+double OrbAltTA(double Eccentricity, double SemiMajorAxis, double TrueAnomaly) {
+	return SemiMajorAxis * (1.0 - pow(Eccentricity, 2.0)) / (1.0 + Eccentricity * cos(TrueAnomaly));
 }
 
 
@@ -79,10 +74,10 @@ double TrueAnomaly(double Eccentricity, double EccentricAnomaly) {
 
 
 
-double OrbSpeed(uint64_t altitude, uint64_t SemiMajorAxis) {
+double OrbSpeed(double altitude, double SemiMajorAxis) {
 	double speed;
 
-	speed = sqrt(EARTH_MU * (2.0 / ((double)altitude) - 1.0 / ((double)SemiMajorAxis)));
+	speed = sqrt(EARTH_MU * (2.0 / (altitude - 1.0 / SemiMajorAxis)));
 
 	return speed;
 }
