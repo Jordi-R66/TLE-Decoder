@@ -1,8 +1,6 @@
 #pragma once
 #include "Common.h"
 
-typedef char* cstring;
-
 struct record {
 	int32_t time;
 	double* values;
