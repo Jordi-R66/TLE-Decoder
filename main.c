@@ -16,7 +16,7 @@
 
 #define CALENDAR_YEAR 365.25
 
-string* filename = "TLEs/stations.tle";
+string* filename = "TLEs/active.tle";
 uint32_t lookingFor = 25544;
 
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
@@ -221,7 +221,7 @@ void PrintTle(TLE Object, bool debug) {
 		*/
 	} else {
 
-		uint64_t orb_period = (uint64_t)OrbitalPeriod(Object.MeanMotion) + 2;
+		uint64_t orb_period = ((uint64_t)OrbitalPeriod(Object.MeanMotion) + 2) * 5;
 		FILE* fp = fopen("log.csv", "w");
 
 		if (fp == NULL) {
