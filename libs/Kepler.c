@@ -9,13 +9,48 @@ double keplerDistance(double a, double e, double E) {
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E) {
 	KeplerCoords2D_t coords;
 
-	coords.x = a * (cos(E) - e);
-	coords.y = b(a, e) * sin(E);
+	coords.x = a * (cos(E + M_PI / 2.0) - e);
+	coords.y = b(a, e) * sin(E + M_PI / 2.0);
 
 	KeplerCoords2D_t focalPoint = FocalRelativeToBaricenter(a, e);
 	coords = PointRelativeToBaricenter(focalPoint, coords);
 
 	return coords;
+}
+
+KeplerCoords2D_t RotatePeri2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri) {
+	Matrix LongPeriRot, CoordsTemp, CoordsRot;
+
+	LongPeriRot.rows = 2;
+	LongPeriRot.cols = 2;
+
+	CoordsTemp.rows = 2;
+	CoordsTemp.cols = 1;
+
+	CoordsRot.rows = 2;
+	CoordsRot.cols = 1;
+
+	allocMatrix(&LongPeriRot);
+	allocMatrix(&CoordsTemp);
+	allocMatrix(&CoordsRot);
+
+	LongPeriRot.data[0] = cos(LongPeri);
+	LongPeriRot.data[1] = -sin(LongPeri);
+	LongPeriRot.data[2] = sin(LongPeri);
+	LongPeriRot.data[3] = cos(LongPeri);
+
+	CoordsTemp.data[0] = coords.x;
+	CoordsTemp.data[1] = coords.y;
+
+	matrixMultiplication(&LongPeriRot, &CoordsTemp, &CoordsRot);
+
+	KeplerCoords2D_t RotatedCoords = *(KeplerCoords2D_t*)CoordsRot.data;
+
+	deallocMatrix(&LongPeriRot);
+	deallocMatrix(&CoordsTemp);
+	deallocMatrix(&CoordsRot);
+
+	return RotatedCoords;
 }
 
 KeplerCoords2D_t ANRot2DKeplerCoords(KeplerCoords2D_t coords, double AN) {

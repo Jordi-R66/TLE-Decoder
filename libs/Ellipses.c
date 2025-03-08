@@ -1,7 +1,7 @@
 #include "Ellipses.h"
 
 double b(double a, double e) {
-	return a * sqrt(1.0 - pow(e, 2.0));
+	return a * sqrt(1.0 - e * e);
 }
 
 double c(double a, double e) {
@@ -17,5 +17,5 @@ double f(double a, double e) {
 }
 
 double p(double a, double e) {
-	return a * (1.0 - pow(e, 2.0));
+	return a * (1.0 - e * e);
 }

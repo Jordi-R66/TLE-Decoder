@@ -29,6 +29,15 @@ typedef struct KeplerCoords3D KeplerVector3D_t;
 double keplerDistance(double a, double e, double E);
 
 /**
+ * @brief Computes the longitude of the periapsis of an orbit
+ * 
+ * @param AN Longitude of the ascending node (radians)
+ * @param ArgPeri Argument of periapsis (radians)
+ * @return double The longitude of the periapsis in radians
+ */
+double longitudeOfPeriapsis(double AN, double ArgPeri);
+
+/**
  * @brief Computes the 2D coordinates (relative to the baricenter) of a point on an orbit
  * 
  * @param a Semi major axis
@@ -37,6 +46,15 @@ double keplerDistance(double a, double e, double E);
  * @return KeplerCoords2D_t The coordinates of the point relative to the baricenter
  */
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E);
+
+/**
+ * @brief Rotates a 2D point by a given angle in radians
+ * 
+ * @param coords Baricenter relative coordinates of the point relative to the baricenter
+ * @param LongPeri Longitude of the periapsis in radians
+ * @return KeplerCoords2D_t The new coordinates of the point relative to the baricenter
+ */
+KeplerCoords2D_t RotatePeri2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri);
 
 /**
  * @brief Rotates a 2D point by a given angle in radians
