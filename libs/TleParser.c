@@ -180,7 +180,7 @@ TLE parse_block(string lines[][70]) {
 	output.B_STAR = strtoscinotd(BSTAR);
 
 	output.Inclination = strtof(INCLI, &endptr);
-	output.AscNodeLong = strtof(AN, &endptr);
+	output.AscNodeLong = output.Inclination != 0 ? strtof(AN, &endptr) : 0.f;
 	output.Eccentricity = strtof(ECC, &endptr);
 	output.PeriArg = strtof(ARG_PE, &endptr);
 	output.MeanAnomaly = strtof(MEAN_ANO, &endptr);
