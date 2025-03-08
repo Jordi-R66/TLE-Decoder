@@ -9,8 +9,8 @@ double keplerDistance(double a, double e, double E) {
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E) {
 	KeplerCoords2D_t coords;
 
-	coords.x = a * (cos(E + M_PI / 2.0) - e);
-	coords.y = b(a, e) * sin(E + M_PI / 2.0);
+	coords.x = a * (-cos(E) - e);
+	coords.y = b(a, e) * -sin(E);
 
 	KeplerCoords2D_t focalPoint = FocalRelativeToBaricenter(a, e);
 	coords = PointRelativeToBaricenter(focalPoint, coords);
