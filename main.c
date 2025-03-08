@@ -203,12 +203,12 @@ void PrintTle(TLE Object, bool debug) {
 		// printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
 		// printf("ECC. ANOMALY : %.4lf rads\n", Current_E);
 		// printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);
-		// printf("X Coord : %.2lf m\tX Speed : %.2lf m/s\n", Coord3D_X, Speed3D_X);
-		// printf("Y Coord : %.2lf m\tY Speed : %.2lf m/s\n", Coord3D_Y, Speed3D_Y);
+		printf("X Coord : %.2lf m\n", coords.x);
+		printf("Y Coord : %.2lf m\n", coords.y);
 		// printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);
-		printf("ALTITUDE : %lf m\n", Current_Alt);
-		printf("ALTITUDE (kepler func) : %lf m\n", keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS);
-		printf("Altitude (via coords) : %lf m\n", altitude);
+		printf("ALTITUDE : %.0lf m\n", Current_Alt);
+		printf("ALTITUDE (kepler func) : %.0lf m\n", keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS);
+		printf("Altitude (via coords) : %.0lf m\n", altitude);
 		printf("SPEED : %.4lf m/s\n", Current_Spd);
 
 		/*
@@ -224,7 +224,7 @@ void PrintTle(TLE Object, bool debug) {
 		*/
 	} else {
 
-		uint64_t orb_period = ((uint64_t)OrbitalPeriod(Object.MeanMotion) + 2) * 2;
+		uint64_t orb_period = ((uint64_t)OrbitalPeriod(Object.MeanMotion) + 2);
 		FILE* fp = fopen("log_25544.csv", "w");
 
 		if (fp == NULL) {
@@ -256,13 +256,12 @@ void PrintTle(TLE Object, bool debug) {
 
 			KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
 			KeplerCoords2D_t coords = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
-			//coords = RotatePeri2DKeplerCoords(coords, long_peri);
 
 			coords = PointRelativeToFocal(focal, coords);
 
-			double coordsAlt = sqrt(pow(coords.x, 2) + pow(coords.y, 2));// - (double)EARTH_RADIUS;
-			double keplerAlt = keplerDistance(SMA, Object.Eccentricity, Current_E);// - (double)EARTH_RADIUS;
-			double trueAnoAlt = OrbAltTA(Object.Eccentricity, SMA, Current_TA);// - (double)EARTH_RADIUS;
+			double coordsAlt = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - (double)EARTH_RADIUS;
+			double keplerAlt = keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS;
+			double trueAnoAlt = OrbAltTA(Object.Eccentricity, SMA, Current_TA) - (double)EARTH_RADIUS;
 
 			fprintf(fp, "%llu,%lf,%lf,%lf\n", DeltaTime, coordsAlt, keplerAlt, trueAnoAlt);
 
