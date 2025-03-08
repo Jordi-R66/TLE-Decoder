@@ -21,7 +21,7 @@ uint32_t lookingFor = 25544;
 
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
-bool debugMode = true;
+bool debugMode = false;
 time_t current_time;
 
 /* void InterpretArgs(uint8_t n, char** args) {
