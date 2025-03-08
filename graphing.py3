@@ -5,7 +5,7 @@ X = []
 Ys = [[], [], []]
 Labels = []
 
-fp = open('log.csv', 'r')
+fp = open('log_25544.csv', 'r')
 
 content = fp.read().split('\n')
 fp.close()
@@ -33,4 +33,4 @@ plt.xlabel('Time (s)')
 
 plt.ylabel('Altitude (m)')
 
-plt.savefig('graph.png')
+plt.savefig('graph_25544.png')
