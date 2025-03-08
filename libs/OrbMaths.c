@@ -1,4 +1,5 @@
 #include "OrbMaths.h"
+#include "Ellipses.h"
 
 // ------------------------------------------------------------------
 
@@ -47,7 +48,10 @@ double OrbAlt(double Eccentricity, double SemiMajorAxis, double EccentricAnomaly
 }
 
 double OrbAltTA(double Eccentricity, double SemiMajorAxis, double TrueAnomaly) {
-	return SemiMajorAxis * (1.0 - pow(Eccentricity, 2.0)) / (1.0 + Eccentricity * cos(TrueAnomaly));
+	double a = p(SemiMajorAxis, Eccentricity);
+	double b = 1.0 + Eccentricity * cos(TrueAnomaly);
+
+	return a / b;
 }
 
 
