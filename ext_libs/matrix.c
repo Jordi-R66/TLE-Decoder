@@ -100,6 +100,10 @@ void genIdentityMatrix(Matrix* matrix, size_t n) {
 	matrix->cols = n;
 	matrix->rows = n;
 	allocMatrix(matrix);
+
+	for (size_t i = 0; i < n; i++) {
+		setMatrixCase(matrix, 1.0, i, i);
+	}
 }
 
 /*
