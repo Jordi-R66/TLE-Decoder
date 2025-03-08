@@ -92,6 +92,8 @@ void PrintTle(TLE Object, bool debug) {
 	double Ap = Apoapsis(Object.Eccentricity, SMA);
 	double Pe = Periapsis(Object.Eccentricity, SMA);
 
+	double long_peri = (Object.AscNodeLong + Object.PeriArg) * DEGS2RADS;
+
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
 	double Epoch_TA = TrueAnomaly(Object.Eccentricity, Epoch_E);
