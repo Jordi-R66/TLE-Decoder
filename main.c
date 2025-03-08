@@ -224,7 +224,7 @@ void PrintTle(TLE Object, bool debug) {
 		*/
 	} else {
 
-		uint64_t orb_period = ((uint64_t)OrbitalPeriod(Object.MeanMotion) + 2) * 5;
+		uint64_t orb_period = ((uint64_t)OrbitalPeriod(Object.MeanMotion) + 2) * 2;
 		FILE* fp = fopen("log.csv", "w");
 
 		if (fp == NULL) {
