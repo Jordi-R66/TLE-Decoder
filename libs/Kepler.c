@@ -6,6 +6,19 @@ double keplerDistance(double a, double e, double E) {
 	return a * (1.0 - e * cos(E));
 }
 
+double longitudeOfPeriapsis(double AN, double ArgPeri) {
+	return AN + ArgPeri;
+}
+
+KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b) {
+	KeplerCoords2D_t coords;
+
+	coords.x = a.x + b.x;
+	coords.y = a.y + b.y;
+
+	return coords;
+}
+
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E) {
 	KeplerCoords2D_t coords;
 
@@ -14,6 +27,15 @@ KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E) {
 
 	//KeplerCoords2D_t focalPoint = FocalRelativeToBaricenter(a, e);
 	coords = PointRelativeToBaricenter(baricenterRelativeToFocal(a, e), coords);
+
+	return coords;
+}
+
+KeplerCoords2D_t coordsFromTA(double r, double TA) {
+	KeplerCoords2D_t coords;
+
+	coords.x = r * cos(TA);
+	coords.y = r * sin(TA);
 
 	return coords;
 }
@@ -56,7 +78,7 @@ KeplerCoords2D_t Rotate2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri) 
 KeplerCoords2D_t baricenterRelativeToFocal(double a, double e) {
 	KeplerCoords2D_t coords;
 
-	coords.x = c(a, e);
+	coords.x = -c(a, e);
 	coords.y = 0.0;
 
 	return coords;
@@ -65,7 +87,7 @@ KeplerCoords2D_t baricenterRelativeToFocal(double a, double e) {
 KeplerCoords2D_t FocalRelativeToBaricenter(double a, double e) {
 	KeplerCoords2D_t coords;
 
-	coords.x = -c(a, e);
+	coords.x = c(a, e);
 	coords.y = 0.0;
 
 	return coords;

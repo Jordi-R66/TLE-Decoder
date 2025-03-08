@@ -47,6 +47,8 @@ double longitudeOfPeriapsis(double AN, double ArgPeri);
  */
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E);
 
+KeplerCoords2D_t coordsFromTA(double r, double TA);
+
 /**
  * @brief Rotates a 2D point by a given angle in radians
  * 
