@@ -40,7 +40,7 @@ KeplerCoords2D_t coordsFromTA(double r, double TA) {
 	return coords;
 }
 
-KeplerCoords2D_t Rotate2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri) {
+KeplerCoords2D_t Rotate2DKeplerCoords(KeplerCoords2D_t coords, double angleRot) {
 	Matrix LongPeriRot, CoordsTemp, CoordsRot;
 
 	LongPeriRot.rows = 2;
@@ -56,10 +56,10 @@ KeplerCoords2D_t Rotate2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri) 
 	allocMatrix(&CoordsTemp);
 	allocMatrix(&CoordsRot);
 
-	LongPeriRot.data[0] = cos(LongPeri);
-	LongPeriRot.data[1] = -sin(LongPeri);
-	LongPeriRot.data[2] = sin(LongPeri);
-	LongPeriRot.data[3] = cos(LongPeri);
+	LongPeriRot.data[0] = cos(angleRot);
+	LongPeriRot.data[1] = -sin(angleRot);
+	LongPeriRot.data[2] = sin(angleRot);
+	LongPeriRot.data[3] = cos(angleRot);
 
 	CoordsTemp.data[0] = coords.x;
 	CoordsTemp.data[1] = coords.y;

@@ -37,6 +37,8 @@ double keplerDistance(double a, double e, double E);
  */
 double longitudeOfPeriapsis(double AN, double ArgPeri);
 
+KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b);
+
 /**
  * @brief Computes the 2D coordinates (relative to the baricenter) of a point on an orbit
  * 
@@ -56,7 +58,7 @@ KeplerCoords2D_t coordsFromTA(double r, double TA);
  * @param LongPeri Longitude of the periapsis in radians
  * @return KeplerCoords2D_t The new coordinates of the point relative to the baricenter
  */
-KeplerCoords2D_t Rotate2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri);
+KeplerCoords2D_t Rotate2DKeplerCoords(KeplerCoords2D_t coords, double angleRot);
 
 /**
  * @brief Computes the coordinates of the baricenter relative to the focal point of an orbit
