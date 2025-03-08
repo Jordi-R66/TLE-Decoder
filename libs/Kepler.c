@@ -6,8 +6,8 @@ double keplerDistance(double a, double e, double E) {
 	return a * (1.0 - e * cos(E));
 }
 
-double longitudeOfPeriapsis(double AN, double ArgPeri) {
-	return AN + ArgPeri;
+double longitudeOfPeriapsis(double AscNodeLong, double ArgPeri) {
+	return AscNodeLong + ArgPeri;
 }
 
 KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b) {
@@ -118,4 +118,66 @@ KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2
 	coords.y = point.y - focalPoint.y;
 
 	return coords;
+}
+
+// -------------------------------------------------------------------------------------------------------------
+
+KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t focal, KeplerCoords2D_t AscNode2D, KeplerCoords2D_t coords2D, double Inclination) {
+	KeplerCoords3D_t coords3D = { coords2D.x, coords2D.y, 0.0 };
+
+	AscNode2D = sumCoords2D(AscNode2D, focal);
+	double AscNodeR = sqrt(pow(AscNode2D.x, 2) + pow(AscNode2D.y, 2));
+
+	KeplerVector3D_t unitVector = { AscNode2D.x / AscNodeR, AscNode2D.y / AscNodeR, 0.0 };
+
+	Matrix I, AntiSymUnitMatrix, ResultMatrix;
+
+	I.rows = 3;
+	I.cols = 3;
+
+	AntiSymUnitMatrix.rows = 3;
+	AntiSymUnitMatrix.cols = 3;
+
+	genIdentityMatrix(&I, 3);
+
+	setMatrixCase(&AntiSymUnitMatrix, -unitVector.z, 0, 1);
+	setMatrixCase(&AntiSymUnitMatrix, unitVector.y, 0, 2);
+	setMatrixCase(&AntiSymUnitMatrix, unitVector.z, 1, 0);
+	setMatrixCase(&AntiSymUnitMatrix, -unitVector.x, 1, 2);
+	setMatrixCase(&AntiSymUnitMatrix, -unitVector.y, 2, 0);
+	setMatrixCase(&AntiSymUnitMatrix, unitVector.x, 2, 1);
+
+	Matrix uSqr;
+	matrixMultiplication(&AntiSymUnitMatrix, &AntiSymUnitMatrix, &uSqr);
+	Matrix sin_u = scalarMulNewMatrix(&AntiSymUnitMatrix, sin(Inclination));
+	Matrix cos_u = scalarMulNewMatrix(&uSqr, 1.0 - cos(Inclination));
+
+	Matrix I_sinU = matrixAdditionNewMatrix(&I, &sin_u);
+	Matrix RotMatrix = matrixAdditionNewMatrix(&I_sinU, &cos_u);
+
+	allocMatrix(&AntiSymUnitMatrix);
+
+	Matrix coords3DMatrix;
+	coords3DMatrix.rows = 3;
+	coords3DMatrix.cols = 1;
+	allocMatrix(&coords3DMatrix);
+
+	coords3DMatrix.data[0] = coords3D.x;
+	coords3DMatrix.data[1] = coords3D.y;
+	coords3DMatrix.data[2] = coords3D.z;
+
+	matrixMultiplication(&RotMatrix, &coords3D, &ResultMatrix);
+
+	coords3D = *(KeplerCoords3D_t*)ResultMatrix.data;
+
+	deallocMatrix(&uSqr);
+	deallocMatrix(&sin_u);
+	deallocMatrix(&cos_u);
+	deallocMatrix(&I_sinU);
+	deallocMatrix(&I);
+	deallocMatrix(&RotMatrix);
+	deallocMatrix(&AntiSymUnitMatrix);
+	deallocMatrix(&ResultMatrix);
+
+	return coords3D;
 }

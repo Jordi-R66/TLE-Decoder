@@ -31,11 +31,11 @@ double keplerDistance(double a, double e, double E);
 /**
  * @brief Computes the longitude of the periapsis of an orbit
  * 
- * @param AN Longitude of the ascending node (radians)
+ * @param AscNodeLong Longitude of the ascending node (radians)
  * @param ArgPeri Argument of periapsis (radians)
  * @return double The longitude of the periapsis in radians
  */
-double longitudeOfPeriapsis(double AN, double ArgPeri);
+double longitudeOfPeriapsis(double AscNodeLong, double ArgPeri);
 
 KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b);
 
@@ -98,3 +98,5 @@ KeplerCoords2D_t PointRelativeToBaricenter(KeplerCoords2D_t baricenterPoint, Kep
  * @return KeplerCoords2D_t the coordinates of the point relative to the focal point
  */
 KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2D_t point);
+
+KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t focal, KeplerCoords2D_t AscNode2D, KeplerCoords2D_t coords2D, double Inclination);
