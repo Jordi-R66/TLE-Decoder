@@ -39,6 +39,8 @@ double longitudeOfPeriapsis(double AN, double ArgPeri);
 
 KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b);
 
+KeplerCoords2D_t subCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b);
+
 /**
  * @brief Computes the 2D coordinates (relative to the baricenter) of a point on an orbit
  * 

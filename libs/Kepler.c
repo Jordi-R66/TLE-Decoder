@@ -19,6 +19,15 @@ KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b) {
 	return coords;
 }
 
+KeplerCoords2D_t subCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b) {
+	KeplerCoords2D_t coords;
+
+	coords.x = a.x - b.x;
+	coords.y = a.y - b.y;
+
+	return coords;
+}
+
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E) {
 	KeplerCoords2D_t coords;
 
