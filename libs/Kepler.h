@@ -54,16 +54,7 @@ KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E);
  * @param LongPeri Longitude of the periapsis in radians
  * @return KeplerCoords2D_t The new coordinates of the point relative to the baricenter
  */
-KeplerCoords2D_t RotatePeri2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri);
-
-/**
- * @brief Rotates a 2D point by a given angle in radians
- * 
- * @param coords Baricenter relative coordinates of the point relative to the baricenter
- * @param AN Ascending node angle in radians
- * @return KeplerCoords2D_t The new coordinates of the point relative to the baricenter
- */
-KeplerCoords2D_t ANRot2DKeplerCoords(KeplerCoords2D_t coords, double AN);
+KeplerCoords2D_t Rotate2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri);
 
 /**
  * @brief Computes the coordinates of the baricenter relative to the focal point of an orbit

@@ -92,7 +92,7 @@ void PrintTle(TLE Object, bool debug) {
 	double Ap = Apoapsis(Object.Eccentricity, SMA);
 	double Pe = Periapsis(Object.Eccentricity, SMA);
 
-	double long_peri = (Object.AscNodeLong + Object.PeriArg) * DEGS2RADS;
+	double longPeri = (Object.AscNodeLong + Object.PeriArg) * DEGS2RADS;
 
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
@@ -159,15 +159,16 @@ void PrintTle(TLE Object, bool debug) {
 		Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 
 		KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
-		KeplerCoords2D_t coords = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
-		//coords = RotatePeri2DKeplerCoords(coords, long_peri);
+		KeplerCoords2D_t coords_2d = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
 
-		//focal = ANRot2DKeplerCoords(focal, Object.AscNodeLong);
-		//coords = ANRot2DKeplerCoords(coords, Object.AscNodeLong);
+		coords_2d = PointRelativeToFocal(focal, coords_2d);
 
-		coords = PointRelativeToFocal(focal, coords);
+		//focal = Rotate2DKeplerCoords(focal, longPeri);
+		//coords_2d = Rotate2DKeplerCoords(coords_2d, longPeri);
 
-		double altitude = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - EARTH_RADIUS;
+		
+
+		double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
 
 		printf("Object name : %s\n", Object.name);
 
@@ -203,13 +204,13 @@ void PrintTle(TLE Object, bool debug) {
 		// printf("MEAN ANOMALY : %.4lf degs\n", Current_MA);
 		// printf("ECC. ANOMALY : %.4lf rads\n", Current_E);
 		// printf("TRUE ANOMALY : %.4lf degs\n", Current_TA);
-		printf("X Coord : %.2lf m\n", coords.x);
-		printf("Y Coord : %.2lf m\n", coords.y);
+		printf("X Coord : %.2lf m\tX Earth : %.2lf m\n", coords_2d.x, focal.x);
+		printf("Y Coord : %.2lf m\tY Earth : %.2lf m\n", coords_2d.y, focal.y);
 		// printf("Z Coord : %.2lf m\tZ Speed : %.2lf m/s\n", Coord3D_Z, Speed3D_Z);
-		printf("ALTITUDE : %.0lf m\n", Current_Alt);
-		printf("ALTITUDE (kepler func) : %.0lf m\n", keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS);
-		printf("Altitude (via coords) : %.0lf m\n", altitude);
-		printf("SPEED : %.4lf m/s\n", Current_Spd);
+		printf("ALTITUDE : %.2lf km\n", Current_Alt / 1000);
+		printf("ALTITUDE : %.2lf km\n", altitude / 1000);
+		printf("SPEED : %.2lf km/s\n", Current_Spd / 1000);
+		printf("Ap : %.2lf km | Pe : %.2lf km\n", keplerDistance(SMA, Object.Eccentricity, M_PI) - EARTH_RADIUS, keplerDistance(SMA, Object.Eccentricity, .0) - EARTH_RADIUS);
 
 		/*
 		deallocMatrix(&ArgPeriRot);
@@ -255,11 +256,11 @@ void PrintTle(TLE Object, bool debug) {
 			Current_TA *= DEGS2RADS;
 
 			KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
-			KeplerCoords2D_t coords = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+			KeplerCoords2D_t coords_2d = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
 
-			coords = PointRelativeToFocal(focal, coords);
+			coords_2d = PointRelativeToFocal(focal, coords_2d);
 
-			double coordsAlt = sqrt(pow(coords.x, 2) + pow(coords.y, 2)) - (double)EARTH_RADIUS;
+			double coordsAlt = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - (double)EARTH_RADIUS;
 			double keplerAlt = keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS;
 			double trueAnoAlt = OrbAltTA(Object.Eccentricity, SMA, Current_TA) - (double)EARTH_RADIUS;
 

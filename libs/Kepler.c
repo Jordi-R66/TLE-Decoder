@@ -12,13 +12,13 @@ KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E) {
 	coords.x = a * (-cos(E) - e);
 	coords.y = b(a, e) * -sin(E);
 
-	KeplerCoords2D_t focalPoint = FocalRelativeToBaricenter(a, e);
-	coords = PointRelativeToBaricenter(focalPoint, coords);
+	//KeplerCoords2D_t focalPoint = FocalRelativeToBaricenter(a, e);
+	coords = PointRelativeToBaricenter(baricenterRelativeToFocal(a, e), coords);
 
 	return coords;
 }
 
-KeplerCoords2D_t RotatePeri2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri) {
+KeplerCoords2D_t Rotate2DKeplerCoords(KeplerCoords2D_t coords, double LongPeri) {
 	Matrix LongPeriRot, CoordsTemp, CoordsRot;
 
 	LongPeriRot.rows = 2;
@@ -47,41 +47,6 @@ KeplerCoords2D_t RotatePeri2DKeplerCoords(KeplerCoords2D_t coords, double LongPe
 	KeplerCoords2D_t RotatedCoords = *(KeplerCoords2D_t*)CoordsRot.data;
 
 	deallocMatrix(&LongPeriRot);
-	deallocMatrix(&CoordsTemp);
-	deallocMatrix(&CoordsRot);
-
-	return RotatedCoords;
-}
-
-KeplerCoords2D_t ANRot2DKeplerCoords(KeplerCoords2D_t coords, double AN) {
-	Matrix ANRotMat, CoordsTemp, CoordsRot;
-
-	ANRotMat.rows = 2;
-	ANRotMat.cols = 2;
-
-	CoordsTemp.rows = 2;
-	CoordsTemp.cols = 1;
-
-	CoordsRot.rows = 2;
-	CoordsRot.cols = 1;
-
-	allocMatrix(&ANRotMat);
-	allocMatrix(&CoordsTemp);
-	allocMatrix(&CoordsRot);
-
-	ANRotMat.data[0] = cos(AN);
-	ANRotMat.data[1] = -sin(AN);
-	ANRotMat.data[2] = sin(AN);
-	ANRotMat.data[3] = cos(AN);
-
-	CoordsTemp.data[0] = coords.x;
-	CoordsTemp.data[1] = coords.y;
-
-	matrixMultiplication(&ANRotMat, &CoordsTemp, &CoordsRot);
-
-	KeplerCoords2D_t RotatedCoords = *(KeplerCoords2D_t*)CoordsRot.data;
-
-	deallocMatrix(&ANRotMat);
 	deallocMatrix(&CoordsTemp);
 	deallocMatrix(&CoordsRot);
 
