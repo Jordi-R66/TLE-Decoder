@@ -47,12 +47,26 @@ void scalarMul(Matrix* matrix, double scalar) {
 	}
 }
 
+Matrix scalarMulNewMatrix(Matrix* matrix, double scalar) {
+	Matrix newMatrix;
+	newMatrix.rows = matrix->rows;
+	newMatrix.cols = matrix->cols;
+	allocMatrix(&newMatrix);
+
+	for (size_t i = 0; i < matrix->size; i++) {
+		newMatrix.data[i] = matrix->data[i] * scalar;
+	}
+
+	return newMatrix;
+}
+
 /*
 	Performs an inefficient matrix multiplication algorithm and stores the resulting matrix at a given address
 	Stores the result `matDest` of `matA * matB`
 */
 void matrixMultiplication(Matrix* matA, Matrix* matB, Matrix* matDest) {
 	if (matA->cols != matB->rows) {
+		exit(EXIT_FAILURE);
 		return;
 	}
 
@@ -88,12 +102,31 @@ void matrixMultiplication(Matrix* matA, Matrix* matB, Matrix* matDest) {
 */
 void matrixAddition(Matrix* matA, Matrix* matB) {
 	if ((matA->cols != matB->cols) || (matA->rows != matB->rows)) {
+		exit(EXIT_FAILURE);
 		return;
 	}
 
 	for (size_t i = 0; i < matA->size; i++) {
 		matA->data[i] += matB->data[i];
 	}
+}
+
+Matrix matrixAdditionNewMatrix(Matrix* matA, Matrix* matB) {
+	if ((matA->cols != matB->cols) || (matA->rows != matB->rows)) {
+		exit(EXIT_FAILURE);
+		return;
+	}
+
+	Matrix newMatrix;
+	newMatrix.rows = matA->rows;
+	newMatrix.cols = matA->cols;
+	allocMatrix(&newMatrix);
+
+	for (size_t i = 0; i < matA->size; i++) {
+		newMatrix.data[i] = matA->data[i] + matB->data[i];
+	}
+
+	return newMatrix;
 }
 
 void genIdentityMatrix(Matrix* matrix, size_t n) {

@@ -19,7 +19,9 @@ void setMatrixCase(Matrix* matrix, double value, size_t row, size_t col);
 double getMatrixCase(Matrix* matrix, size_t row, size_t col);
 
 void scalarMul(Matrix* matrix, double scalar);
+Matrix scalarMulNewMatrix(Matrix* matrix, double scalar);
 void matrixMultiplication(Matrix* matA, Matrix* matB, Matrix* matDest);
 void matrixAddition(Matrix* matA, Matrix* matB);
+Matrix matrixAdditionNewMatrix(Matrix* matA, Matrix* matB)
 
 void genIdentityMatrix(Matrix* matrix, size_t n);
