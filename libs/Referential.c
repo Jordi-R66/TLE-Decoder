@@ -2,11 +2,11 @@
 
 #include "../libs/OrbMaths.h"
 
-void Compute2DCoords(Coords2D* Coords, uint64_t OrbAlt, double TrueAnomaly) {
+void Compute2DCoords(Coords2D* Coords, double OrbAlt, double TrueAnomaly) {
 	if ((Coords->rows == 2) && (Coords->cols == 1) && (Coords->size == 2)) {
 		// Computing X and Y coordinates on the orbit's plan
-		Coords->data[0] = (double)OrbAlt * cos(TrueAnomaly);
-		Coords->data[1] = (double)OrbAlt * sin(TrueAnomaly);
+		Coords->data[0] = OrbAlt * cos(TrueAnomaly);
+		Coords->data[1] = OrbAlt * sin(TrueAnomaly);
 
 		//printf("2D Coordinates computed\n");
 	} else {
@@ -15,11 +15,11 @@ void Compute2DCoords(Coords2D* Coords, uint64_t OrbAlt, double TrueAnomaly) {
 	}
 }
 
-void Compute2DSpeedVector(Vector2D* Vector, uint64_t SMA, double Eccentricity, double TrueAnomaly) {
+void Compute2DSpeedVector(Vector2D* Vector, double SMA, double Eccentricity, double TrueAnomaly) {
 	if ((Vector->rows == 2) && (Vector->cols == 1) && (Vector->size == 2)) {
 		// Computing X and Y coordinates on the orbit's plan for the speed vector
-		Vector->data[0] = -sqrt(EARTH_MU / ((double)SMA * (1.0 - pow(Eccentricity, 2.0))) * sin(TrueAnomaly));
-		Vector->data[1] = sqrt(EARTH_MU / ((double)SMA * (1.0 - pow(Eccentricity, 2.0))) * (Eccentricity + cos(TrueAnomaly)));
+		Vector->data[0] = -sqrt(EARTH_MU / (SMA * (1.0 - pow(Eccentricity, 2.0))) * sin(TrueAnomaly));
+		Vector->data[1] = sqrt(EARTH_MU / (SMA * (1.0 - pow(Eccentricity, 2.0))) * (Eccentricity + cos(TrueAnomaly)));
 	
 		//printf("2D Vector computed\n");
 	} else {
