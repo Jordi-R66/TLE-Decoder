@@ -256,6 +256,7 @@ void PrintTle(TLE Object, bool debug) {
 
 			KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
 			KeplerCoords2D_t coords = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+			//coords = RotatePeri2DKeplerCoords(coords, long_peri);
 
 			coords = PointRelativeToFocal(focal, coords);
 
