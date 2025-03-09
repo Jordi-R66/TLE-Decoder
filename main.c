@@ -14,10 +14,10 @@
 #define DEFAULT_ITER 100000
 
 #define CALENDAR_YEAR 365.25
-//#define DEBUG_MODE
+#define DEBUG_MODE
 
 string* filename = "TLEs/active.tle";
-uint32_t lookingFor = 25544;
+uint32_t lookingFor = 23802;
 
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
@@ -101,10 +101,11 @@ void PrintTle(TLE Object) {
 	double AscNodeTA = Object.AscNodeLong * DEGS2RADS - longPeri;
 	double AscNodeR = OrbAltTA(Object.Eccentricity, SMA, AscNodeTA);
 
-	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
+	register KeplerCoords2D_t bari = baricenterRelativeToFocal(SMA, Object.Eccentricity);
+	register KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
 	KeplerCoords2D_t AscNode = coordsFromTA(AscNodeR, AscNodeTA);
 
-	AscNode = subCoords2D(AscNode, focal);
+	changeReferential2D(AscNode, bari, &AscNode);
 
 	KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(AscNode, focal, Object.Inclination * DEGS2RADS);
 
@@ -138,7 +139,7 @@ void PrintTle(TLE Object) {
 	//double DeltaTime;
 #ifdef DEBUG_MODE
 	uint64_t orb_period = ((uint64_t)OrbitalPeriod(Object.MeanMotion) + 2);
-	FILE* fp = fopen("log_25544.csv", "w");
+	FILE* fp = fopen("log_23802.csv", "w");
 
 	if (fp == NULL) {
 		fprintf(stderr, "Error while opening the file\n");
@@ -146,7 +147,7 @@ void PrintTle(TLE Object) {
 		return;
 	}
 
-	fprintf(fp, "Time,altitude via coords,altitude via ecc ano,altitude via true ano\n");
+	fprintf(fp, "Time,altitude via 2D coords,altitude via 3D coords,altitude via ecc ano,altitude via true ano\n");
 
 	for (uint64_t DeltaTime = 0; DeltaTime < orb_period; DeltaTime++) {
 		double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
@@ -167,16 +168,27 @@ void PrintTle(TLE Object) {
 		Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 		Current_TA *= DEGS2RADS;
 
-		KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
-		KeplerCoords2D_t coords_2d = basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+		KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+		KeplerCoords2D_t absCoords;
 
-		coords_2d = PointRelativeToFocal(focal, coords_2d);
+		changeReferential2D(coords_2d, bari, &absCoords);
 
-		double coordsAlt = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - (double)EARTH_RADIUS;
+		double altitude2D = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
+
+		KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(AscNode, absCoords, Object.Inclination * DEGS2RADS);
+		KeplerCoords3D_t coords3D;
+
+		changeReferential3D(absCoords3D, focal3D, &coords3D);
+
+		//double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
+		double altitude3D = sqrt(pow(coords3D.x, 2) + pow(coords3D.y, 2) + pow(coords3D.z, 2)) - EARTH_RADIUS;
+
+		double coords2dAlt = altitude2D;
+		double coords3dAlt = altitude3D;
 		double keplerAlt = keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS;
 		double trueAnoAlt = OrbAltTA(Object.Eccentricity, SMA, Current_TA) - (double)EARTH_RADIUS;
 
-		fprintf(fp, "%llu,%lf,%lf,%lf\n", DeltaTime, coordsAlt, keplerAlt, trueAnoAlt);
+		fprintf(fp, "%llu,%lf,%lf,%lf,%lf\n", DeltaTime, coords2dAlt, coords3dAlt, keplerAlt, trueAnoAlt);
 
 		//addRecord(&file, record);
 	}
@@ -202,20 +214,19 @@ void PrintTle(TLE Object) {
 	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 
 	KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
-	KeplerCoords2D_t absCoords;
+	register KeplerCoords2D_t absCoords;
 
-	changeReferential2D(coords_2d, focal, &absCoords);
+	changeReferential2D(coords_2d, bari, &absCoords);
+
+	double altitude2D = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
 
 	KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(AscNode, absCoords, Object.Inclination * DEGS2RADS);
-
-	//coords_2d = PointRelativeToFocal(focal, coords_2d);
-
 	KeplerCoords3D_t coords3D;
 
 	changeReferential3D(absCoords3D, focal3D, &coords3D);
 
 	//double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
-	double altitude = sqrt(pow(absCoords3D.x, 2) + pow(absCoords3D.y, 2) + pow(absCoords3D.z, 2)) - EARTH_RADIUS;
+	double altitude3D = sqrt(pow(coords3D.x, 2) + pow(coords3D.y, 2) + pow(coords3D.z, 2)) - EARTH_RADIUS;
 
 	printf("Object name : %s\n", Object.name);
 
@@ -253,7 +264,8 @@ void PrintTle(TLE Object) {
 	printf("Y Coord : %.0lf m\tY Earth : %.0lf m\n", coords3D.y, focal3D.y);
 	printf("Z Coord : %.0lf m\tZ Earth : %.0lf m\n", coords3D.z, focal3D.z);
 	printf("ALTITUDE : %.0lf m\n", Current_Alt);
-	printf("ALTITUDE : %.0lf m\n", altitude);
+	printf("ALTITUDE 2D : %.0lf m\n", altitude2D);
+	printf("ALTITUDE 3D : %.0lf m\n", altitude3D);
 	printf("SPEED : %.2lf m/s\n", Current_Spd);
 
 	printf("-------------------------------------------------------------------------\n");
