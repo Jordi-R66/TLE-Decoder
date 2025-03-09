@@ -138,6 +138,8 @@ KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t focal, KeplerCoords2D
 	AntiSymUnitMatrix.rows = 3;
 	AntiSymUnitMatrix.cols = 3;
 
+	allocMatrix(&AntiSymUnitMatrix);
+
 	genIdentityMatrix(&I, 3);
 
 	setMatrixCase(&AntiSymUnitMatrix, -unitVector.z, 0, 1);
