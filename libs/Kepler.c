@@ -122,6 +122,79 @@ KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2
 
 // -------------------------------------------------------------------------------------------------------------
 
+KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination) {
+	KeplerCoords3D_t coords3D = { 0.0, 0.0, 0.0 };
+
+	double AxisPointR = sqrt(pow(AxisPoint2D.x, 2) + pow(AxisPoint2D.y, 2));
+	KeplerVector3D_t unitVector = { AxisPoint2D.x / AxisPointR, AxisPoint2D.y / AxisPointR, 0.0 };
+
+	Matrix u;
+
+	u.rows = 3;
+	u.cols = 3;
+
+	allocMatrix(&u);
+
+	setMatrixCase(&u, -unitVector.z, 0, 1);
+	setMatrixCase(&u, unitVector.y, 0, 2);
+	setMatrixCase(&u, unitVector.z, 1, 0);
+	setMatrixCase(&u, -unitVector.x, 1, 2);
+	setMatrixCase(&u, -unitVector.y, 2, 0);
+	setMatrixCase(&u, unitVector.x, 2, 1);
+
+	Matrix uSqr;
+
+	matrixMultiplication(&u, &u, &uSqr);
+
+	Matrix sin_u = scalarMulNewMatrix(&u, sin(Inclination));
+
+	scalarMul(&uSqr, 1.0 - cos(Inclination));
+
+	Matrix I;
+
+	genIdentityMatrix(&I, 3);
+
+	Matrix R;
+
+	R.cols = 3;
+	R.rows = 3;
+
+	allocMatrix(&R);
+
+	matrixAddition(&R, &I);
+	matrixAddition(&R, &sin_u);
+	matrixAddition(&R, &uSqr);
+
+	Matrix coords3DMatrix;
+
+	coords3DMatrix.rows = 3;
+	coords3DMatrix.cols = 1;
+
+	allocMatrix(&coords3DMatrix);
+
+	coords3DMatrix.data[0] = coords2D.x;
+	coords3DMatrix.data[1] = coords2D.y;
+	coords3DMatrix.data[2] = 0.0;
+
+	Matrix ResultMatrix;
+
+	matrixMultiplication(&R, &coords3DMatrix, &ResultMatrix);
+
+	coords3D.x = getMatrixCase(&ResultMatrix, 0, 0);
+	coords3D.y = getMatrixCase(&ResultMatrix, 1, 0);
+	coords3D.z = getMatrixCase(&ResultMatrix, 2, 0);
+
+	deallocMatrix(&u);
+	deallocMatrix(&uSqr);
+	deallocMatrix(&sin_u);
+	deallocMatrix(&I);
+	deallocMatrix(&R);
+	deallocMatrix(&coords3DMatrix);
+	deallocMatrix(&ResultMatrix);
+
+	return coords3D;
+}
+
 /*
 KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination) {
 	KeplerCoords3D_t coords3D = { coords2D.x, coords2D.y, 0.0 };
@@ -183,6 +256,11 @@ KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCo
 	deallocMatrix(&coords3DMatrix);
 
 	return coords3D;
+}*/
+
+void changeReferential2D(KeplerCoords2D_t coords, KeplerCoords2D_t newReferential, KeplerCoords2D_t* result) {
+	result->x = coords.x - newReferential.x;
+	result->y = coords.y - newReferential.y;
 }
 
 void changeReferential3D(KeplerCoords3D_t coords, KeplerCoords3D_t newReferential, KeplerCoords3D_t* result) {
