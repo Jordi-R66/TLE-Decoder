@@ -104,6 +104,7 @@ void PrintTle(TLE Object) {
 	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
 	KeplerCoords2D_t AscNode = coordsFromTA(AscNodeR, AscNodeTA);
 	AscNode = sumCoords2D(focal, AscNode);
+	KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(focal, AscNode, focal, Object.Inclination * DEGS2RADS);
 
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
@@ -218,11 +219,10 @@ void PrintTle(TLE Object) {
 	KeplerCoords2D_t absCoords = sumCoords2D(focal, coords_2d);
 
 	KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(focal, AscNode, absCoords, Object.Inclination * DEGS2RADS);
-	KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(focal, AscNode, focal, Object.Inclination * DEGS2RADS);
 
 	//coords_2d = PointRelativeToFocal(focal, coords_2d);
 
-	KeplerCoords3D_t coords3D = { absCoords3D.x + focal3D.x, absCoords3D.y + focal3D.y, absCoords3D.z + focal3D.z };
+	KeplerCoords3D_t coords3D = { absCoords3D.x - focal3D.x, absCoords3D.y - focal3D.y, absCoords3D.z - focal3D.z };
 
 	//double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
 	double altitude = sqrt(pow(absCoords3D.x, 2) + pow(absCoords3D.y, 2) + pow(absCoords3D.z, 2)) - EARTH_RADIUS;
