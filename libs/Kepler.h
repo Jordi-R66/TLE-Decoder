@@ -115,3 +115,6 @@ KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2
  * @return KeplerCoords3D_t The 3D coordinates of the point after rotation (abs coordinates)
  */
 KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination);
+
+void changeReferential2D(KeplerCoords2D_t coords, KeplerCoords2D_t newReferential, KeplerCoords2D_t* result);
+void changeReferential3D(KeplerCoords3D_t coords, KeplerCoords3D_t newReferential, KeplerCoords3D_t* result);

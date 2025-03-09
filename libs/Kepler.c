@@ -122,13 +122,13 @@ KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2
 
 // -------------------------------------------------------------------------------------------------------------
 
-KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t focal, KeplerCoords2D_t AscNode2D, KeplerCoords2D_t coords2D, double Inclination) {
+/*
+KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination) {
 	KeplerCoords3D_t coords3D = { coords2D.x, coords2D.y, 0.0 };
 
-	AscNode2D = sumCoords2D(AscNode2D, focal);
-	double AscNodeR = sqrt(pow(AscNode2D.x, 2) + pow(AscNode2D.y, 2));
+	double AxisPointR = sqrt(pow(AxisPoint2D.x, 2) + pow(AxisPoint2D.y, 2));
 
-	KeplerVector3D_t unitVector = { AscNode2D.x / AscNodeR, AscNode2D.y / AscNodeR, 0.0 };
+	KeplerVector3D_t unitVector = { AxisPoint2D.x / AxisPointR, AxisPoint2D.y / AxisPointR, 0.0 };
 
 	Matrix I, AntiSymUnitMatrix, ResultMatrix;
 
@@ -183,4 +183,10 @@ KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t focal, KeplerCoords2D
 	deallocMatrix(&coords3DMatrix);
 
 	return coords3D;
+}
+
+void changeReferential3D(KeplerCoords3D_t coords, KeplerCoords3D_t newReferential, KeplerCoords3D_t* result) {
+	result->x = coords.x - newReferential.x;
+	result->y = coords.y - newReferential.y;
+	result->z = coords.z - newReferential.z;
 }
