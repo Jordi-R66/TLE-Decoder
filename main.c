@@ -103,8 +103,10 @@ void PrintTle(TLE Object) {
 
 	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
 	KeplerCoords2D_t AscNode = coordsFromTA(AscNodeR, AscNodeTA);
-	AscNode = sumCoords2D(focal, AscNode);
-	KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(focal, AscNode, focal, Object.Inclination * DEGS2RADS);
+
+	AscNode = subCoords2D(AscNode, focal);
+
+	KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(AscNode, focal, Object.Inclination * DEGS2RADS);
 
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
@@ -193,22 +195,6 @@ void PrintTle(TLE Object) {
 	double Current_Alt = Current_R - (double)EARTH_RADIUS;
 	double Current_Spd = OrbSpeed(Current_R, SMA);
 
-	/*
-	Compute2DCoords(&OrbCoords2D, Current_R, Current_TA);
-	Compute2DSpeedVector(&OrbSpeed2D, SMA, Object.Eccentricity, Current_TA);
-
-	RotateCoords(&ArgPeriRot, &IncliRot, &ANRot, &OrbCoords2D, &RefCoords3D);
-	RotateVector(&ArgPeriRot, &IncliRot, &ANRot, &OrbSpeed2D, &RefSpeed3D);
-
-	Coord3D_X = RefCoords3D.data[0];
-	Coord3D_Y = RefCoords3D.data[1];
-	Coord3D_Z = RefCoords3D.data[2];
-
-	Speed3D_Z = RefSpeed3D.data[0];
-	Speed3D_X = RefSpeed3D.data[1];
-	Speed3D_Y = RefSpeed3D.data[2];
-	*/
-
 	Current_MA *= RADS2DEGS;
 	Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
 
@@ -216,9 +202,11 @@ void PrintTle(TLE Object) {
 	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 
 	KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
-	KeplerCoords2D_t absCoords = sumCoords2D(focal, coords_2d);
+	KeplerCoords2D_t absCoords;
 
-	KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(focal, AscNode, absCoords, Object.Inclination * DEGS2RADS);
+	changeReferential2D(coords_2d, focal, &absCoords);
+
+	KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(AscNode, absCoords, Object.Inclination * DEGS2RADS);
 
 	//coords_2d = PointRelativeToFocal(focal, coords_2d);
 
