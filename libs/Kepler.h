@@ -51,6 +51,13 @@ KeplerCoords2D_t subCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b);
  */
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E);
 
+/**
+ * @brief Returns the coordinates of a point in 2D space given its distance from the focal and its true anomaly
+ * 
+ * @param r Distance from the focal point
+ * @param TA True anomaly in radians
+ * @return KeplerCoords2D_t Coordinates of the point in 2D space relative to the focal point
+ */
 KeplerCoords2D_t coordsFromTA(double r, double TA);
 
 /**
@@ -99,4 +106,12 @@ KeplerCoords2D_t PointRelativeToBaricenter(KeplerCoords2D_t baricenterPoint, Kep
  */
 KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2D_t point);
 
-KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t focal, KeplerCoords2D_t AscNode2D, KeplerCoords2D_t coords2D, double Inclination);
+/**
+ * @brief Computes the coordinates of a point in 3D space after rotating it around an arbitrary axis
+ * 
+ * @param AxisPoint2D A point on the axis of rotation (abs coordinates)
+ * @param coords2D The 2D coordinates of the point to rotate (abs coordinates)
+ * @param Inclination The inclination of the orbit in radians
+ * @return KeplerCoords3D_t The 3D coordinates of the point after rotation (abs coordinates)
+ */
+KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination);
