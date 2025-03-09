@@ -210,7 +210,9 @@ void PrintTle(TLE Object) {
 
 	//coords_2d = PointRelativeToFocal(focal, coords_2d);
 
-	KeplerCoords3D_t coords3D = { absCoords3D.x - focal3D.x, absCoords3D.y - focal3D.y, absCoords3D.z - focal3D.z };
+	KeplerCoords3D_t coords3D;
+
+	changeReferential3D(absCoords3D, focal3D, &coords3D);
 
 	//double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
 	double altitude = sqrt(pow(absCoords3D.x, 2) + pow(absCoords3D.y, 2) + pow(absCoords3D.z, 2)) - EARTH_RADIUS;
