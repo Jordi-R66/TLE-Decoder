@@ -1,28 +1,16 @@
 {
-    "tasks": [
-        {
-            "type": "cppbuild",
-            "label": "C/C++: gcc.exe générer le fichier actif",
-            "command": "C:\\Program Files\\mingw64\\bin\\gcc.exe",
-            "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "Tâche générée par le débogueur."
-        }
-    ],
-    "version": "2.0.0"
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "python3 compile.py",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": ["$gcc"],
+			"detail": "Tâche générée pour compiler le projet C"
+		}
+	]
 }

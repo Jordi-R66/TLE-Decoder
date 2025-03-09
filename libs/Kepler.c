@@ -166,7 +166,7 @@ KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t focal, KeplerCoords2D
 	coords3DMatrix.data[1] = coords3D.y;
 	coords3DMatrix.data[2] = coords3D.z;
 
-	matrixMultiplication(&RotMatrix, &coords3D, &ResultMatrix);
+	matrixMultiplication(&RotMatrix, &coords3DMatrix, &ResultMatrix);
 
 	coords3D = *(KeplerCoords3D_t*)ResultMatrix.data;
 
@@ -178,6 +178,7 @@ KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t focal, KeplerCoords2D
 	deallocMatrix(&RotMatrix);
 	deallocMatrix(&AntiSymUnitMatrix);
 	deallocMatrix(&ResultMatrix);
+	deallocMatrix(&coords3DMatrix);
 
 	return coords3D;
 }

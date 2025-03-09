@@ -3,7 +3,7 @@
 #include "libs/TleFiles.h"
 #include "libs/TermFuncs.h"
 #include "libs/Algos.h"
-#include "libs/Referential.h"
+//#include "libs/Referential.h"
 #include "libs/Kepler.h"
 #include "libs/Ellipses.h"
 
@@ -101,8 +101,9 @@ void PrintTle(TLE Object, bool debug) {
 	double AscNodeTA = Object.AscNodeLong * DEGS2RADS - longPeri;
 	double AscNodeR = OrbAltTA(Object.Eccentricity, SMA, AscNodeTA);
 
+	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
 	KeplerCoords2D_t AscNode = coordsFromTA(AscNodeR, AscNodeTA);
-	KeplerCoords3D_t AscNode3D = { AscNode.x, AscNode.y, 0.0 };
+	AscNode = sumCoords2D(focal, AscNode);
 
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
@@ -168,16 +169,16 @@ void PrintTle(TLE Object, bool debug) {
 		Current_TA *= RADS2DEGS;
 		Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 
-		KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
 		KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+		KeplerCoords2D_t absCoords = sumCoords2D(focal, coords_2d);
 
-		KeplerCoords2D_t bariRelCoords = sumCoords2D(focal, coords_2d);
-
-
+		KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(focal, AscNode, absCoords, Object.Inclination * DEGS2RADS);
+		KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(focal, AscNode, focal, Object.Inclination * DEGS2RADS);
 
 		//coords_2d = PointRelativeToFocal(focal, coords_2d);
 
-		double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
+		//double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
+		double altitude = sqrt(pow(absCoords3D.x, 2) + pow(absCoords3D.y, 2) + pow(absCoords3D.z, 2)) - EARTH_RADIUS;
 
 		printf("Object name : %s\n", Object.name);
 

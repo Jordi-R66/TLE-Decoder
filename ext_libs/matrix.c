@@ -114,7 +114,7 @@ void matrixAddition(Matrix* matA, Matrix* matB) {
 Matrix matrixAdditionNewMatrix(Matrix* matA, Matrix* matB) {
 	if ((matA->cols != matB->cols) || (matA->rows != matB->rows)) {
 		exit(EXIT_FAILURE);
-		return;
+		//return;
 	}
 
 	Matrix newMatrix;
