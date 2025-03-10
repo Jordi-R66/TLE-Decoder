@@ -14,7 +14,7 @@
 #define DEFAULT_ITER 100000
 
 #define CALENDAR_YEAR 365.25
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 string* filename = "TLEs/active.tle";
 uint32_t lookingFor = 23802;
@@ -101,13 +101,16 @@ void PrintTle(TLE Object) {
 	double AscNodeTA = Object.AscNodeLong * DEGS2RADS - longPeri;
 	double AscNodeR = OrbAltTA(Object.Eccentricity, SMA, AscNodeTA);
 
-	register KeplerCoords2D_t bari = baricenterRelativeToFocal(SMA, Object.Eccentricity);
-	register KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
+	KeplerCoords2D_t bari = baricenterRelativeToFocal(SMA, Object.Eccentricity);
+	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
 	KeplerCoords2D_t AscNode = coordsFromTA(AscNodeR, AscNodeTA);
 
 	changeReferential2D(AscNode, bari, &AscNode);
 
 	KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(AscNode, focal, Object.Inclination * DEGS2RADS);
+	KeplerCoords3D_t AscNode3D = Rotate3DCoordsAroundAxis(AscNode, AscNode, Object.Inclination * DEGS2RADS);
+
+	printf("X : %lf | Y : %lf | Z : %lf\n", AscNode3D.x, AscNode3D.y, AscNode3D.z);
 
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
@@ -214,7 +217,7 @@ void PrintTle(TLE Object) {
 	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 
 	KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
-	register KeplerCoords2D_t absCoords;
+	KeplerCoords2D_t absCoords;
 
 	changeReferential2D(coords_2d, bari, &absCoords);
 
