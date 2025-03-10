@@ -121,7 +121,79 @@ KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2
 }
 
 // -------------------------------------------------------------------------------------------------------------
+KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination) {
+	KeplerCoords3D_t coords3D = { 0.0, 0.0, 0.0 };
 
+	// 1️⃣ Calcul du vecteur unitaire de l'axe (FIXE)
+	double AxisPointR = sqrt(pow(AxisPoint2D.x, 2) + pow(AxisPoint2D.y, 2));
+	if (AxisPointR == 0) {
+		printf("Erreur : Le point d'axe ne peut pas être à l'origine.\n");
+		return coords3D;
+	}
+
+	KeplerVector3D_t unitVector = { AxisPoint2D.x / AxisPointR, AxisPoint2D.y / AxisPointR, 0.0 };
+
+	// 2️⃣ Matrice antisymétrique [u]×
+	Matrix u;
+	u.rows = 3;
+	u.cols = 3;
+	allocMatrix(&u);
+
+	setMatrixCase(&u, 0.0, 0, 0);
+	setMatrixCase(&u, -unitVector.z, 0, 1);
+	setMatrixCase(&u, unitVector.y, 0, 2);
+	setMatrixCase(&u, unitVector.z, 1, 0);
+	setMatrixCase(&u, 0.0, 1, 1);
+	setMatrixCase(&u, -unitVector.x, 1, 2);
+	setMatrixCase(&u, -unitVector.y, 2, 0);
+	setMatrixCase(&u, unitVector.x, 2, 1);
+	setMatrixCase(&u, 0.0, 2, 2);
+
+	// 3️⃣ Matrice de rotation R = I + sin(θ) [u]× + (1 - cos(θ)) [u]×²
+	Matrix I, uSqr, sin_u, R;
+	genIdentityMatrix(&I, 3);          // Matrice identité
+	matrixMultiplication(&u, &u, &uSqr); // u²
+	sin_u = scalarMulNewMatrix(&u, sin(Inclination));
+	scalarMul(&uSqr, 1.0 - cos(Inclination));
+
+	allocMatrix(&R);
+	matrixAddition(&R, &I);
+	matrixAddition(&R, &sin_u);
+	matrixAddition(&R, &uSqr);
+
+	// 4️⃣ Transformation du point coords2D en 3D
+	Matrix coords3DMatrix;
+	coords3DMatrix.rows = 3;
+	coords3DMatrix.cols = 1;
+	allocMatrix(&coords3DMatrix);
+
+	setMatrixCase(&coords3DMatrix, coords2D.x, 0, 0);
+	setMatrixCase(&coords3DMatrix, coords2D.y, 1, 0);
+	setMatrixCase(&coords3DMatrix, 0.0, 2, 0);  // Plan 2D → 3D
+
+	// 5️⃣ Appliquer la rotation
+	Matrix ResultMatrix;
+	allocMatrix(&ResultMatrix);
+	matrixMultiplication(&R, &coords3DMatrix, &ResultMatrix);
+
+	// 6️⃣ Extraction des nouvelles coordonnées
+	coords3D.x = getMatrixCase(&ResultMatrix, 0, 0);
+	coords3D.y = getMatrixCase(&ResultMatrix, 1, 0);
+	coords3D.z = getMatrixCase(&ResultMatrix, 2, 0);
+
+	// 7️⃣ Libération de la mémoire
+	deallocMatrix(&u);
+	deallocMatrix(&uSqr);
+	deallocMatrix(&sin_u);
+	deallocMatrix(&I);
+	deallocMatrix(&R);
+	deallocMatrix(&coords3DMatrix);
+	deallocMatrix(&ResultMatrix);
+
+	return coords3D;
+}
+
+/*
 KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination) {
 	KeplerCoords3D_t coords3D = { 0.0, 0.0, 0.0 };
 
@@ -193,7 +265,7 @@ KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCo
 	deallocMatrix(&ResultMatrix);
 
 	return coords3D;
-}
+}*/
 
 /*
 KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination) {
