@@ -16,8 +16,8 @@
 #define CALENDAR_YEAR 365.25
 //#define DEBUG_MODE
 
-string* filename = "TLEs/active.tle";
-uint32_t lookingFor = 23802;
+string* filename = "TLEs/stations.tle";
+uint32_t lookingFor = 25544;
 
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
@@ -110,7 +110,7 @@ void PrintTle(TLE Object) {
 	KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(AscNode, focal, Object.Inclination * DEGS2RADS);
 	KeplerCoords3D_t AscNode3D = Rotate3DCoordsAroundAxis(AscNode, AscNode, Object.Inclination * DEGS2RADS);
 
-	printf("X : %lf | Y : %lf | Z : %lf\n", AscNode3D.x, AscNode3D.y, AscNode3D.z);
+	//printf("X : %lf | Y : %lf | Z : %lf\n", AscNode3D.x, AscNode3D.y, AscNode3D.z);
 
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
@@ -142,15 +142,15 @@ void PrintTle(TLE Object) {
 	//double DeltaTime;
 #ifdef DEBUG_MODE
 	uint64_t orb_period = ((uint64_t)OrbitalPeriod(Object.MeanMotion) + 2);
-	FILE* fp = fopen("log_23802.csv", "w");
+	//FILE* fp = fopen("log_23802.csv", "w");
 
-	if (fp == NULL) {
+	/*if (fp == NULL) {
 		fprintf(stderr, "Error while opening the file\n");
 		exit(EXIT_FAILURE);
 		return;
-	}
+	}*/
 
-	fprintf(fp, "Time,altitude via 2D coords,altitude via 3D coords,altitude via ecc ano,altitude via true ano\n");
+	//fprintf(fp, "Time,altitude via 2D coords,altitude via 3D coords,altitude via ecc ano,altitude via true ano\n");
 
 	for (uint64_t DeltaTime = 0; DeltaTime < orb_period; DeltaTime++) {
 		double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
@@ -191,12 +191,12 @@ void PrintTle(TLE Object) {
 		double keplerAlt = keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS;
 		double trueAnoAlt = OrbAltTA(Object.Eccentricity, SMA, Current_TA) - (double)EARTH_RADIUS;
 
-		fprintf(fp, "%llu,%lf,%lf,%lf,%lf\n", DeltaTime, coords2dAlt, coords3dAlt, keplerAlt, trueAnoAlt);
+		//fprintf(fp, "%llu,%lf,%lf,%lf,%lf\n", DeltaTime, coords2dAlt, coords3dAlt, keplerAlt, trueAnoAlt);
 
 		//addRecord(&file, record);
 	}
 
-	fclose(fp);
+	//fclose(fp);
 #else
 	double DeltaTime = (((double)(current_year - epoch_year) * CALENDAR_YEAR) + (double)(current_day - Object.EPOCH)) * EARTH_DAY_LENGTH;
 
