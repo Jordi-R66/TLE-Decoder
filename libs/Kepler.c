@@ -124,6 +124,9 @@ KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2
 KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination) {
 	KeplerCoords3D_t coords3D = { 0.0, 0.0, 0.0 };
 
+	coords3D.x = coords2D.x;
+	coords3D.y = coords2D.y;
+
 	// 1️⃣ Calcul du vecteur unitaire de l'axe (FIXE)
 	double AxisPointR = sqrt(pow(AxisPoint2D.x, 2) + pow(AxisPoint2D.y, 2));
 	if (AxisPointR == 0) {
@@ -132,6 +135,9 @@ KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCo
 	}
 
 	KeplerVector3D_t unitVector = { AxisPoint2D.x / AxisPointR, AxisPoint2D.y / AxisPointR, 0.0 };
+	printf("Vecteur unitaire : (%lf, %lf, %lf)\n", unitVector.x, unitVector.y, unitVector.z);
+
+	return coords3D;
 
 	// 2️⃣ Matrice antisymétrique [u]×
 	Matrix u;
