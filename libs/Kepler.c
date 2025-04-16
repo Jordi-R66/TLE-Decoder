@@ -1,6 +1,6 @@
 #include "Kepler.h"
 #include "Ellipses.h"
-#include "../ext_libs/matrix.h"
+#include "../ext_libs/myOwnCLib/matrices/matrix.h"
 
 double keplerDistance(double a, double e, double E) {
 	return a * (1.0 - e * cos(E));
