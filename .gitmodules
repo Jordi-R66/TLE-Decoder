@@ -1,0 +1,3 @@
+[submodule "ext_libs/myOwnCLib"]
+	path = ext_libs/myOwnCLib
+	url = git@github.com:Jordi-R66/myOwnCLib.git
