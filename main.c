@@ -105,18 +105,6 @@ void PrintTle(TLE Object) {
 	Vector AscNode = coordsFromTA(AscNodeR, AscNodeTA);
 	Vector rotAN = Rotate2D(&AscNode, rotAngle);
 
-	Vector testPoint;
-	allocVector(&testPoint, 2);
-
-	value_t test[2] = {1, 0};
-	setVector(&testPoint, test);
-
-	printMatrix(&testPoint);
-	printf("\n");
-	Vector rotTest = Rotate2D(&testPoint, M_PI / 4.0);
-
-	printMatrix(&rotTest);
-
 	KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)rotAN.data;
 
 	printMatrix(&AscNode);
@@ -130,17 +118,6 @@ void PrintTle(TLE Object) {
 
 	deallocVector(&AscNode);
 	deallocVector(&rotAN);
-
-	/*KeplerCoords2D_t bari = baricenterRelativeToFocal(SMA, Object.Eccentricity);
-	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
-	Vector AscNode = coordsFromTA(AscNodeR, AscNodeTA);
-
-	changeReferential2D(AscNode, bari, &AscNode);
-
-	KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(AscNode, focal, Object.Inclination * DEGS2RADS);
-	KeplerCoords3D_t AscNode3D = Rotate3DCoordsAroundAxis(AscNode, AscNode, Object.Inclination * DEGS2RADS);
-
-	printf("X : %lf | Y : %lf | Z : %lf\n", AscNode3D.x, AscNode3D.y, AscNode3D.z);*/
 
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
