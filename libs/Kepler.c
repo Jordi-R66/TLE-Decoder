@@ -33,10 +33,10 @@ Vector Rotate2D(Vector* coords, value_t angleRot) {
 
 	allocMatrix(&RotMat);
 
-	setMatrixCase(&RotMat, cos(angleRot), 0, 0);
-	setMatrixCase(&RotMat, -sin(angleRot), 0, 1);
-	setMatrixCase(&RotMat, sin(angleRot), 1, 0);
-	setMatrixCase(&RotMat, cos(angleRot), 1, 1);
+	setMatrixCase(&RotMat, (value_t)cos(angleRot), 0, 0);
+	setMatrixCase(&RotMat, (value_t)-sin(angleRot), 0, 1);
+	setMatrixCase(&RotMat, (value_t)sin(angleRot), 1, 0);
+	setMatrixCase(&RotMat, (value_t)cos(angleRot), 1, 1);
 
 	Vector newCoords;
 
@@ -298,7 +298,7 @@ KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCo
 	deallocMatrix(&ResultMatrix);
 
 	return coords3D;
-}
+}*/
 
 /*
 KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination) {

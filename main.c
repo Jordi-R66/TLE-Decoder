@@ -98,25 +98,43 @@ void PrintTle(TLE Object) {
 	longPeri -= (double)((uint32_t)(longPeri / 360.0) * 360);
 	longPeri *= DEGS2RADS;
 
-	double AscNodeTA = Object.AscNodeLong * DEGS2RADS - longPeri;
+	double AscNodeTA = longitudeToTA(Object.AscNodeLong, longPeri);
 	double AscNodeR = OrbAltTA(Object.Eccentricity, SMA, AscNodeTA);
+	Vector AscNode = coordsFromTA(AscNodeR, AscNodeTA);
+	Rotate2D(&AscNode, -1.0 * Object.PeriArg * DEGS2RADS);
 
-	KeplerCoords2D_t bari = baricenterRelativeToFocal(SMA, Object.Eccentricity);
+	KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)AscNode.data;
+
+	double AscNodeNorm = sqrt(pow(AscNode2D.x, 2) + pow(AscNode2D.y, 2));
+
+	printf("AscNode : %lf | AscNode2D : %lf\n", AscNodeR, AscNodeNorm);
+	Vector unitVector = unitVector2D(AscNode2D.x, AscNode2D.y);
+	deallocVector(&AscNode);
+
+	/*KeplerCoords2D_t bari = baricenterRelativeToFocal(SMA, Object.Eccentricity);
 	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
-	KeplerCoords2D_t AscNode = coordsFromTA(AscNodeR, AscNodeTA);
+	Vector AscNode = coordsFromTA(AscNodeR, AscNodeTA);
 
 	changeReferential2D(AscNode, bari, &AscNode);
 
 	KeplerCoords3D_t focal3D = Rotate3DCoordsAroundAxis(AscNode, focal, Object.Inclination * DEGS2RADS);
 	KeplerCoords3D_t AscNode3D = Rotate3DCoordsAroundAxis(AscNode, AscNode, Object.Inclination * DEGS2RADS);
 
-	//printf("X : %lf | Y : %lf | Z : %lf\n", AscNode3D.x, AscNode3D.y, AscNode3D.z);
+	printf("X : %lf | Y : %lf | Z : %lf\n", AscNode3D.x, AscNode3D.y, AscNode3D.z);*/
 
 	double Epoch_E_Approx = (Object.MeanAnomaly * DEGS2RADS) + Object.Eccentricity * sin(Object.MeanAnomaly * DEGS2RADS);
 	double Epoch_E = NewtonRaphson(Object.MeanAnomaly * DEGS2RADS, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Epoch_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
 	double Epoch_TA = TrueAnomaly(Object.Eccentricity, Epoch_E);
 
 	double Epoch_R = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA);
+	Vector Epoch = coordsFromTA(Epoch_R, Epoch_TA);
+
+	KeplerCoords2D_t Epoch2D = *(KeplerCoords2D_t*)Epoch.data;
+
+	double EpochNorm = sqrt(pow(Epoch2D.x, 2) + pow(Epoch2D.y, 2));
+
+	printf("Epoch : %lf | Epoch2D : %lf\n", Epoch_R, EpochNorm);
+
 	double Epoch_Alt = Epoch_R - (double)EARTH_RADIUS;
 
 	double Speed_Ap = OrbSpeed(Ap, SMA);
@@ -216,7 +234,7 @@ void PrintTle(TLE Object) {
 	Current_TA *= RADS2DEGS;
 	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 
-	KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+	/*KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
 	KeplerCoords2D_t absCoords;
 
 	changeReferential2D(coords_2d, bari, &absCoords);
@@ -271,7 +289,7 @@ void PrintTle(TLE Object) {
 	printf("ALTITUDE 3D : %.0lf m\n", altitude3D);
 	printf("SPEED : %.2lf m/s\n", Current_Spd);
 
-	printf("-------------------------------------------------------------------------\n");
+	printf("-------------------------------------------------------------------------\n");*/
 #endif
 
 	//writeFile(&file);
@@ -280,6 +298,9 @@ void PrintTle(TLE Object) {
 		//freeRecord(file.records[i]);
 	//}
 	//freeFile(&file);
+
+	deallocVector(&unitVector);
+	deallocVector(&Epoch);
 }
 
 int32_t main(int argc, char* argv[]) {
@@ -309,6 +330,7 @@ int32_t main(int argc, char* argv[]) {
 
 		if (!found) {
 			printf("Unable to find %u amongst the TLEs\n", lookingFor);
+			free(AllObjs);
 			exit(-1);
 		}
 
@@ -321,6 +343,7 @@ int32_t main(int argc, char* argv[]) {
 				break;
 			#endif
 		}
+		free(AllObjs);
 	} else {
 		printf("Opening the files\n");
 		int32_t block_number = GetTLENumber(filename);
@@ -335,7 +358,9 @@ int32_t main(int argc, char* argv[]) {
 
 		time(&rawtime_end);
 
-		printf("Memory usage to store %d blocks : %llu bytes\nTime : %lld\n", block_number, sizeof(TLE) * block_number, rawtime_end - rawtime_start);
+		free(AllObjs);
+
+		printf("Memory usage to store %d blocks : %lu bytes\nTime : %ld\n", block_number, sizeof(TLE) * block_number, rawtime_end - rawtime_start);
 		//ExportToStructFile(AllObjs, block_number, "merged.tle_struct");
 	}
 
