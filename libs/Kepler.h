@@ -39,6 +39,15 @@ double keplerDistance(double a, double e, double E);
  */
 double longitudeOfPeriapsis(double AscNodeLong, double ArgPeri);
 
+/**
+ * @brief Computes the true anomaly from the longitude of the periapsis
+ * 
+ * @param longitude Longitude of the object (radians)
+ * @param LongPeri Longitude of the periapsis (radians)
+ * @return double The true anomaly in radians
+ */
+double longitudeToTA(double longitude, double LongPeri);
+
 KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b);
 
 KeplerCoords2D_t subCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b);

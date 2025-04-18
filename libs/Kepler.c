@@ -9,6 +9,10 @@ double longitudeOfPeriapsis(double AscNodeLong, double ArgPeri) {
 	return AscNodeLong + ArgPeri;
 }
 
+double longitudeToTA(double longitude, double LongPeri) {
+	return LongPeri - longitude;
+}
+
 // ---------------------------------------------------------------------------------------
 
 Vector coordsFromTA(double r, double TA) {
