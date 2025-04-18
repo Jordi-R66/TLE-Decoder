@@ -76,6 +76,14 @@ double TrueAnomaly(double Eccentricity, double EccentricAnomaly) {
 	return nu_;
 }
 
+double EccentricAnomaly(double Eccentricity, double TrueAnomaly) {
+	double tan_ = tan(TrueAnomaly / 2.0);
+	double sqrt_ = sqrt((1.0 + Eccentricity) / (1.0 - Eccentricity));
+	double EccentricAnomaly = 2.0 * atan(tan_ / sqrt_);
+
+	return EccentricAnomaly;
+}
+
 
 
 double OrbSpeed(double altitude, double SemiMajorAxis) {
