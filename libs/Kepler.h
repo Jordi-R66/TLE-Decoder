@@ -63,6 +63,15 @@ KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E);
 Vector coordsFromTA(double r, double TA);
 
 /**
+ * @brief Computes the rotated coordinates of a point in 2D plane
+ * 
+ * @param coords The pointer to the Vector representing the coordinates of the point
+ * @param angleRot The angle of rotation in radians
+ * @return Vector The rotated coordinates of the point
+ */
+Vector Rotate2D(Vector* coords, value_t angleRot);
+
+/**
  * @brief Rotates a 2D point by a given angle in radians
  * 
  * @param coords Baricenter relative coordinates of the point relative to the baricenter

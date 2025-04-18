@@ -22,6 +22,25 @@ Vector coordsFromTA(double r, double TA) {
 
 	return coords;
 }
+
+Vector Rotate2D(Vector* coords, value_t angleRot) {
+	Matrix RotMat;
+	RotMat.rows = 2;
+	RotMat.cols = 2;
+
+	allocMatrix(&RotMat);
+
+	setMatrixCase(&RotMat, cos(angleRot), 0, 0);
+	setMatrixCase(&RotMat, -sin(angleRot), 0, 1);
+	setMatrixCase(&RotMat, sin(angleRot), 1, 0);
+	setMatrixCase(&RotMat, cos(angleRot), 1, 1);
+
+	Vector newCoords;
+
+	matrixMultiplication(&RotMat, (Matrix*)coords, (Matrix*)&newCoords);
+
+	return newCoords;
+}
 /*
 KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b) {
 	KeplerCoords2D_t coords;
