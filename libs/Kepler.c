@@ -202,7 +202,7 @@ KeplerCoords2D_t FocalRelativeToBaricenter(double a, double e) {
 
 	return coords;
 }
-
+*/
 KeplerCoords2D_t PointRelativeToBaricenter(KeplerCoords2D_t baricenterPoint, KeplerCoords2D_t point) {
 	KeplerCoords2D_t coords;
 
@@ -220,7 +220,7 @@ KeplerCoords2D_t PointRelativeToFocal(KeplerCoords2D_t focalPoint, KeplerCoords2
 
 	return coords;
 }
-
+/*
 // -------------------------------------------------------------------------------------------------------------
 KeplerCoords3D_t Rotate3DCoordsAroundAxis(KeplerCoords2D_t AxisPoint2D, KeplerCoords2D_t coords2D, double Inclination) {
 	KeplerCoords3D_t coords3D = { 0.0, 0.0, 0.0 };
