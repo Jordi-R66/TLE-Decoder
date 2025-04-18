@@ -10,6 +10,19 @@ double longitudeOfPeriapsis(double AscNodeLong, double ArgPeri) {
 	return AscNodeLong + ArgPeri;
 }
 
+// ---------------------------------------------------------------------------------------
+
+Vector coordsFromTA(double r, double TA) {
+	Vector coords;
+
+	allocVector(&coords, 2);
+
+	setCoord(&coords, 0, r * cos(TA));
+	setCoord(&coords, 1, r * sin(TA));
+
+	return coords;
+}
+/*
 KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b) {
 	KeplerCoords2D_t coords;
 

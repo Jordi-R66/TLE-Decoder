@@ -58,9 +58,9 @@ KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E);
  * 
  * @param r Distance from the focal point
  * @param TA True anomaly in radians
- * @return KeplerCoords2D_t Coordinates of the point in 2D space relative to the focal point
+ * @return Vector Coordinates of the point in 2D space relative to the focal point
  */
-KeplerCoords2D_t coordsFromTA(double r, double TA);
+Vector coordsFromTA(double r, double TA);
 
 /**
  * @brief Rotates a 2D point by a given angle in radians
