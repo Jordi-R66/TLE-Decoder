@@ -24,23 +24,6 @@ double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 //bool debugMode = false;
 time_t current_time;
 
-/* void InterpretArgs(uint8_t n, char** args) {
-	if (n == 5) {
-		for (uint8_t i=0; i<n; i++) {
-			printf("%s\n", args[i]);
-			if (!strcmp(args[i], "-s")) {
-				strcpy(filename, args[i+1]);
-			} else if (!strcmp(args[i], "-u")) {
-				lookingFor = strint(args[i+1]);
-			}
-		}
-
-		printf("%s\n%u\n\n", filename, lookingFor);
-	} else {
-		exit(-1);
-	}
-}*/
-
 void PrintTle(TLE Object) {
 
 	double OrbPeriod = OrbitalPeriod(Object.MeanMotion);
@@ -50,7 +33,9 @@ void PrintTle(TLE Object) {
 	double Ap = Apoapsis(Object.Eccentricity, SMA);
 	double Pe = Periapsis(Object.Eccentricity, SMA);
 
-	double longPeri = (Object.AscNodeLong + Object.PeriArg) * DEGS2RADS;
+	printf("AN : %lf | w = %lf\n", Object.AscNodeLong, Object.PeriArg);
+
+	double longPeri = longitudeOfPeriapsis(Object.AscNodeLong * DEGS2RADS, Object.PeriArg * DEGS2RADS);
 
 	longPeri *= RADS2DEGS;
 	longPeri -= (double)((uint32_t)(longPeri / 360.0) * 360);
@@ -61,13 +46,12 @@ void PrintTle(TLE Object) {
 	double AscNodeTA = longitudeToTA(Object.AscNodeLong * DEGS2RADS, longPeri);
 	double AscNodeR = OrbAltTA(Object.Eccentricity, SMA, AscNodeTA);
 	Vector AscNode = coordsFromTA(AscNodeR, AscNodeTA);
+
 	Vector rotAN = Rotate2D(&AscNode, rotAngle);
 
 	KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)rotAN.data;
 
-	printMatrix(&AscNode);
-	printf("\n");
-	printMatrix(&rotAN);
+	printf("\nrotAngle = %lf\n", rotAngle * RADS2DEGS);
 
 	double AscNodeNorm = sqrt(pow(AscNode2D.x, 2) + pow(AscNode2D.y, 2));
 
