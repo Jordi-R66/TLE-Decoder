@@ -98,18 +98,38 @@ void PrintTle(TLE Object) {
 	longPeri -= (double)((uint32_t)(longPeri / 360.0) * 360);
 	longPeri *= DEGS2RADS;
 
-	double AscNodeTA = longitudeToTA(Object.AscNodeLong, longPeri);
+	value_t rotAngle = longPeri;
+
+	double AscNodeTA = longitudeToTA(Object.AscNodeLong * DEGS2RADS, longPeri);
 	double AscNodeR = OrbAltTA(Object.Eccentricity, SMA, AscNodeTA);
 	Vector AscNode = coordsFromTA(AscNodeR, AscNodeTA);
-	Rotate2D(&AscNode, -1.0 * Object.PeriArg * DEGS2RADS);
+	Vector rotAN = Rotate2D(&AscNode, rotAngle);
 
-	KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)AscNode.data;
+	Vector testPoint;
+	allocVector(&testPoint, 2);
+
+	value_t test[2] = {1, 0};
+	setVector(&testPoint, test);
+
+	printMatrix(&testPoint);
+	printf("\n");
+	Vector rotTest = Rotate2D(&testPoint, M_PI / 4.0);
+
+	printMatrix(&rotTest);
+
+	KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)rotAN.data;
+
+	printMatrix(&AscNode);
+	printf("\n");
+	printMatrix(&rotAN);
 
 	double AscNodeNorm = sqrt(pow(AscNode2D.x, 2) + pow(AscNode2D.y, 2));
 
 	printf("AscNode : %lf | AscNode2D : %lf\n", AscNodeR, AscNodeNorm);
 	Vector unitVector = unitVector2D(AscNode2D.x, AscNode2D.y);
+
 	deallocVector(&AscNode);
+	deallocVector(&rotAN);
 
 	/*KeplerCoords2D_t bari = baricenterRelativeToFocal(SMA, Object.Eccentricity);
 	KeplerCoords2D_t focal = FocalRelativeToBaricenter(SMA, Object.Eccentricity);
@@ -128,12 +148,18 @@ void PrintTle(TLE Object) {
 
 	double Epoch_R = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA);
 	Vector Epoch = coordsFromTA(Epoch_R, Epoch_TA);
+	Vector rotEpoch = Rotate2D(&Epoch, rotAngle);
+	Vector Epoch3D = Rotate3D(&unitVector, &rotEpoch, Object.Inclination * DEGS2RADS);
 
-	KeplerCoords2D_t Epoch2D = *(KeplerCoords2D_t*)Epoch.data;
+	KeplerCoords2D_t epochKepler = *(KeplerCoords2D_t*)Epoch.data;
+	KeplerCoords2D_t rotKepler = *(KeplerCoords2D_t*)rotEpoch.data;
+	KeplerCoords3D_t Epoch3DKepler = *(KeplerCoords3D_t*)Epoch3D.data;
 
-	double EpochNorm = sqrt(pow(Epoch2D.x, 2) + pow(Epoch2D.y, 2));
+	double rotNorm = sqrt(rotKepler.x * rotKepler.x + rotKepler.y * rotKepler.y);
+	double epochNorm = sqrt(epochKepler.x * epochKepler.x + epochKepler.y * epochKepler.y);
+	double Epoch3DNorm = sqrt(Epoch3DKepler.x * Epoch3DKepler.x + Epoch3DKepler.y * Epoch3DKepler.y + Epoch3DKepler.z * Epoch3DKepler.z);
 
-	printf("Epoch : %lf | Epoch2D : %lf\n", Epoch_R, EpochNorm);
+	printf("rotNorm = %lf | 3DNorm = %lf | EpochNorm = %lf | ActuNorm = %lf\n", rotNorm, Epoch3DNorm, epochNorm, Epoch_R);
 
 	double Epoch_Alt = Epoch_R - (double)EARTH_RADIUS;
 
@@ -233,6 +259,9 @@ void PrintTle(TLE Object) {
 
 	Current_TA *= RADS2DEGS;
 	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
+
+	Vector coords2D = coordsFromTA(Current_R, Current_TA * DEGS2RADS);
+	Rotate2D(&coords2D, -rotAngle);
 
 	/*KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
 	KeplerCoords2D_t absCoords;
