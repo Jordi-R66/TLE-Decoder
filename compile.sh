@@ -10,7 +10,7 @@ mkdir $OUTPUT_DIR
 
 EXEC="TLE.elf"
 
-ARGS="-g -O0 -std=c23"
+ARGS="-Wall -g -O0 -std=c23"
 #ARGS="-Wall -Wno-unused-variable -O3 -std=c17 -m64 -march=x86-64 -flto"
 
 $COMPILER $ARGS $SOURCES -o $OUTPUT_DIR/$EXEC -lm
