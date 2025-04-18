@@ -80,6 +80,17 @@ Vector Rotate2D(Vector* coords, value_t angleRot);
  */
 Vector unitVector2D(value_t x, value_t y) ;
 
+
+/**
+ * @brief Uses Rodrigues' Rotation Formula to return the rotated vector by a given angle around a unit vector
+ * 
+ * @param unitVector 2D unit vector
+ * @param currentVector 2D vector to rotate
+ * @param angleRot Rotation angle in radians
+ * @return Vector 
+ */
+Vector Rotate3D(Vector* unitVector, Vector* currentVector, value_t angleRot);
+
 /**
  * @brief Rotates a 2D point by a given angle in radians
  * 

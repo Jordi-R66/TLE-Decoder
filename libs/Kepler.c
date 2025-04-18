@@ -59,6 +59,53 @@ Vector unitVector2D(value_t x, value_t y) {
 
 	return unitVec;
 }
+
+Vector Rotate3D(Vector* unitVector, Vector* currentVector, value_t angleRot) {
+	Vector rotatedVector;
+
+	Vector crossProductVector;
+
+	// Rodrigues' rotation formula
+	// `v' = v * cos(θ) + (u × v) * sin(θ) + u * (u . v) * (1 - cos(θ))`
+	// where u is the unit vector, v is the current vector, and θ is the rotation angle and v' is the rotated vector
+
+	// Transpose the unit vector and the current Vector into 3D
+	Vector unitVector3D, currentVector3D;
+	allocVector(&currentVector3D, 3);
+	allocVector(&unitVector3D, 3);
+
+	memcpy(unitVector3D.data, unitVector->data, unitVector->size * sizeof(value_t));
+	memcpy(currentVector3D.data, currentVector->data, currentVector->size * sizeof(value_t));
+
+	// Set the z component to 0
+	setCoord(&unitVector3D, 2, 0.0);
+	setCoord(&currentVector3D, 2, 0.0);
+
+	// Calculate `v * cos(θ)`
+	rotatedVector = (Vector)scalarMulNewMatrix((Matrix*)&currentVector3D, cos(angleRot));
+
+	// Calculate `(u × v) * sin(θ)`
+	crossProductVector = crossProduct(&unitVector3D, &currentVector3D);
+	scalarMul(&crossProductVector, sin(angleRot));
+
+	// Calculate `u * (u . v) * (1 - cos(θ))`
+	value_t dotProduct = dotProduct2D(&unitVector3D, &currentVector3D);
+	Vector Vec3 = scalarMulNewMatrix((Matrix*)&unitVector3D, dotProduct);
+	scalarMul(&Vec3, 1.0 - cos(angleRot));	
+
+	// Calculate the rotated vector
+	matrixAddition(&rotatedVector, (Matrix*)&crossProductVector);
+	matrixAddition(&rotatedVector, (Matrix*)&Vec3);
+
+	// Free the allocated memory
+	deallocVector(&unitVector3D);
+	deallocVector(&currentVector3D);
+	deallocVector(&crossProductVector);
+	deallocVector(&Vec3);
+
+	return rotatedVector;
+}
+
 /*
 KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b) {
 	KeplerCoords2D_t coords;
