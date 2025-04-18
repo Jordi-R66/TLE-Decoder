@@ -43,48 +43,6 @@ time_t current_time;
 
 void PrintTle(TLE Object) {
 
-	/*
-	double Coord3D_X, Coord3D_Y, Coord3D_Z;
-	double Speed3D_X, Speed3D_Y, Speed3D_Z;
-
-	Matrix ArgPeriRot;
-	ArgPeriRot.cols = 3;
-	ArgPeriRot.rows = 3;
-	allocMatrix(&ArgPeriRot);
-
-	Matrix IncliRot;
-	IncliRot.cols = 3;
-	IncliRot.rows = 3;
-	allocMatrix(&IncliRot);
-
-	Matrix ANRot;
-	ANRot.cols = 3;
-	ANRot.rows = 3;
-	allocMatrix(&ANRot);
-
-	Coords2D OrbCoords2D;
-	OrbCoords2D.cols = 1;
-	OrbCoords2D.rows = 2;
-	allocMatrix(&OrbCoords2D);
-
-	Coords3D RefCoords3D;
-	RefCoords3D.cols = 1;
-	RefCoords3D.rows = 3;
-	allocMatrix(&RefCoords3D);
-
-	Vector2D OrbSpeed2D;
-	OrbSpeed2D.cols = 1;
-	OrbSpeed2D.rows = 2;
-	allocMatrix(&OrbSpeed2D);
-
-	Vector3D RefSpeed3D;
-	RefSpeed3D.cols = 1;
-	RefSpeed3D.rows = 3;
-	allocMatrix(&RefSpeed3D);
-
-	GenRotMatrices(&ArgPeriRot, &IncliRot, &ANRot, Object.PeriArg * DEGS2RADS, Object.Inclination * DEGS2RADS, Object.AscNodeLong * DEGS2RADS);
-	*/
-
 	double OrbPeriod = OrbitalPeriod(Object.MeanMotion);
 	double SMA = SemiMajorAxis(OrbPeriod);
 	double n = AngularSpeed(SMA);
