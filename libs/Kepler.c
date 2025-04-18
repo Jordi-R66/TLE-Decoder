@@ -93,8 +93,8 @@ Vector Rotate3D(Vector* unitVector, Vector* currentVector, value_t angleRot) {
 	scalarMul(&crossProductVector, sin(angleRot));
 
 	// Calculate `u * (u . v) * (1 - cos(θ))`
-	value_t dotProduct = dotProduct2D(&unitVector3D, &currentVector3D);
-	Vector Vec3 = scalarMulNewMatrix((Matrix*)&unitVector3D, dotProduct);
+	value_t dot_product = dotProduct(&unitVector3D, &currentVector3D);
+	Vector Vec3 = scalarMulNewMatrix((Matrix*)&unitVector3D, dot_product);
 	scalarMul(&Vec3, 1.0 - cos(angleRot));	
 
 	// Calculate the rotated vector
