@@ -1,14 +1,16 @@
 #include "Common.h"
 
+#include "../ext_libs/myOwnCLib/vectors/vectors.h"
+
 struct KeplerCoords2D {
-	double x;
-	double y;
+	value_t x;
+	value_t y;
 };
 
 struct KeplerCoords3D {
-	double x;
-	double y;
-	double z;
+	value_t x;
+	value_t y;
+	value_t z;
 };
 
 
