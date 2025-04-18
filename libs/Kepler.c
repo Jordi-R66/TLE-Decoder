@@ -33,10 +33,8 @@ Vector Rotate2D(Vector* coords, value_t angleRot) {
 
 	allocMatrix(&RotMat);
 
-	setMatrixCase(&RotMat, (value_t)cos(angleRot), 0, 0);
-	setMatrixCase(&RotMat, (value_t)-sin(angleRot), 0, 1);
-	setMatrixCase(&RotMat, (value_t)sin(angleRot), 1, 0);
-	setMatrixCase(&RotMat, (value_t)cos(angleRot), 1, 1);
+	value_t factors[4] = {(value_t)cos(angleRot), (value_t)-sin(angleRot), (value_t)sin(angleRot), (value_t)cos(angleRot)};
+	setMatrix(&RotMat, factors);
 
 	Vector newCoords;
 
