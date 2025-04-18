@@ -30,10 +30,13 @@ typedef struct Params {
 } OrbParams_t;
 
 void computeParams(OrbParams_t* params) {
+	Vector bariVec, earthVec;
+
 	params->OrbPeriod = OrbitalPeriod(params->MeanMotion);
 	params->SMA = SemiMajorAxis(params->OrbPeriod);
 	params->Ap = Apoapsis(params->Eccentricity, params->SMA);
 	params->Pe = Periapsis(params->Eccentricity, params->SMA);
+
 	params->longPeri = (params->AscNodeLong + params->ArgPeri);
 	params->longPeri *= RADS2DEGS;
 	params->longPeri -= (double)((uint32_t)(params->longPeri / 360.0) * 360);
@@ -45,7 +48,9 @@ void computeParams(OrbParams_t* params) {
 	params->TrueAnomaly = TrueAnomaly(params->Eccentricity, params->EccentricAnomaly);
 	params->distanceToEarth = OrbAltTA(params->Eccentricity, params->SMA, params->TrueAnomaly);
 
-	params->coords2D_Earth = coordsFromTA(params->distanceToEarth, params->TrueAnomaly);
+	earthVec = coordsFromTA(params->distanceToEarth, params->TrueAnomaly);
+
+	params->coords2D_Earth = *(KeplerCoords2D_t*)earthVec.data;
 	KeplerCoords2D_t bari = baricenterRelativeToFocal(params->SMA, params->Eccentricity);
 	params->coords2D_Bari = PointRelativeToBaricenter(bari, params->coords2D_Earth);
 }
