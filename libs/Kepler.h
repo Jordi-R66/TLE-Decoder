@@ -72,6 +72,15 @@ Vector coordsFromTA(double r, double TA);
 Vector Rotate2D(Vector* coords, value_t angleRot);
 
 /**
+ * @brief Computes the unit vector in 2D space given its x and y components
+ * 
+ * @param x The x component of the vector
+ * @param y The y component of the vector
+ * @return Vector The unit vector in 2D space
+ */
+Vector unitVector2D(value_t x, value_t y) ;
+
+/**
  * @brief Rotates a 2D point by a given angle in radians
  * 
  * @param coords Baricenter relative coordinates of the point relative to the baricenter

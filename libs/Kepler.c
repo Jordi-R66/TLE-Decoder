@@ -1,6 +1,5 @@
 #include "Kepler.h"
 #include "Ellipses.h"
-#include "../ext_libs/myOwnCLib/matrices/matrix.h"
 
 double keplerDistance(double a, double e, double E) {
 	return a * (1.0 - e * cos(E));
@@ -40,6 +39,25 @@ Vector Rotate2D(Vector* coords, value_t angleRot) {
 	matrixMultiplication(&RotMat, (Matrix*)coords, (Matrix*)&newCoords);
 
 	return newCoords;
+}
+
+Vector unitVector2D(value_t x, value_t y) {
+	Vector unitVec;
+	allocVector(&unitVec, 2);
+
+	value_t norm = sqrt(pow(x, 2) + pow(y, 2));
+
+	if (norm == 0) {
+		// Handle the error: cannot create a unit vector with null length
+		fprintf(stderr, "Error: Cannot create a unit vector with null length.\n");
+		deallocVector(&unitVec);
+		exit(EXIT_FAILURE);
+	}
+
+	setCoord(&unitVec, 0, x / norm);
+	setCoord(&unitVec, 1, y / norm);
+
+	return unitVec;
 }
 /*
 KeplerCoords2D_t sumCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b) {
