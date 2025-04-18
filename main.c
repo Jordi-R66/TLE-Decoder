@@ -344,7 +344,6 @@ int32_t main(int argc, char* argv[]) {
 				break;
 			#endif
 		}
-		free(AllObjs);
 	} else {
 		printf("Opening the files\n");
 		int32_t block_number = GetTLENumber(filename);
