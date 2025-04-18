@@ -328,9 +328,10 @@ int32_t main(int argc, char* argv[]) {
 			}
 		}
 
+		free(AllObjs);
+
 		if (!found) {
 			printf("Unable to find %u amongst the TLEs\n", lookingFor);
-			free(AllObjs);
 			exit(-1);
 		}
 
