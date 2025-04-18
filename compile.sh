@@ -8,8 +8,9 @@ OUTPUT_DIR="output"
 
 mkdir $OUTPUT_DIR
 
-EXEC="TLE.exe"
+EXEC="TLE.elf"
 
-ARGS="-Wall -Wno-unused-variable -O3 -std=c17 -m64 -march=x86-64 -flto"
+ARGS="-g -O0 -std=c23"
+#ARGS="-Wall -Wno-unused-variable -O3 -std=c17 -m64 -march=x86-64 -flto"
 
 $COMPILER $ARGS $SOURCES -o $OUTPUT_DIR/$EXEC -lm
