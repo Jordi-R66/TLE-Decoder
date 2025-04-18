@@ -184,7 +184,7 @@ KeplerCoords2D_t Rotate2DKeplerCoords(KeplerCoords2D_t coords, double angleRot) 
 
 	return RotatedCoords;
 }
-
+*/
 KeplerCoords2D_t baricenterRelativeToFocal(double a, double e) {
 	KeplerCoords2D_t coords;
 
@@ -193,7 +193,7 @@ KeplerCoords2D_t baricenterRelativeToFocal(double a, double e) {
 
 	return coords;
 }
-
+/*
 KeplerCoords2D_t FocalRelativeToBaricenter(double a, double e) {
 	KeplerCoords2D_t coords;
 
