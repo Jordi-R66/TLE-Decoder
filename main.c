@@ -278,7 +278,7 @@ int32_t main(int argc, char* argv[]) {
 			exit(-1);
 		}
 
-		exportSingleTLE("25544.bin", &CurrentEntry);
+		//exportSingleTLE("25544.bin", &CurrentEntry);
 
 		while (true) {
 			clear();
