@@ -105,3 +105,17 @@ void PrintContentAsAscii(string* filename) {
 
 	return;
 }
+
+void exportSingleTLE(string* filename, TLE* tlePtr) {
+	FILE* fp = fopen(filename, "w");
+
+	fwrite(tlePtr, sizeof(*tlePtr), 1, fp);
+	fclose(fp);
+}
+
+void importSingleTLE(string* filename, TLE* tlePtr) {
+	FILE* fp = fopen(filename, "r");
+
+	fread(tlePtr, sizeof(TLE), 1, fp);
+	fclose(fp);
+}
