@@ -74,8 +74,6 @@ void PrintTle(TLE Object) {
 	double epochNorm = sqrt(epochKepler.x * epochKepler.x + epochKepler.y * epochKepler.y);
 	double Epoch3DNorm = sqrt(Epoch3DKepler.x * Epoch3DKepler.x + Epoch3DKepler.y * Epoch3DKepler.y + Epoch3DKepler.z * Epoch3DKepler.z);
 
-	//printf("rotNorm = %lf | 3DNorm = %lf | EpochNorm = %lf | ActuNorm = %lf\n", rotNorm, Epoch3DNorm, epochNorm, Epoch_R);
-
 	double Epoch_Alt = Epoch_R - (double)EARTH_RADIUS;
 
 	double Speed_Ap = OrbSpeed(Ap, SMA);
@@ -174,8 +172,9 @@ void PrintTle(TLE Object) {
 	Current_TA *= RADS2DEGS;
 	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
 
-	Vector coords2D = coordsFromTA(Current_R, Current_TA * DEGS2RADS);
-	Rotate2D(&coords2D, -rotAngle);
+	Vector current2D = coordsFromTA(Current_R, Current_TA * DEGS2RADS);
+	Vector rotCurrent2D = Rotate2D(&current2D, rotAngle);
+	Vector current3D = Rotate3D(&unitVector, &rotCurrent2D, Object.Inclination * DEGS2RADS);
 
 	//KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
 	//KeplerCoords2D_t absCoords;
@@ -184,13 +183,14 @@ void PrintTle(TLE Object) {
 
 	//double altitude2D = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
 
-	//KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(AscNode, absCoords, Object.Inclination * DEGS2RADS);
-	//KeplerCoords3D_t coords3D;
+	KeplerCoords3D_t coords3D = *(KeplerCoords3D_t*)current3D.data;
+
+	deallocVector(&current2D);
+	deallocVector(&rotCurrent2D);
+	deallocVector(&current3D);
 
 	//changeReferential3D(absCoords3D, focal3D, &coords3D);
-
-	//double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
-	//double altitude3D = sqrt(pow(coords3D.x, 2) + pow(coords3D.y, 2) + pow(coords3D.z, 2)) - EARTH_RADIUS;
+	double altitude3D = sqrt(pow(coords3D.x, 2) + pow(coords3D.y, 2) + pow(coords3D.z, 2)) - EARTH_RADIUS;
 
 	printf("Object name : %s\n", Object.name);
 
@@ -224,12 +224,12 @@ void PrintTle(TLE Object) {
 	printf("------------------------------- CURRENTLY -------------------------------\n");
 
 	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon + 1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
-	//printf("X Coord : %.0lf m\tX Earth : %.0lf m\n", coords3D.x, focal3D.x);
-	//printf("Y Coord : %.0lf m\tY Earth : %.0lf m\n", coords3D.y, focal3D.y);
-	//printf("Z Coord : %.0lf m\tZ Earth : %.0lf m\n", coords3D.z, focal3D.z);
+	printf("X Coord : %.0lf m\n", coords3D.x);
+	printf("Y Coord : %.0lf m\n", coords3D.y);
+	printf("Z Coord : %.0lf m\n", coords3D.z);
 	printf("ALTITUDE : %.0lf m\n", Current_Alt);
 	//printf("ALTITUDE 2D : %.0lf m\n", altitude2D);
-	//printf("ALTITUDE 3D : %.0lf m\n", altitude3D);
+	printf("ALTITUDE 3D : %.0lf m\n", altitude3D);
 	printf("SPEED : %.2lf m/s\n", Current_Spd);
 
 	printf("-------------------------------------------------------------------------\n");
