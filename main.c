@@ -33,7 +33,7 @@ void PrintTle(TLE Object) {
 	double Ap = Apoapsis(Object.Eccentricity, SMA);
 	double Pe = Periapsis(Object.Eccentricity, SMA);
 
-	printf("AN : %lf | w = %lf\n", Object.AscNodeLong, Object.PeriArg);
+	//printf("AN : %lf | w = %lf\n", Object.AscNodeLong, Object.PeriArg);
 
 	double longPeri = longitudeOfPeriapsis(Object.AscNodeLong * DEGS2RADS, Object.PeriArg * DEGS2RADS);
 
@@ -51,11 +51,11 @@ void PrintTle(TLE Object) {
 
 	KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)rotAN.data;
 
-	printf("\nrotAngle = %lf\n", rotAngle * RADS2DEGS);
+	//printf("\nrotAngle = %lf\n", rotAngle * RADS2DEGS);
 
 	double AscNodeNorm = sqrt(pow(AscNode2D.x, 2) + pow(AscNode2D.y, 2));
 
-	printf("AscNode : %lf | AscNode2D : %lf\n", AscNodeR, AscNodeNorm);
+	//printf("AscNode : %lf | AscNode2D : %lf\n", AscNodeR, AscNodeNorm);
 	Vector unitVector = unitVector2D(AscNode2D.x, AscNode2D.y);
 
 	deallocVector(&AscNode);
@@ -78,7 +78,7 @@ void PrintTle(TLE Object) {
 	double epochNorm = sqrt(epochKepler.x * epochKepler.x + epochKepler.y * epochKepler.y);
 	double Epoch3DNorm = sqrt(Epoch3DKepler.x * Epoch3DKepler.x + Epoch3DKepler.y * Epoch3DKepler.y + Epoch3DKepler.z * Epoch3DKepler.z);
 
-	printf("rotNorm = %lf | 3DNorm = %lf | EpochNorm = %lf | ActuNorm = %lf\n", rotNorm, Epoch3DNorm, epochNorm, Epoch_R);
+	//printf("rotNorm = %lf | 3DNorm = %lf | EpochNorm = %lf | ActuNorm = %lf\n", rotNorm, Epoch3DNorm, epochNorm, Epoch_R);
 
 	double Epoch_Alt = Epoch_R - (double)EARTH_RADIUS;
 
@@ -97,8 +97,7 @@ void PrintTle(TLE Object) {
 
 	if (epoch_year < 57) {
 		epoch_year += 2000;
-	}
-	else {
+	} else {
 		epoch_year += 1900;
 	}
 
@@ -182,20 +181,20 @@ void PrintTle(TLE Object) {
 	Vector coords2D = coordsFromTA(Current_R, Current_TA * DEGS2RADS);
 	Rotate2D(&coords2D, -rotAngle);
 
-	/*KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
-	KeplerCoords2D_t absCoords;
+	//KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
+	//KeplerCoords2D_t absCoords;
 
-	changeReferential2D(coords_2d, bari, &absCoords);
+	//changeReferential2D(coords_2d, bari, &absCoords);
 
-	double altitude2D = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
+	//double altitude2D = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
 
-	KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(AscNode, absCoords, Object.Inclination * DEGS2RADS);
-	KeplerCoords3D_t coords3D;
+	//KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(AscNode, absCoords, Object.Inclination * DEGS2RADS);
+	//KeplerCoords3D_t coords3D;
 
-	changeReferential3D(absCoords3D, focal3D, &coords3D);
+	//changeReferential3D(absCoords3D, focal3D, &coords3D);
 
 	//double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
-	double altitude3D = sqrt(pow(coords3D.x, 2) + pow(coords3D.y, 2) + pow(coords3D.z, 2)) - EARTH_RADIUS;
+	//double altitude3D = sqrt(pow(coords3D.x, 2) + pow(coords3D.y, 2) + pow(coords3D.z, 2)) - EARTH_RADIUS;
 
 	printf("Object name : %s\n", Object.name);
 
@@ -229,15 +228,15 @@ void PrintTle(TLE Object) {
 	printf("------------------------------- CURRENTLY -------------------------------\n");
 
 	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc->tm_mday, 2, utc->tm_mon + 1, 4, epoch_year, 2, utc->tm_hour, 2, utc->tm_min, 2, utc->tm_sec);
-	printf("X Coord : %.0lf m\tX Earth : %.0lf m\n", coords3D.x, focal3D.x);
-	printf("Y Coord : %.0lf m\tY Earth : %.0lf m\n", coords3D.y, focal3D.y);
-	printf("Z Coord : %.0lf m\tZ Earth : %.0lf m\n", coords3D.z, focal3D.z);
+	//printf("X Coord : %.0lf m\tX Earth : %.0lf m\n", coords3D.x, focal3D.x);
+	//printf("Y Coord : %.0lf m\tY Earth : %.0lf m\n", coords3D.y, focal3D.y);
+	//printf("Z Coord : %.0lf m\tZ Earth : %.0lf m\n", coords3D.z, focal3D.z);
 	printf("ALTITUDE : %.0lf m\n", Current_Alt);
-	printf("ALTITUDE 2D : %.0lf m\n", altitude2D);
-	printf("ALTITUDE 3D : %.0lf m\n", altitude3D);
+	//printf("ALTITUDE 2D : %.0lf m\n", altitude2D);
+	//printf("ALTITUDE 3D : %.0lf m\n", altitude3D);
 	printf("SPEED : %.2lf m/s\n", Current_Spd);
 
-	printf("-------------------------------------------------------------------------\n");*/
+	printf("-------------------------------------------------------------------------\n");
 #endif
 
 	//writeFile(&file);
