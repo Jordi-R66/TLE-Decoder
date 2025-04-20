@@ -8,20 +8,16 @@
 
 #include "libs/Common.h"
 
-//#include "libs/logger.h"
-
 #define CHECKSUM_MODULO 10
 #define DEFAULT_ITER 100000
 
 #define CALENDAR_YEAR 365.25
-//#define DEBUG_MODE
 
 string* filename = "TLEs/stations.tle";
 uint32_t lookingFor = 25544;
 
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
-//bool debugMode = false;
 time_t current_time;
 
 void PrintTle(TLE Object) {
