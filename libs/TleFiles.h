@@ -7,5 +7,5 @@ TLE* GetAllTle(string* filename);
 
 void PrintContentAsAscii(string* filename);
 
-void exportSingleTLE(string* filename, TLE tleObject);
+void exportSingleTLE(string* filename, TLE* tlePtr);
 void importSingleTLE(string* filename, TLE* tlePtr);
