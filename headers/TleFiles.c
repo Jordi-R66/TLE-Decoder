@@ -67,20 +67,20 @@ TLE* GetAllTle(string* filename) {
 			}
 
 			switch (block_line) {
-			case 0:
-				first_line[j] = c;
-				break;
+				case 0:
+					first_line[j] = c;
+					break;
 
-			case 1:
-				second_line[j] = c;
-				break;
+				case 1:
+					second_line[j] = c;
+					break;
 
-			case 2:
-				third_line[j] = c;
-				break;
+				case 2:
+					third_line[j] = c;
+					break;
 
-			default:
-				break;
+				default:
+					break;
 			}
 			j++;
 		}
