@@ -29,8 +29,6 @@ void PrintTle(TLE Object) {
 	double Ap = Apoapsis(Object.Eccentricity, SMA);
 	double Pe = Periapsis(Object.Eccentricity, SMA);
 
-	//printf("AN : %lf | w = %lf\n", Object.AscNodeLong, Object.PeriArg);
-
 	double longPeri = longitudeOfPeriapsis(Object.AscNodeLong * DEGS2RADS, Object.PeriArg * DEGS2RADS);
 
 	longPeri *= RADS2DEGS;
@@ -47,11 +45,6 @@ void PrintTle(TLE Object) {
 
 	KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)rotAN.data;
 
-	//printf("\nrotAngle = %lf\n", rotAngle * RADS2DEGS);
-
-	double AscNodeNorm = sqrt(pow(AscNode2D.x, 2) + pow(AscNode2D.y, 2));
-
-	//printf("AscNode : %lf | AscNode2D : %lf\n", AscNodeR, AscNodeNorm);
 	Vector unitVector = unitVector2D(AscNode2D.x, AscNode2D.y);
 
 	deallocVector(&AscNode);
@@ -62,18 +55,6 @@ void PrintTle(TLE Object) {
 	double Epoch_TA = TrueAnomaly(Object.Eccentricity, Epoch_E);
 
 	double Epoch_R = OrbAltTA(Object.Eccentricity, SMA, Epoch_TA);
-	Vector Epoch = coordsFromTA(Epoch_R, Epoch_TA);
-	Vector rotEpoch = Rotate2D(&Epoch, rotAngle);
-	Vector Epoch3D = Rotate3D(&unitVector, &rotEpoch, Object.Inclination * DEGS2RADS);
-
-	KeplerCoords2D_t epochKepler = *(KeplerCoords2D_t*)Epoch.data;
-	KeplerCoords2D_t rotKepler = *(KeplerCoords2D_t*)rotEpoch.data;
-	KeplerCoords3D_t Epoch3DKepler = *(KeplerCoords3D_t*)Epoch3D.data;
-
-	double rotNorm = sqrt(rotKepler.x * rotKepler.x + rotKepler.y * rotKepler.y);
-	double epochNorm = sqrt(epochKepler.x * epochKepler.x + epochKepler.y * epochKepler.y);
-	double Epoch3DNorm = sqrt(Epoch3DKepler.x * Epoch3DKepler.x + Epoch3DKepler.y * Epoch3DKepler.y + Epoch3DKepler.z * Epoch3DKepler.z);
-
 	double Epoch_Alt = Epoch_R - (double)EARTH_RADIUS;
 
 	double Speed_Ap = OrbSpeed(Ap, SMA);
@@ -95,65 +76,6 @@ void PrintTle(TLE Object) {
 		epoch_year += 1900;
 	}
 
-	//double DeltaTime;
-#ifdef DEBUG_MODE
-	uint64_t orb_period = ((uint64_t)OrbitalPeriod(Object.MeanMotion) + 2);
-	//FILE* fp = fopen("log_23802.csv", "w");
-
-	/*if (fp == NULL) {
-		fprintf(stderr, "Error while opening the file\n");
-		exit(EXIT_FAILURE);
-		return;
-	}*/
-
-	//fprintf(fp, "Time,altitude via 2D coords,altitude via 3D coords,altitude via ecc ano,altitude via true ano\n");
-
-	for (uint64_t DeltaTime = 0; DeltaTime < orb_period; DeltaTime++) {
-		double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
-
-		double Current_E_Approx = Current_MA + Object.Eccentricity * sin(Current_MA);
-		double Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Current_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
-		double Current_TA = TrueAnomaly(Object.Eccentricity, Current_E);
-
-		double Current_R = OrbAltTA(Object.Eccentricity, SMA, Current_TA);
-		double Current_Alt = Current_R - (double)EARTH_RADIUS;
-		double Current_Spd = OrbSpeed(Current_R, SMA);
-
-		Current_MA *= RADS2DEGS;
-		Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
-		Current_MA *= DEGS2RADS;
-
-		Current_TA *= RADS2DEGS;
-		Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
-		Current_TA *= DEGS2RADS;
-
-		KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
-		KeplerCoords2D_t absCoords;
-
-		changeReferential2D(coords_2d, bari, &absCoords);
-
-		double altitude2D = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
-
-		KeplerCoords3D_t absCoords3D = Rotate3DCoordsAroundAxis(AscNode, absCoords, Object.Inclination * DEGS2RADS);
-		KeplerCoords3D_t coords3D;
-
-		changeReferential3D(absCoords3D, focal3D, &coords3D);
-
-		//double altitude = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
-		double altitude3D = sqrt(pow(coords3D.x, 2) + pow(coords3D.y, 2) + pow(coords3D.z, 2)) - EARTH_RADIUS;
-
-		double coords2dAlt = altitude2D;
-		double coords3dAlt = altitude3D;
-		double keplerAlt = keplerDistance(SMA, Object.Eccentricity, Current_E) - (double)EARTH_RADIUS;
-		double trueAnoAlt = OrbAltTA(Object.Eccentricity, SMA, Current_TA) - (double)EARTH_RADIUS;
-
-		//fprintf(fp, "%llu,%lf,%lf,%lf,%lf\n", DeltaTime, coords2dAlt, coords3dAlt, keplerAlt, trueAnoAlt);
-
-		//addRecord(&file, record);
-	}
-
-	//fclose(fp);
-#else
 	double DeltaTime = (((double)(current_year - epoch_year) * CALENDAR_YEAR) + (double)(current_day - Object.EPOCH)) * EARTH_DAY_LENGTH;
 
 	double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
@@ -176,20 +98,12 @@ void PrintTle(TLE Object) {
 	Vector rotCurrent2D = Rotate2D(&current2D, rotAngle);
 	Vector current3D = Rotate3D(&unitVector, &rotCurrent2D, Object.Inclination * DEGS2RADS);
 
-	//KeplerCoords2D_t coords_2d = coordsFromTA(Current_R, Current_TA * DEGS2RADS);//basic2DKeplerCoords(SMA, Object.Eccentricity, Current_E);
-	//KeplerCoords2D_t absCoords;
-
-	//changeReferential2D(coords_2d, bari, &absCoords);
-
-	//double altitude2D = sqrt(pow(coords_2d.x, 2) + pow(coords_2d.y, 2)) - EARTH_RADIUS;
-
 	KeplerCoords3D_t coords3D = *(KeplerCoords3D_t*)current3D.data;
 
 	deallocVector(&current2D);
 	deallocVector(&rotCurrent2D);
 	deallocVector(&current3D);
 
-	//changeReferential3D(absCoords3D, focal3D, &coords3D);
 	double altitude3D = sqrt(pow(coords3D.x, 2) + pow(coords3D.y, 2) + pow(coords3D.z, 2)) - EARTH_RADIUS;
 
 	printf("Object name : %s\n", Object.name);
@@ -233,22 +147,11 @@ void PrintTle(TLE Object) {
 	printf("SPEED : %.2lf m/s\n", Current_Spd);
 
 	printf("-------------------------------------------------------------------------\n");
-#endif
-
-	//writeFile(&file);
-
-	//for (size_t i = 0; i < file.n_records; i++) {
-		//freeRecord(file.records[i]);
-	//}
-	//freeFile(&file);
 
 	deallocVector(&unitVector);
-	deallocVector(&Epoch);
 }
 
 int32_t main(int argc, char* argv[]) {
-	// InterpretArgs(argc, argv);
-
 	clear();
 
 	const bool ReadingFile = false;
@@ -283,16 +186,11 @@ int32_t main(int argc, char* argv[]) {
 		while (true) {
 			clear();
 			PrintTle(CurrentEntry);
-			#ifndef DEBUG_MODE
-				sleep(1);
-			#else
-				break;
-			#endif
+			sleep(1);
 		}
 	} else {
 		printf("Opening the files\n");
 		int32_t block_number = GetTLENumber(filename);
-		// printf("TLE File size : %d blocks\n", block_number);
 
 		time_t rawtime_start;
 		time_t rawtime_end;
@@ -306,7 +204,6 @@ int32_t main(int argc, char* argv[]) {
 		free(AllObjs);
 
 		printf("Memory usage to store %d blocks : %lu bytes\nTime : %ld\n", block_number, sizeof(TLE) * block_number, rawtime_end - rawtime_start);
-		//ExportToStructFile(AllObjs, block_number, "merged.tle_struct");
 	}
 
 	return 0;
