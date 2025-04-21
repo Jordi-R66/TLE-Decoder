@@ -65,6 +65,30 @@ EpochData computeEpochData(TLE* Object, OrbitData* orbitData, bool realTime) {
 	output.Alt = Alt;
 	output.Spd = Spd;
 
+	// Now computing the unit vector - if not initialized
+
+	if (!uvInit) {
+		double AscNodeTA = longitudeToTA(Object->AscNodeLong * DEGS2RADS, orbitData->longPeri);
+		double AscNodeR = OrbAltTA(Object->Eccentricity, orbitData->SMA, AscNodeTA);
+
+		Vector AscNode = coordsFromTA(AscNodeR, AscNodeTA);
+		Vector rotAN = Rotate2D(&AscNode, orbitData->longPeri);
+		KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)rotAN.data;
+
+		Vector unitVector = unitVector2D(AscNode2D.x, AscNode2D.y);
+		uv = *(KeplerCoords2D_t*)unitVector.data;
+
+		deallocVector(&AscNode);
+		deallocVector(&rotAN);
+		deallocVector(&unitVector);
+
+		uvInit = true;
+	}
+
+	// Now computing 2D
+
+	
+
 	return output;
 }
 
