@@ -2,7 +2,7 @@
 clear
 COMPILER="gcc"
 
-SOURCES="headers/TleFiles.c headers/OrbMaths.c headers/TleParser.c headers/CONVERSIONS.c headers/Algos.c headers/TermFuncs.c headers/Kepler.c headers/Ellipses.c ext_libs/myOwnCLib/matrices/matrix.c ext_libs/myOwnCLib/vectors/vectors.c main.c"
+SOURCES="headers/TleFiles.c headers/OrbMaths.c headers/TleParser.c headers/CONVERSIONS.c headers/Algos.c headers/TermFuncs.c headers/Kepler.c headers/Ellipses.c libs/myOwnCLib/matrices/matrix.c libs/myOwnCLib/vectors/vectors.c main.c"
 
 OUTPUT_DIR="output"
 

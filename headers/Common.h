@@ -9,7 +9,7 @@
 #include <math.h>
 #include <time.h>
 
-#include "../ext_libs/myOwnCLib/bools/bool.h"
+#include "../libs/myOwnCLib/bools/bool.h"
 
 #ifdef __linux__
 	#include <unistd.h>

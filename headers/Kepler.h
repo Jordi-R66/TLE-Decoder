@@ -1,6 +1,6 @@
 #include "Common.h"
 
-#include "../ext_libs/myOwnCLib/vectors/vectors.h"
+#include "../libs/myOwnCLib/vectors/vectors.h"
 
 struct KeplerCoords2D {
 	value_t x;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Common.h"
-#include "../ext_libs/myOwnCLib/matrices/matrix.h"
+#include "../libs/myOwnCLib/matrices/matrix.h"
 
 typedef Matrix Coords2D;
 typedef Matrix Coords3D;
