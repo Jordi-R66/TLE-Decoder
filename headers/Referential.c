@@ -1,6 +1,6 @@
 #include "Referential.h"
 
-#include "../libs/OrbMaths.h"
+#include "../headers/OrbMaths.h"
 
 void Compute2DCoords(Coords2D* Coords, double OrbAlt, double TrueAnomaly) {
 	if ((Coords->rows == 2) && (Coords->cols == 1) && (Coords->size == 2)) {

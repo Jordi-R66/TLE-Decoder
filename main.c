@@ -1,12 +1,12 @@
-#include "libs/TleParser.h"
-#include "libs/OrbMaths.h"
-#include "libs/TleFiles.h"
-#include "libs/TermFuncs.h"
-#include "libs/Algos.h"
-#include "libs/Kepler.h"
-#include "libs/Ellipses.h"
+#include "headers/TleParser.h"
+#include "headers/OrbMaths.h"
+#include "headers/TleFiles.h"
+#include "headers/TermFuncs.h"
+#include "headers/Algos.h"
+#include "headers/Kepler.h"
+#include "headers/Ellipses.h"
 
-#include "libs/Common.h"
+#include "headers/Common.h"
 
 #define CHECKSUM_MODULO 10
 #define DEFAULT_ITER 100000

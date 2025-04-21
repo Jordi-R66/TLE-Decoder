@@ -96,7 +96,7 @@ if path.exists("compile_conf.json"):
 # #PARAMS = "-O3 -march=native -flto -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--strip-all -fomit-frame-pointer -finline-functions -fpeel-loops -funswitch-loops -fsplit-paths -ftree-vectorize"
 # #PARAMS = "-O3 -std=c17 -mconsole -m64 -march=native -flto -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--strip-all -fomit-frame-pointer -finline-functions -fpeel-loops -funswitch-loops -ftree-vectorize"
 
-# SOURCE_FILES = ["libs/TleFiles.c", "libs/OrbMaths.c", "libs/TleParser.c", "libs/CONVERSIONS.c", "TLE.c"]
+# SOURCE_FILES = ["headers/TleFiles.c", "headers/OrbMaths.c", "headers/TleParser.c", "headers/CONVERSIONS.c", "TLE.c"]
 
 # EXECUTABLE = f"{OUTPUT_PATH}TLE{EXEC_EXT}"
 
