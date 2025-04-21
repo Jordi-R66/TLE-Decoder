@@ -6,7 +6,7 @@ double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 time_t current_time;
 
 bool uvInit = false; // Has the unit vector been initialized?
-KeplerCoords2D_t uv = {0.0, 0.0}; // Unit vector
+Vector uv; // Unit vector
 
 OrbitData computeOrbitData(TLE* Object) {
 	OrbitData output;
@@ -77,12 +77,10 @@ EpochData computeEpochData(TLE* Object, OrbitData* orbitData, bool realTime) {
 		Vector rotAN = Rotate2D(&AscNode, orbitData->longPeri);
 		KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)rotAN.data;
 
-		Vector unitVector = unitVector2D(AscNode2D.x, AscNode2D.y);
-		uv = *(KeplerCoords2D_t*)unitVector.data;
+		uv = unitVector2D(AscNode2D.x, AscNode2D.y);
 
 		deallocVector(&AscNode);
 		deallocVector(&rotAN);
-		deallocVector(&unitVector);
 
 		uvInit = true;
 	}
