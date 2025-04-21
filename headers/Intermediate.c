@@ -13,10 +13,9 @@ void PrintTle(TLE Object) {
 	double Ap = Apoapsis(Object.Eccentricity, SMA);
 	double Pe = Periapsis(Object.Eccentricity, SMA);
 
-	double longPeri = longitudeOfPeriapsis(Object.AscNodeLong * DEGS2RADS, Object.PeriArg * DEGS2RADS);
+	double longPeri = longitudeOfPeriapsis(Object.AscNodeLong, Object.PeriArg);
 
-	longPeri *= RADS2DEGS;
-	longPeri -= (double)((uint32_t)(longPeri / 360.0) * 360);
+	longPeri = fmod(longPeri, 360.0);
 	longPeri *= DEGS2RADS;
 
 	value_t rotAngle = longPeri;
