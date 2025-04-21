@@ -1,7 +1,7 @@
 cls
 set COMPILER=gcc
 
-set SOURCES=headers/TleFiles.c headers/OrbMaths.c headers/TleParser.c headers/CONVERSIONS.c headers/Algos.c headers/TermFuncs.c headers/Kepler.c headers/Ellipses.c libs/myOwnCLib/matrices/matrix.c libs/myOwnCLib/vectors/vectors.c main.c
+set SOURCES=headers/TleFiles.c headers/OrbMaths.c headers/TleParser.c headers/Conversions.c headers/Algos.c headers/TermFuncs.c headers/Kepler.c headers/Ellipses.c libs/myOwnCLib/matrices/matrix.c libs/myOwnCLib/vectors/vectors.c main.c
 
 set OUTPUT_DIR=output/
 
