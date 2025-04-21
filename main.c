@@ -6,10 +6,26 @@
 
 #define CHECKSUM_MODULO 10
 
-string* filename = "TLEs/stations.tle";
-uint32_t lookingFor = 25544;
+cstring filename = NULL;
+uint32_t lookingFor = 0;
+bool ArgsGiven = false;
+
+void ArgumentParser(char** argv, int argc) {
+	char* endptr;
+
+	if (argc == 3) {
+		ArgsGiven = true;
+
+		filename = argv[1];
+		lookingFor = strtoul(argv[2], &endptr, 10);
+	} else {
+		fprintf(stderr, "Please pass file as first argument and NORAD ID as second argument\n");
+		exit(EXIT_FAILURE);
+	}
+}
 
 int32_t main(int argc, char* argv[]) {
+	ArgumentParser(argv, argc);
 	clear();
 
 	const bool ReadingFile = false;
