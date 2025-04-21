@@ -12,6 +12,10 @@
 *.map
 *.exp
 
+# ASM Files
+asm/
+*.s
+
 # Precompiled Headers
 *.gch
 *.pch
