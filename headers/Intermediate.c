@@ -61,7 +61,7 @@ void PrintTle(TLE Object) {
 
 	double DeltaTime = (((double)(current_year - epoch_year) * CALENDAR_YEAR) + (double)(current_day - Object.EPOCH)) * EARTH_DAY_LENGTH;
 
-	double Current_MA = (Object.MeanAnomaly * DEGS2RADS) + (n * DeltaTime);
+	double Current_MA = (Object.MeanAnomaly) + (n * DeltaTime * RADS2DEGS);
 
 	double Current_E_Approx = Current_MA + Object.Eccentricity * sin(Current_MA);
 	double Current_E = NewtonRaphson(Current_MA, Object.Eccentricity, *KeplerEquation, *KeplerPrime, Current_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
@@ -71,11 +71,8 @@ void PrintTle(TLE Object) {
 	double Current_Alt = Current_R - (double)EARTH_RADIUS;
 	double Current_Spd = OrbSpeed(Current_R, SMA);
 
-	Current_MA *= RADS2DEGS;
-	Current_MA -= (double)((uint32_t)(Current_MA / 360.0) * 360);
-
-	Current_TA *= RADS2DEGS;
-	Current_TA -= (double)((uint32_t)(Current_TA / 360.0) * 360);
+	Current_MA = fmod(Current_MA, 360.0);
+	Current_TA = fmod(Current_TA, 360.0);
 
 	Vector current2D = coordsFromTA(Current_R, Current_TA * DEGS2RADS);
 	Vector rotCurrent2D = Rotate2D(&current2D, rotAngle);
