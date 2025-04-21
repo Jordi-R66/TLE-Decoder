@@ -41,15 +41,18 @@ OrbitData computeOrbitData(TLE* Object) {
 EpochData computeEpochData(TLE* Object, OrbitData* orbitData, bool realTime) {
 	EpochData output;
 
+	memset(&output, 0, EPOCH_DATA_LENGTH);
+
 	double deltaTime = 0.0;
 
 	if (realTime) {
 		deltaTime = (CurrentEpoch() - orbitData->epoch) * EARTH_DAY_LENGTH;
 	}
 
-	memset(&output, 0, EPOCH_DATA_LENGTH);
+	output.deltaTime = deltaTime;
 
 	double MA = Object->MeanAnomaly + (orbitData->n * deltaTime * RADS2DEGS);
+	MA = fmod(MA, 360.0);
 
 	double E_Approx = MA + Object->Eccentricity * sin(MA * DEGS2RADS);
 	double E = NewtonRaphson(MA, Object->Eccentricity, *KeplerEquation, *KeplerPrime, E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
