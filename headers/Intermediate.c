@@ -46,10 +46,11 @@ EpochData computeEpochData(TLE* Object, OrbitData* orbitData, bool realTime) {
 	double deltaTime = 0.0;
 
 	if (realTime) {
-		deltaTime = (CurrentEpoch() - orbitData->epoch) * EARTH_DAY_LENGTH;
+		deltaTime = (CurrentEpoch() - orbitData->epoch);
 	}
 
 	output.deltaTime = deltaTime;
+	deltaTime *= EARTH_DAY_LENGTH;
 
 	double MA = Object->MeanAnomaly + (orbitData->n * deltaTime * RADS2DEGS);
 	MA = fmod(MA, 360.0);
