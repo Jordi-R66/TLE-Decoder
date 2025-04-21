@@ -29,6 +29,8 @@ typedef struct EpochData {
 	double Alt;
 	double Spd;
 
+	double deltaTime;
+
 	KeplerCoords2D_t coords2D;
 	KeplerCoords3D_t coords3D;
 } EpochData;
