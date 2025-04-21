@@ -45,3 +45,34 @@ double tleEpochToJJ(uint16_t Y, double day) {
 
 	return JJ_REF + (Y - 1900) * CALENDAR_YEAR + day;
 }
+
+Date JJToReadable(double JJ) {
+	double Z, F;
+
+	Z = (double)ENT(JJ);
+	F = JJ - Z;
+
+	if (Z < 2299161) {
+		exit(EXIT_FAILURE);
+	}
+
+	double a = ENT( (Z - 1867216.25)  / 36524.25);
+	double S = Z + 1 + a - (double)ENT(a/4.0);
+
+	double B = S + 1524;
+	double C = (double)ENT( (B - 122.1) / CALENDAR_YEAR);
+	double D = (double)ENT(CALENDAR_YEAR * C);
+	double E = (double)ENT((B-D)/30.6001);
+
+	uint8_t Day = (uint8_t)(B - D - (double)ENT(30.6001 * E));
+	uint8_t Month = E >= 14 ? E - 13 : E - 1;
+	uint16_t Year = Month > 2 ? C - 4716 : C - 4715;
+
+	uint8_t Hour = (uint8_t)ENT(F * 24.0);
+	uint8_t Minute = (uint8_t)ENT((ENT(F * 24.0) - Hour) * 60.0);
+	uint8_t Second = (uint8_t)((ENT((ENT(F * 24.0) - Hour) * 60.0) - Minute) * 60.0);
+
+	Date date = {Year, Month, Day, Hour, Minute, Second};
+
+	return date;
+}
