@@ -16,7 +16,7 @@ int32_t main(int argc, char* argv[]) {
 
 	if (!ReadingFile) {
 
-		TLE* AllObjs = GetAllTle(filename);
+		/*TLE* AllObjs = GetAllTle(filename);
 		int32_t block_quant = GetTLENumber(filename);
 
 		printf("%d entries loaded\nLooping to find %u\n\n", block_quant, lookingFor);
@@ -37,7 +37,9 @@ int32_t main(int argc, char* argv[]) {
 		if (!found) {
 			printf("Unable to find %u amongst the TLEs\n", lookingFor);
 			exit(-1);
-		}
+		}*/
+
+		TLE CurrentEntry = GetSingleTLE(filename, lookingFor);
 
 		//exportSingleTLE("25544.bin", &CurrentEntry);
 
