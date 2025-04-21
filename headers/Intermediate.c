@@ -4,6 +4,8 @@
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
 time_t current_time;
+
+bool uvInit = false; // Has the unit vector been initialized?
 KeplerCoords2D_t uv = {0.0, 0.0}; // Unit vector
 
 OrbitData computeOrbitData(TLE* Object) {
