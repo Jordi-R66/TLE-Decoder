@@ -87,7 +87,7 @@ void PrintTle(TLE* Object) {
 
 	double Current_MA = (Object->MeanAnomaly) + (orbitData.n * DeltaTime * RADS2DEGS);
 
-	double Current_E_Approx = Current_MA + Object->Eccentricity * sin(Current_MA);
+	double Current_E_Approx = Current_MA + Object->Eccentricity * sin(Current_MA * DEGS2RADS);
 	double Current_E = NewtonRaphson(Current_MA, Object->Eccentricity, *KeplerEquation, *KeplerPrime, Current_E_Approx, EccentricAnomalyTolerance, DEFAULT_ITER);
 	double Current_TA = TrueAnomaly(Object->Eccentricity, Current_E);
 
