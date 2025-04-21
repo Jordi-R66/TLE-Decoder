@@ -87,6 +87,15 @@ EpochData computeEpochData(TLE* Object, OrbitData* orbitData, bool realTime) {
 
 	// Now computing 2D
 
+	Vector coords2D = coordsFromTA(R, TA);
+	Vector rot2D = Rotate2D(&coords2D, orbitData->longPeri);
+
+	output.coords2D = *(KeplerCoords2D_t*)rot2D.data;
+
+	deallocVector(&coords2D);
+
+	// Now Computing 3D
+
 	
 
 	return output;
