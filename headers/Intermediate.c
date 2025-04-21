@@ -96,7 +96,12 @@ EpochData computeEpochData(TLE* Object, OrbitData* orbitData, bool realTime) {
 
 	// Now Computing 3D
 
-	
+	Vector rot3D = Rotate3D(&uv, &rot2D, Object->Inclination * DEGS2RADS);
+
+	output.coords3D = *(KeplerCoords3D_t*)rot3D.data;
+
+	deallocVector(&rot2D);
+	deallocVector(&rot3D);
 
 	return output;
 }
