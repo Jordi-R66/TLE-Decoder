@@ -56,6 +56,14 @@ EpochData computeEpochData(TLE* Object, OrbitData* orbitData, bool realTime) {
 	output.E = E;
 	output.TA = TA;
 
+	double R = OrbAltTA(Object->Eccentricity, orbitData->SMA, TA);
+	double Alt = R - EARTH_RADIUS;
+	double Spd = OrbSpeed(R, orbitData->SMA);
+
+	output.R = R;
+	output.Alt = Alt;
+	output.Spd = Spd;
+
 	return output;
 }
 
