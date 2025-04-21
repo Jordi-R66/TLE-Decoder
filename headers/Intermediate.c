@@ -117,9 +117,12 @@ void PrintTle(TLE* Object) {
 	double Current_Spd = OrbSpeed(Current_R, orbitData.SMA);
 
 	Current_MA = fmod(Current_MA, 360.0);
-	Current_TA = fmod(Current_TA, 360.0);
 
-	Vector current2D = coordsFromTA(Current_R, Current_TA * DEGS2RADS);
+	Current_TA *= RADS2DEGS;
+	Current_TA = fmod(Current_TA, 360.0);
+	Current_TA *= DEGS2RADS;
+
+	Vector current2D = coordsFromTA(Current_R, Current_TA);
 	Vector rotCurrent2D = Rotate2D(&current2D, rotAngle);
 	Vector current3D = Rotate3D(&unitVector, &rotCurrent2D, Object->Inclination * DEGS2RADS);
 
