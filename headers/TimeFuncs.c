@@ -35,3 +35,9 @@ double JulianDay(uint32_t Y, uint32_t M, uint32_t D, uint32_t h, uint32_t m, uin
 
 	return JJ;
 }
+
+double tleEpochToJJ(uint16_t Y, double day) {
+	double JJ_REF = JulianDay(1900, 1, 1, 0, 0, 0);
+
+	return JJ_REF + (Y - 1900) * CALENDAR_YEAR + day;
+}
