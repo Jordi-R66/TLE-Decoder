@@ -21,6 +21,19 @@ OrbitData computeOrbitData(TLE* Object) {
 	output.longPeri = fmod(output.longPeri, 360.0);
 	output.longPeri *= DEGS2RADS;
 
+	uint16_t epoch_year = Object->EPOCH_YR;
+
+	if (epoch_year < 57) {
+		epoch_year += 2000;
+	} else {
+		epoch_year += 1900;
+	}
+
+	output.epoch = tleEpochToJJ(epoch_year, Object->EPOCH);
+
+	return output;
+}
+
 	return output;
 }
 
