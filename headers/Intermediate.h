@@ -9,3 +9,5 @@
 
 #define DEFAULT_ITER 100000
 #define CALENDAR_YEAR 365.25
+
+void PrintTle(TLE Object);

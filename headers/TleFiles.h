@@ -1,4 +1,5 @@
 #pragma once
+#include "TleParser.h"
 #include "Common.h"
 
 int32_t GetTLENumber(string* filename);
