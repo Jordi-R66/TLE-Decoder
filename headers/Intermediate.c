@@ -1,4 +1,5 @@
 #include "Intermediate.h"
+#include "TimeFuncs.h"
 
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
