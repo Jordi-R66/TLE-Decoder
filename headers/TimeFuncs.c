@@ -1,5 +1,9 @@
 #include "TimeFuncs.h"
 
+int64_t ENT(double x) {
+	return (int64_t)floor(x);
+}
+
 double CurrentEpoch() {
 	time_t current_time = time(NULL);
 
