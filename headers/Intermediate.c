@@ -4,21 +4,25 @@ double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
 time_t current_time;
 
-void PrintTle(TLE Object) {
+OrbitData computeOrbitData(TLE* Object) {
+	OrbitData output;
 
-	double OrbPeriod = OrbitalPeriod(Object.MeanMotion);
-	double SMA = SemiMajorAxis(OrbPeriod);
-	double n = AngularSpeed(SMA);
+	memset(&output, 0, ORBIT_DATA_LENGTH);
 
-	double Ap = Apoapsis(Object.Eccentricity, SMA);
-	double Pe = Periapsis(Object.Eccentricity, SMA);
+	output.OrbPeriod = OrbitalPeriod(Object->MeanMotion);
+	output.SMA = SemiMajorAxis(output.OrbPeriod);
+	output.n = AngularSpeed(output.SMA);
 
-	double longPeri = longitudeOfPeriapsis(Object.AscNodeLong, Object.PeriArg);
+	output.Ap = Apoapsis(Object->Eccentricity, output.SMA);
+	output.Pe = Periapsis(Object->Eccentricity, output.SMA);
 
-	longPeri = fmod(longPeri, 360.0);
-	longPeri *= DEGS2RADS;
+	output.longPeri = longitudeOfPeriapsis(Object->AscNodeLong, Object->PeriArg);
 
-	value_t rotAngle = longPeri;
+	output.longPeri = fmod(output.longPeri, 360.0);
+	output.longPeri *= DEGS2RADS;
+
+	return output;
+}
 
 	double AscNodeTA = longitudeToTA(Object.AscNodeLong * DEGS2RADS, longPeri);
 	double AscNodeR = OrbAltTA(Object.Eccentricity, SMA, AscNodeTA);

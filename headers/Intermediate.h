@@ -36,6 +36,6 @@ typedef struct EpochData {
 #define ORBIT_DATA_LENGTH sizeof(OrbitData)
 #define EPOCH_DATA_LENGTH sizeof(EpochData)
 
-OrbitData computeOrbitData(TLE Object);
+OrbitData computeOrbitData(TLE* Object);
 
-void PrintTle(TLE Object);
+void PrintTle(TLE* Object);
