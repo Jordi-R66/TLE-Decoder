@@ -1,5 +1,6 @@
 #include "headers/TleFiles.h"
 #include "headers/TermFuncs.h"
+#include "headers/TimeFuncs.h"
 
 #include "headers/Intermediate.h"
 

@@ -23,21 +23,20 @@ double CurrentEpoch() {
 }
 
 double JulianDay(uint32_t Y, uint32_t M, uint32_t D, uint32_t h, uint32_t m, uint32_t s) {
-	double Q = (double)D + ((double)((h - 12 + 12) * 3600 + m * 60 + s)) / 86400.0;
+	double F = h * 3600.0 + m * 60 + s * 1.0;
+	F /= 86400.0;
 
-	double JJ;
+	double Q = (double)D + F;
 
-	if (M <= 2) {
-		Y--;
+	if (M == 1 || M == 2) {
+		Y -= 1;
 		M += 12;
 	}
 
-	uint8_t S = Y / 100;
-	uint8_t B = 2 - S + S / 4;
+	double S = ENT((double)Y / 100.0);
+	double B = 2 - S + ENT(S / 4.0);
 
-	JJ = (uint32_t)(365.25 * Y) + (uint32_t)(30.6001 * (M + 1)) + Q + B + 1720994.5;
-
-	return JJ;
+	return ENT(365.25 * Y) + ENT(30.6001 * (M + 1)) + Q + B + 1720994.5 + 0.5;
 }
 
 double tleEpochToJJ(uint16_t Y, double day) {
@@ -52,10 +51,6 @@ Date JJToReadable(double JJ) {
 	Z = (double)ENT(JJ);
 	F = JJ - Z;
 
-	if (Z < 2299161) {
-		exit(EXIT_FAILURE);
-	}
-
 	double a = ENT( (Z - 1867216.25)  / 36524.25);
 	double S = Z + 1 + a - (double)ENT(a/4.0);
 
@@ -69,8 +64,8 @@ Date JJToReadable(double JJ) {
 	uint16_t Year = Month > 2 ? C - 4716 : C - 4715;
 
 	uint8_t Hour = (uint8_t)ENT(F * 24.0);
-	uint8_t Minute = (uint8_t)ENT((ENT(F * 24.0) - Hour) * 60.0);
-	uint8_t Second = (uint8_t)((ENT((ENT(F * 24.0) - Hour) * 60.0) - Minute) * 60.0);
+	uint8_t Minute = (uint8_t)ENT(1440.0 * (F - (double)Hour/24.0));
+	uint8_t Second = ENT(86400.0 * (F - (double)Hour/24.0 - (double)Minute/1440));
 
 	Date date = {Year, Month, Day, Hour, Minute, Second};
 
