@@ -4,6 +4,7 @@
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
 time_t current_time;
+KeplerCoords2D_t uv = {0.0, 0.0}; // Unit vector
 
 OrbitData computeOrbitData(TLE* Object) {
 	OrbitData output;
