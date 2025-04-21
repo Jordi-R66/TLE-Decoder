@@ -42,7 +42,7 @@ int32_t main(int argc, char* argv[]) {
 
 		while (true) {
 			clear();
-			PrintTle(CurrentEntry);
+			PrintTle(&CurrentEntry);
 			sleep(1);
 		}
 	} else {
