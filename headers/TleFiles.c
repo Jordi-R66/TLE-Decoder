@@ -2,6 +2,8 @@
 
 #include <sys/stat.h>
 
+const uint8_t block_size = 165;
+
 int32_t GetTLENumber(string* filename) {
 	FILE* file = fopen(filename, "r");
 	char c = 'a';
