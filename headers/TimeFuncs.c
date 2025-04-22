@@ -4,21 +4,29 @@ int64_t ENT(double x) {
 	return (int64_t)floor(x);
 }
 
-double CurrentEpoch() {
+double timeDelta(Date A, Date B) {
+	uint16_t latest_year = A.Year;
+	double latest_day = (double)A.DayOfYear + (double)(A.Hour) / 24.0 + (double)(A.Minute) / 1440.0 + (double)(A.Second) / EARTH_DAY_LENGTH + 1.0;
+
+	uint16_t oldest_year = B.Year;
+	double oldest_day = (double)B.DayOfYear + (double)(B.Hour) / 24.0 + (double)(B.Minute) / 1440.0 + (double)(B.Second) / EARTH_DAY_LENGTH + 1.0;
+
+	double DeltaTime = (((double)(latest_year - oldest_year) * CALENDAR_YEAR) + (double)(latest_day - oldest_day)) * EARTH_DAY_LENGTH;
+	return DeltaTime;
+}
+
+Date CurrentDate() {
 	time_t current_time = time(NULL);
 
 	struct tm* utc = gmtime(&current_time);
 
 	uint32_t Y = utc->tm_year + 1900;
-	uint32_t M = utc->tm_mon + 1;
-	uint32_t D = utc->tm_mday;
 	uint32_t h = utc->tm_hour;
 	uint32_t m = utc->tm_min;
 	uint32_t s = utc->tm_sec;
 
-	// printf("YEAR : %u\nMONTH : %u\n", Y, M);
+	Date Epoch = {Y, utc->tm_yday, h, m, s};
 
-	double Epoch = JulianDay(Y, M, D, h, m, s);
 	return Epoch;
 }
 
@@ -36,13 +44,30 @@ double JulianDay(uint32_t Y, uint32_t M, uint32_t D, uint32_t h, uint32_t m, uin
 	double S = ENT((double)Y / 100.0);
 	double B = 2 - S + ENT(S / 4.0);
 
-	return ENT(365.25 * Y) + ENT(30.6001 * (M + 1)) + Q + B + 1720994.5 + 0.5;
+	return (ENT(365.25 * Y) + ENT(30.6001 * (M + 1)) + Q + B + 1720994.5 + 0.5);
 }
 
-double tleEpochToJJ(uint16_t Y, double day) {
-	double JJ_REF = JulianDay(1900, 1, 1, 0, 0, 0);
+int64_t JulianDayInt(uint32_t Y, uint32_t M, uint32_t D) {
+	return ENT(JulianDay(Y, M, D, 0, 0, 0));
+}
 
-	return JJ_REF + (Y - 1900) * CALENDAR_YEAR + day;
+Date tleToDate(uint16_t EPOCH_YEAR, double EPOCH_DAY) {
+	Date output;
+
+	output.Year = EPOCH_YEAR;
+	output.DayOfYear = (uint16_t)ENT(EPOCH_DAY);
+
+	double dayFraction = EPOCH_DAY - (double)output.DayOfYear;
+
+	double h = dayFraction * 24;
+	double m = (h - ENT(h)) * 60;
+	double s = (m - ENT(m)) * 60;
+
+	output.Hour = (uint8_t)ENT(h);
+	output.Minute = (uint8_t)ENT(m);
+	output.Second = (uint8_t)ENT(s);
+
+	return output;
 }
 
 Date JJToReadable(double JJ) {
