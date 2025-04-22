@@ -6,10 +6,10 @@ int64_t ENT(double x) {
 
 double timeDelta(Date A, Date B) {
 	uint16_t latest_year = A.Year;
-	double latest_day = (double)A.DayOfYear + (double)(A.Hour) / 24.0 + (double)(A.Minute) / 1440.0 + (double)(A.Second) / EARTH_DAY_LENGTH + 1.0;
+	double latest_day = (double)A.DayOfYear + (double)(A.Hour) / 24.0 + (double)(A.Minute) / 1440.0 + (double)(A.Second) / EARTH_DAY_LENGTH;
 
 	uint16_t oldest_year = B.Year;
-	double oldest_day = (double)B.DayOfYear + (double)(B.Hour) / 24.0 + (double)(B.Minute) / 1440.0 + (double)(B.Second) / EARTH_DAY_LENGTH + 1.0;
+	double oldest_day = (double)B.DayOfYear + (double)(B.Hour) / 24.0 + (double)(B.Minute) / 1440.0 + (double)(B.Second) / EARTH_DAY_LENGTH;
 
 	double DeltaTime = (((double)(latest_year - oldest_year) * CALENDAR_YEAR) + (double)(latest_day - oldest_day)) * EARTH_DAY_LENGTH;
 	return DeltaTime;
@@ -27,7 +27,7 @@ Date CurrentDate() {
 	uint8_t m = utc->tm_min;
 	uint8_t s = utc->tm_sec;
 
-	Date Epoch = {Y, D, M, utc->tm_yday, h, m, s};
+	Date Epoch = {Y, M, D, utc->tm_yday+1, h, m, s};
 
 	return Epoch;
 }
@@ -72,7 +72,11 @@ Date tleToDate(uint16_t EPOCH_YEAR, double EPOCH_DAY) {
 	int64_t JJ_YEAR = JulianDayInt(EPOCH_YEAR, 1, 1);
 	int64_t JJ_EPOCH = JJ_YEAR + output.DayOfYear - 1;
 
-	output.DayOfYear = JJToReadable(JJ_EPOCH).DayOfYear;
+	Date translatedJJ = JJToReadable(JJ_EPOCH);
+
+	output.Day = translatedJJ.Day;
+	output.Month = translatedJJ.Month;
+	output.DayOfYear = translatedJJ.DayOfYear;
 
 	return output;
 }
