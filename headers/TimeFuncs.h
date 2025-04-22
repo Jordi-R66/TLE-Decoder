@@ -26,6 +26,6 @@ double timeDelta(Date A, Date B);
 Date CurrentDate();
 Date tleToDate(uint16_t EPOCH_YEAR, double EPOCH_DAY);
 double JulianDay(uint32_t Y, uint32_t M, uint32_t D, uint32_t h, uint32_t m, uint32_t s);
-double tleEpochToJJ(uint16_t Y, double day);
+Date tleToDate(uint16_t EPOCH_YEAR, double EPOCH_DAY);
 
 Date JJToReadable(double JJ);

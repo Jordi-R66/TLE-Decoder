@@ -18,7 +18,7 @@ double timeDelta(Date A, Date B) {
 Date CurrentDate() {
 	time_t current_time = time(NULL);
 
-	struct tm* utc = gmtime(&current_time);
+	tm* utc = gmtime(&current_time);
 
 	uint32_t Y = utc->tm_year + 1900;
 	uint32_t h = utc->tm_hour;
