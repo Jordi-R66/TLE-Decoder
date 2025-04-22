@@ -72,7 +72,7 @@ Date tleToDate(uint16_t EPOCH_YEAR, double EPOCH_DAY) {
 	int64_t JJ_YEAR = JulianDayInt(EPOCH_YEAR, 1, 1);
 	int64_t JJ_EPOCH = JJ_YEAR + output.DayOfYear - 1;
 
-	
+	output.DayOfYear = JJToReadable(JJ_EPOCH).DayOfYear;
 
 	return output;
 }
