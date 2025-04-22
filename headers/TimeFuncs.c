@@ -21,11 +21,13 @@ Date CurrentDate() {
 	tm* utc = gmtime(&current_time);
 
 	uint32_t Y = utc->tm_year + 1900;
-	uint32_t h = utc->tm_hour;
-	uint32_t m = utc->tm_min;
-	uint32_t s = utc->tm_sec;
+	uint8_t M = utc->tm_mon + 1;
+	uint8_t D = utc->tm_mday;
+	uint8_t h = utc->tm_hour;
+	uint8_t m = utc->tm_min;
+	uint8_t s = utc->tm_sec;
 
-	Date Epoch = {Y, utc->tm_yday, h, m, s};
+	Date Epoch = {Y, D, M, utc->tm_yday, h, m, s};
 
 	return Epoch;
 }
@@ -67,6 +69,11 @@ Date tleToDate(uint16_t EPOCH_YEAR, double EPOCH_DAY) {
 	output.Minute = (uint8_t)ENT(m);
 	output.Second = (uint8_t)ENT(s);
 
+	int64_t JJ_YEAR = JulianDayInt(EPOCH_YEAR, 1, 1);
+	int64_t JJ_EPOCH = JJ_YEAR + output.DayOfYear - 1;
+
+	
+
 	return output;
 }
 
@@ -92,7 +99,9 @@ Date JJToReadable(double JJ) {
 	uint8_t Minute = (uint8_t)ENT(1440.0 * (F - (double)Hour/24.0));
 	uint8_t Second = ENT(86400.0 * (F - (double)Hour/24.0 - (double)Minute/1440));
 
-	Date date = {Year, Month, Day, Hour, Minute, Second};
+	uint16_t DayOfYear = ENT(JJ) - JulianDayInt(Year, 1, 1) + 1;
+
+	Date date = {Year, Month, Day, DayOfYear, Hour, Minute, Second};
 
 	return date;
 }
