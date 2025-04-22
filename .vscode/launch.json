@@ -6,7 +6,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/output/TLE.elf",
-			"args": [],
+			"args": ["${workspaceFolder}/TLEs/stations.tle", "25544"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
