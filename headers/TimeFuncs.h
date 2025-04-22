@@ -1,9 +1,10 @@
 #include "Common.h"
 
+typedef struct tm tm;
+
 typedef struct Date {
 	uint16_t Year;
-	uint8_t Month;
-	uint8_t Day;
+	uint16_t DayOfYear; // [0; 365]
 
 	uint8_t Hour;
 	uint8_t Minute;
