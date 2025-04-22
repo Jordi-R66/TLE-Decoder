@@ -17,7 +17,7 @@ typedef struct OrbitData {
 
 	double Ap, Pe;
 	double longPeri;
-	double epoch;
+	Date epoch;
 } OrbitData;
 
 typedef struct EpochData {
@@ -29,7 +29,7 @@ typedef struct EpochData {
 	double Alt;
 	double Spd;
 
-	double deltaTime;
+	Date epoch;
 
 	KeplerCoords2D_t coords2D;
 	KeplerCoords3D_t coords3D;
