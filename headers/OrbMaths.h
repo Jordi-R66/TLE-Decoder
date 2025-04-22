@@ -1,8 +1,7 @@
 #pragma once
-#include "Common.h"
 
-#define EARTH_DAY_LENGTH 86400.0
-//86164.096
+#include "Common.h"
+#include "TimeFuncs.h"
 
 #define G 6.67428E-11
 #define EARTH_MASS 5.9722E24
