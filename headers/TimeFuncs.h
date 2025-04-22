@@ -4,7 +4,9 @@ typedef struct tm tm;
 
 typedef struct Date {
 	uint16_t Year;
+	uint8_t Month, Day;
 	double DayOfYear; // [0; 365] + Fraction of day
+
 
 	uint8_t Hour;
 	uint8_t Minute;
