@@ -33,7 +33,7 @@ OrbitData computeOrbitData(TLE* Object) {
 		epoch_year += 1900;
 	}
 
-	output.epoch = tleEpochToJJ(epoch_year, Object->EPOCH);
+	output.epoch = tleToDate(epoch_year, Object->EPOCH);
 
 	return output;
 }
@@ -44,13 +44,12 @@ EpochData computeEpochData(TLE* Object, OrbitData* orbitData, bool realTime) {
 	memset(&output, 0, EPOCH_DATA_LENGTH);
 
 	double deltaTime = 0.0;
+	output.epoch = orbitData->epoch;
 
 	if (realTime) {
-		deltaTime = (CurrentEpoch() - orbitData->epoch) + 1;
+		output.epoch = CurrentDate();
+		deltaTime = timeDelta(output.epoch, orbitData->epoch);
 	}
-
-	output.deltaTime = deltaTime;
-	deltaTime *= EARTH_DAY_LENGTH;
 
 	double MA = Object->MeanAnomaly + (orbitData->n * deltaTime * RADS2DEGS);
 	MA = fmod(MA, 360.0);
@@ -116,9 +115,9 @@ void PrintTle(TLE* Object) {
 	EpochData epoch = computeEpochData(Object, &orbitData, false);
 	EpochData current = computeEpochData(Object, &orbitData, true);
 
-	double DeltaTime = current.deltaTime * EARTH_DAY_LENGTH;
+	double DeltaTime = timeDelta(current.epoch, epoch.epoch);
 
-	Date utc = JJToReadable(orbitData.epoch + current.deltaTime);
+	Date utc = current.epoch;
 
 	double Speed_Ap, Speed_Pe;
 
