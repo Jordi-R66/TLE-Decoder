@@ -3,6 +3,6 @@
 	"Parameters": ["-Wall", "-O3", "-s", "-std=c23", "-m64", "-flto", "-ffunction-sections", "-fdata-sections", "-Wl,--gc-sections"],
 	"OutputPath": "output/",
 	"OutputName": "TLE-Decoder",
-	"Sources": ["headers/TleFiles.c", "headers/OrbMaths.c", "headers/TleParser.c", "headers/Conversions.c", "headers/Algos.c", "headers/TermFuncs.c", "libs/myOwnCLib/matrices/matrix.c", "libs/myOwnCLib/vectors/vectors.c", "headers/Kepler.c", "headers/Ellipses.c", "headers/logger.c", "headers/Intermediate.c", "headers/TimeFuncs.c", "main.c"],
+	"Sources": ["headers/TleFiles.c", "headers/OrbMaths.c", "headers/TleParser.c", "headers/Conversions.c", "headers/Algos.c", "headers/TermFuncs.c", "libs/myOwnCLib/matrices/matrix.c", "libs/myOwnCLib/vectors/vectors.c", "headers/Kepler.c", "headers/Ellipses.c", "headers/Intermediate.c", "headers/TimeFuncs.c", "main.c"],
 	"UseMath": true
 }
