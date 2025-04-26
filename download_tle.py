@@ -2,6 +2,7 @@ from fileinput import filename
 from h11 import Response
 from requests import get
 from time import time, time_ns
+from os import mkdir, path
 
 CELESTRAK_SETS: list[str] = sorted([
 	"active",
@@ -161,5 +162,8 @@ def merge_all():
 
 if __name__ == "__main__":
 	# download_spacetrack()
+	if (not path.exists("./TLEs")):
+		mkdir("TLEs")
+
 	download_all()
 	merge_all()
