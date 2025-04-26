@@ -28,7 +28,7 @@ int32_t main(int argc, char* argv[]) {
 	ArgumentParser(argv, argc);
 	clear();
 
-	struct timespec sleeptime = {.tv_sec = 0, .tv_nsec = 1000000000/24};
+	struct timespec sleeptime = {.tv_sec = 0, .tv_nsec = 1000000000/4};
 
 	const bool ReadingFile = false;
 
