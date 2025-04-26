@@ -28,6 +28,8 @@ int32_t main(int argc, char* argv[]) {
 	ArgumentParser(argv, argc);
 	clear();
 
+	struct timespec sleeptime = {.tv_sec = 0, .tv_nsec = 1000000000/24};
+
 	const bool ReadingFile = false;
 
 	if (!ReadingFile) {
@@ -62,7 +64,7 @@ int32_t main(int argc, char* argv[]) {
 		while (true) {
 			clear();
 			PrintTle(&CurrentEntry);
-			sleep(1);
+			nanosleep(&sleeptime, NULL);
 		}
 	} else {
 		printf("Opening the files\n");
