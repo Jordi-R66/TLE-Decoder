@@ -57,13 +57,14 @@ if path.exists("compile_conf.json"):
 
 	valid_steps += 1
 
-	currentPath: str = ""
+	currentPath: str = "."
 	for Folder in OUTPUT_PATH.split("/"):
 		exists: bool = path.exists(f"{currentPath}/{Folder}")
 
 		if not (exists):
+			#print(__file__)
 			mkdir(f"{currentPath}/{Folder}")
-		
+
 		currentPath = f"{currentPath}/{Folder}"
 
 	valid_steps += 1
