@@ -26,6 +26,7 @@
 
 #define COSPAR_LENGTH (YR_LENGTH + LAUNCH_NB_LENGTH + LAUNCH_PART_LENGTH - 2)
 
+#pragma pack(1)
 struct TLE {
 	string name[NAME_LENGTH];
 
@@ -60,6 +61,9 @@ struct TLE {
 };
 
 typedef struct TLE TLE;
+#pragma pack()
+
+#define TLE_SIZE sizeof(TLE)
 
 TLE parse_block(string lines[][70]);
 
