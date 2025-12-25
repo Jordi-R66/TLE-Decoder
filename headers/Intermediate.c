@@ -1,12 +1,13 @@
 #include "Intermediate.h"
 #include "TimeFuncs.h"
+#include "Kepler.h"
 
 double EccentricAnomalyTolerance = 1E-5 * DEGS2RADS;
 
 time_t current_time;
 
 bool uvInit = false; // Has the unit vector been initialized?
-Vector uv; // Unit vector
+//Vector uv; // Unit vector
 
 OrbitData computeOrbitData(TLE* Object) {
 	OrbitData output;
@@ -70,42 +71,6 @@ EpochData computeEpochData(TLE* Object, OrbitData* orbitData, bool realTime) {
 	output.Alt = Alt;
 	output.Spd = Spd;
 
-	// Now computing the unit vector - if not initialized
-
-	if (!uvInit) {
-		double AscNodeTA = longitudeToTA(Object->AscNodeLong * DEGS2RADS, orbitData->longPeri);
-		double AscNodeR = OrbAltTA(Object->Eccentricity, orbitData->SMA, AscNodeTA);
-
-		Vector AscNode = coordsFromTA(AscNodeR, AscNodeTA);
-		Vector rotAN = Rotate2D(&AscNode, orbitData->longPeri);
-		KeplerCoords2D_t AscNode2D = *(KeplerCoords2D_t*)rotAN.data;
-
-		uv = unitVector2D(AscNode2D.x, AscNode2D.y);
-
-		deallocVector(&AscNode);
-		deallocVector(&rotAN);
-
-		uvInit = true;
-	}
-
-	// Now computing 2D
-
-	Vector coords2D = coordsFromTA(R, TA);
-	Vector rot2D = Rotate2D(&coords2D, orbitData->longPeri);
-
-	output.coords2D = *(KeplerCoords2D_t*)rot2D.data;
-
-	deallocVector(&coords2D);
-
-	// Now Computing 3D
-
-	Vector rot3D = Rotate3D(&uv, &rot2D, Object->Inclination * DEGS2RADS);
-
-	output.coords3D = *(KeplerCoords3D_t*)rot3D.data;
-
-	deallocVector(&rot2D);
-	deallocVector(&rot3D);
-
 	return output;
 }
 
@@ -156,14 +121,10 @@ void PrintTle(TLE* Object) {
 	printf("------------------------------- CURRENTLY -------------------------------\n");
 
 	printf("DATE (UTC) : %0*d/%0*d/%0*d %0*d:%0*d:%0*d\n", 2, utc.Day, 2, utc.Month + 1, 4, utc.Year, 2, utc.Hour, 2, utc.Minute, 2, utc.Second);
-	printf("X Coord : %.0lf m\n", current.coords3D.x);
-	printf("Y Coord : %.0lf m\n", current.coords3D.y);
-	printf("Z Coord : %.0lf m\n", current.coords3D.z);
 	printf("ALTITUDE : %.0lf m\n", current.Alt);
 	printf("SPEED : %.2lf m/s\n", current.Spd);
 
 	printf("-------------------------------------------------------------------------\n");
 
-	deallocVector(&uv);
 	uvInit = false;
 }

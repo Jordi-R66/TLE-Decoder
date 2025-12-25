@@ -1,16 +1,14 @@
 #include "Common.h"
 
-#include "../libs/myOwnCLib/vectors/vectors.h"
-
 struct KeplerCoords2D {
-	value_t x;
-	value_t y;
+	double x;
+	double y;
 };
 
 struct KeplerCoords3D {
-	value_t x;
-	value_t y;
-	value_t z;
+	double x;
+	double y;
+	double z;
 };
 
 
@@ -61,44 +59,6 @@ KeplerCoords2D_t subCoords2D(KeplerCoords2D_t a, KeplerCoords2D_t b);
  * @return KeplerCoords2D_t The coordinates of the point relative to the baricenter
  */
 KeplerCoords2D_t basic2DKeplerCoords(double a, double e, double E);
-
-/**
- * @brief Returns the coordinates of a point in 2D space given its distance from the focal and its true anomaly
- * 
- * @param r Distance from the focal point
- * @param TA True anomaly in radians
- * @return Vector Coordinates of the point in 2D space relative to the focal point
- */
-Vector coordsFromTA(double r, double TA);
-
-/**
- * @brief Computes the rotated coordinates of a point in 2D plane
- * 
- * @param coords The pointer to the Vector representing the coordinates of the point
- * @param angleRot The angle of rotation in radians
- * @return Vector The rotated coordinates of the point
- */
-Vector Rotate2D(Vector* coords, value_t angleRot);
-
-/**
- * @brief Computes the unit vector in 2D space given its x and y components
- * 
- * @param x The x component of the vector
- * @param y The y component of the vector
- * @return Vector The unit vector in 2D space
- */
-Vector unitVector2D(value_t x, value_t y) ;
-
-
-/**
- * @brief Uses Rodrigues' Rotation Formula to return the rotated vector by a given angle around a unit vector
- * 
- * @param unitVector 2D unit vector
- * @param currentVector 2D vector to rotate
- * @param angleRot Rotation angle in radians
- * @return Vector 
- */
-Vector Rotate3D(Vector* unitVector, Vector* currentVector, value_t angleRot);
 
 /**
  * @brief Rotates a 2D point by a given angle in radians
