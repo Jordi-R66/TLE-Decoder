@@ -10,8 +10,8 @@ mkdir -p $OUTPUT_DIR
 
 EXEC="TLE.elf"
 
-ARGS="-Wall -Wextra -s -Os -std=c23 -masm=intel"
-#ARGS="-Wall -Wno-unused-variable -O3 -std=c17 -m64 -march=x86-64 -flto"
+#ARGS="-Wall -Wextra --fast-math -s -Os -std=c23 -masm=intel"
+ARGS="-Wall -Wextra -Wno-unused-variable -s -O3 -std=c17 -m64 -march=x86-64 -flto -masm=intel"
 
 $COMPILER $ARGS $SOURCES -o $OUTPUT_DIR/$EXEC -lm
 $COMPILER $ARGS $SOURCES -S
