@@ -10,7 +10,7 @@ uint32_t strint(char*);
 
 double strtoscinotd(char*);
 
-string* secstohms(double secs);
+string secstohms(double secs);
 
 #undef M_PI
 #define M_PI 3.141592653589793

@@ -10,7 +10,7 @@ uint32_t ipow(uint32_t a, uint32_t b) {
 	return result;
 }
 
-uint32_t strint(string* value) {
+uint32_t strint(string value) {
 	uint32_t output_value = 0;
 	uint32_t length = strlen(value);
 
@@ -29,7 +29,7 @@ uint32_t strint(string* value) {
 	return output_value;
 }
 
-double strtoscinotd(string* original) {
+double strtoscinotd(string original) {
 	// Converts a string to a scientific notation and then converts it to a double
 
 	int8_t total_shift = 0;
@@ -55,7 +55,7 @@ double strtoscinotd(string* original) {
 	return final_output;
 }
 
-string* secstohms(double secs) {
+string secstohms(double secs) {
 	static string output[28];
 
 	uint8_t days, hours, minutes, seconds, centiseconds;
@@ -79,7 +79,7 @@ string* secstohms(double secs) {
 	return output;
 }
 
-string* intstr(uint32_t x) {
+string intstr(uint32_t x) {
 	static string output[11];
 
 	if (x == 0) {

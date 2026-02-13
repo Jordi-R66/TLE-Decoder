@@ -1,6 +1,6 @@
 #include "Algos.h"
 
-int32_t checksum_algorithm(string* line, int32_t modulus) {
+int32_t checksum_algorithm(string line, int32_t modulus) {
 
 	int32_t checksum = 0;
 	int32_t line_length = strlen(line) + 1;
@@ -12,7 +12,7 @@ int32_t checksum_algorithm(string* line, int32_t modulus) {
 	for (int32_t i = 0; i < line_length; i++) {
 		int8_t c = line[i];
 
-		if ((c >= 48) && (c <= 57)) {
+		if ((48 <= c) && (c <= 57)) {
 			c -= 48;
 		}
 		else if (c == '-') {

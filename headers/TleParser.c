@@ -4,9 +4,9 @@
 
 TLE parse_block(string lines[][70]) {
 	char* endptr;
-	string* NAME_LINE = lines[0];
-	string* FIRST_LINE = lines[1];
-	string* SECOND_LINE = lines[2];
+	string NAME_LINE = lines[0];
+	string FIRST_LINE = lines[1];
+	string SECOND_LINE = lines[2];
 
 	// 0-th line
 

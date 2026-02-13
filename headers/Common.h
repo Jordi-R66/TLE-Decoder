@@ -1,7 +1,5 @@
 #pragma once
 
-#define M_PI 3.14159265358979323846
-
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,5 +13,4 @@
 	#include <unistd.h>
 #endif
 
-typedef char string;
-typedef char* cstring;
+typedef char* string;

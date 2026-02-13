@@ -4,7 +4,7 @@
 
 const uint8_t block_size = 165;
 
-int32_t GetTLENumber(string* filename) {
+int32_t GetTLENumber(string filename) {
 	FILE* file = fopen(filename, "r");
 	char c = 'a';
 
@@ -22,7 +22,7 @@ int32_t GetTLENumber(string* filename) {
 	return line_count / 3;
 }
 
-TLE* GetAllTle(string* filename) {
+TLE* GetAllTle(string filename) {
 
 	uint32_t TLE_NUMBER = GetTLENumber(filename);
 
@@ -93,7 +93,7 @@ TLE* GetAllTle(string* filename) {
 	return Output;
 }
 
-TLE GetSingleTLE(string* filename, uint32_t NORAD_ID) {
+TLE GetSingleTLE(string filename, uint32_t NORAD_ID) {
 	uint32_t TLE_NUMBER = GetTLENumber(filename);
 	FILE* tle_file = fopen(filename, "r");
 
@@ -161,7 +161,7 @@ TLE GetSingleTLE(string* filename, uint32_t NORAD_ID) {
 	exit(EXIT_FAILURE);
 }
 
-void PrintContentAsAscii(string* filename) {
+void PrintContentAsAscii(string filename) {
 	FILE* file = fopen(filename, "r");
 	char c = 'a';
 
@@ -174,14 +174,14 @@ void PrintContentAsAscii(string* filename) {
 	return;
 }
 
-void exportSingleTLE(string* filename, TLE* tlePtr) {
+void exportSingleTLE(string filename, TLE* tlePtr) {
 	FILE* fp = fopen(filename, "w");
 
 	fwrite(tlePtr, sizeof(*tlePtr), 1, fp);
 	fclose(fp);
 }
 
-void importSingleTLE(string* filename, TLE* tlePtr) {
+void importSingleTLE(string filename, TLE* tlePtr) {
 	FILE* fp = fopen(filename, "r");
 
 	fread(tlePtr, sizeof(TLE), 1, fp);
