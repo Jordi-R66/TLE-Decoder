@@ -22,75 +22,18 @@ int32_t GetTLENumber(string filename) {
 	return line_count / 3;
 }
 
-TLE* GetAllTle(string filename) {
+tle_block getBlockByIndex(FILE* fp, long index) {
+	tle_block output = {0};
 
-	uint32_t TLE_NUMBER = GetTLENumber(filename);
+	long curr_pos = ftell(fp);
 
-	FILE* tle_file = fopen(filename, "r");
+	long new_pos = TLE_BLOCK_SIZE * index;
+	fseek(fp, new_pos, SEEK_SET);
 
-	TLE* Output = (TLE*)malloc(sizeof(TLE) * TLE_NUMBER);
+	size_t read_bytes = fread(&output, TLE_BLOCK_SIZE, 1, fp);
+	fseek(fp, curr_pos, SEEK_SET);
 
-	if (Output == NULL) {
-		return NULL;
-	}
-
-	memset(Output, 0, sizeof(TLE) * TLE_NUMBER);
-
-	string first_line[25];
-	string second_line[70];
-	string third_line[70];
-
-	for (uint32_t block_number = 0; block_number < TLE_NUMBER; block_number++) {
-
-		uint8_t block_line = 0;
-		uint8_t j = 0;
-
-		for (uint8_t i = 0; i < block_size; i++) {
-			uint32_t pos = block_number * block_size + i;
-
-			if (i >= 25) {
-				block_line = 1;
-				j = i - 25;
-			}
-
-			if (i >= 95) {
-				block_line = 2;
-				j = i - 95;
-			}
-
-			fseek(tle_file, pos, SEEK_SET);
-			char c = fgetc(tle_file);
-
-			if ((c == '\n') || (c == EOF)) {
-				c = '\0';
-			}
-
-			switch (block_line) {
-				case 0:
-					first_line[j] = c;
-					break;
-
-				case 1:
-					second_line[j] = c;
-					break;
-
-				case 2:
-					third_line[j] = c;
-					break;
-
-				default:
-					break;
-			}
-			j++;
-		}
-
-		TLE obj = parse_lines(first_line, second_line, third_line);
-		Output[block_number] = obj;
-	}
-
-	fclose(tle_file);
-
-	return Output;
+	return output;
 }
 
 TLE GetSingleTLE(string filename, uint32_t NORAD_ID) {
