@@ -26,77 +26,62 @@ tle_block getBlockByIndex(FILE* fp, long index) {
 	size_t read_bytes = fread(&output, TLE_BLOCK_SIZE, 1, fp);
 	fseek(fp, curr_pos, SEEK_SET);
 
+	output.FIRST_LINE[24] = '\0';
+	output.SECOND_LINE[69] = '\0';
+	output.THIRD_LINE[69] = '\0';
+
 	return output;
+};
+
+TLE parse_block(tle_block* block) {
+	return parse_lines(block->FIRST_LINE, block->SECOND_LINE, block->THIRD_LINE);
 }
 
-TLE GetSingleTLE(string filename, uint32_t NORAD_ID) {
-	uint32_t TLE_NUMBER = GetTLENumber(filename);
-	FILE* tle_file = fopen(filename, "r");
+uint32_t readNoradIdFromBlock(tle_block* block) {
+	uint32_t noradId = 0;
 
-	TLE Output;
-	memset(&Output, 0, sizeof(Output));
+	char NORAD_CAT[NORAD_ID_LENGTH] = {0};
 
-	string first_line[25];
-	string second_line[70];
-	string third_line[70];
-
-	for (uint32_t block_number = 0; block_number < TLE_NUMBER; block_number++) {
-
-		uint8_t block_line = 0;
-		uint8_t j = 0;
-
-		for (uint8_t i = 0; i < block_size; i++) {
-			uint32_t pos = block_number * block_size + i;
-
-			if (i >= 25) {
-				block_line = 1;
-				j = i - 25;
-			}
-
-			if (i >= 95) {
-				block_line = 2;
-				j = i - 95;
-			}
-
-			fseek(tle_file, pos, SEEK_SET);
-			char c = fgetc(tle_file);
-
-			if ((c == '\n') || (c == EOF)) {
-				c = '\0';
-			}
-
-			switch (block_line) {
-				case 0:
-					first_line[j] = c;
-					break;
-
-				case 1:
-					second_line[j] = c;
-					break;
-
-				case 2:
-					third_line[j] = c;
-					break;
-
-				default:
-					break;
-			}
-			j++;
-		}
-
-		Output = parse_lines(first_line, second_line, third_line);
-
-		if (Output.NORAD_ID == NORAD_ID) {
-			fclose(tle_file);
-			return Output;
+	for (uint8_t i = 0; i < NORAD_ID_LENGTH; i++) {
+		if (i < 5) {
+			NORAD_CAT[i] = block->SECOND_LINE[i + 2];
 		}
 	}
 
-	fclose(tle_file);
-	fprintf(stderr, "Error: Couldn't find %u in %s\n", NORAD_ID, filename);
-	exit(EXIT_FAILURE);
+	noradId = (uint32_t)strint(NORAD_CAT);
+
+	return noradId;
 }
 
+TLE GetSingleTLE(FILE* fp, uint32_t noradId) {
+	TLE output = {0};
+
+	tle_block tempBlock;
+	long tle_count = GetTLENumber(fp);
+	printf("Counted the TLEs (%ld)\n", tle_count);
+
+	bool found = false;
+	long i = 0;
+
+	while (!found && i < tle_count) {
+		tempBlock = getBlockByIndex(fp, i);
+		uint32_t temp_noradId = readNoradIdFromBlock(&tempBlock);
+
+		found = noradId == temp_noradId;
+
+		if (found) {
+			fprintf(stdout, "%s\n%s\n%s\n\n", tempBlock.FIRST_LINE, tempBlock.SECOND_LINE, tempBlock.THIRD_LINE);
+		}
+
+		i++;
+	}
+
+	output = parse_block(&tempBlock);
+
+	return output;
+}
+
+/*
 void PrintContentAsAscii(string filename) {
 	FILE* file = fopen(filename, "r");
 	char c = 'a';
@@ -123,3 +108,4 @@ void importSingleTLE(string filename, TLE* tlePtr) {
 	fread(tlePtr, sizeof(TLE), 1, fp);
 	fclose(fp);
 }
+*/
