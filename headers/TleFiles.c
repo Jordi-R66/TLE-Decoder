@@ -76,7 +76,9 @@ TLE GetSingleTLE(FILE* fp, uint32_t noradId) {
 		i++;
 	}
 
-	output = parse_block(&tempBlock);
+	if (found) {
+		output = parse_block(&tempBlock);
+	}
 
 	return output;
 }
