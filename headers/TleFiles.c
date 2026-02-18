@@ -23,7 +23,7 @@ tle_block getBlockByIndex(FILE* fp, long index) {
 	long new_pos = TLE_BLOCK_SIZE * index;
 	fseek(fp, new_pos, SEEK_SET);
 
-	size_t read_bytes = fread(&output, TLE_BLOCK_SIZE, 1, fp);
+	fread(&output, TLE_BLOCK_SIZE, 1, fp);
 	fseek(fp, curr_pos, SEEK_SET);
 
 	output.FIRST_LINE[24] = '\0';
