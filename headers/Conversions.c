@@ -29,13 +29,12 @@ uint32_t strint(char* value) {
 	return output_value;
 }
 
-/*
-double strtoscinotd(string original) {
+double strtoscinotd(char* original) {
 	// Converts a string to a scientific notation and then converts it to a double
 
 	int8_t total_shift = 0;
 
-	string intermediate_string[10];
+	char intermediate_string[10];
 	char* endptr;
 
 	for (uint8_t i = 0; i < 8; i++) {
@@ -56,6 +55,7 @@ double strtoscinotd(string original) {
 	return final_output;
 }
 
+/*
 string secstohms(double secs) {
 	static string output[28];
 
