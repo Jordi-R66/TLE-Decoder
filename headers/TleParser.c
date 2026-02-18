@@ -2,38 +2,35 @@
 
 #define EOS '\0'
 
-TLE parse_block(string lines[][70]) {
+TLE parse_lines(char NAME_LINE[25], char FIRST_LINE[70], char SECOND_LINE[70]) {
 	char* endptr;
-	string NAME_LINE = lines[0];
-	string FIRST_LINE = lines[1];
-	string SECOND_LINE = lines[2];
 
 	// 0-th line
 
-	string OBJ_NAME[NAME_LENGTH];
+	char OBJ_NAME[NAME_LENGTH];
 
 	// 1st line
 
-	string NORAD_CAT[NORAD_ID_LENGTH];
+	char NORAD_CAT[NORAD_ID_LENGTH];
 	char CLASSIFICATION;
-	string COSPAR_YR[YR_LENGTH];
-	string LAUNCH_NB[LAUNCH_NB_LENGTH];
-	string LAUNCH_PART[LAUNCH_PART_LENGTH];
-	string EPOCH_YR[YR_LENGTH];
-	string EPOCH_DAY[EPOCH_LENGTH];
-	string DERIV_1[DERIV_1_LENGTH];
-	string DERIV_2[DERIV_2_LENGTH];
-	string BSTAR[BSTAR_LENGTH];
+	char COSPAR_YR[YR_LENGTH];
+	char LAUNCH_NB[LAUNCH_NB_LENGTH];
+	char LAUNCH_PART[LAUNCH_PART_LENGTH];
+	char EPOCH_YR[YR_LENGTH];
+	char EPOCH_DAY[EPOCH_LENGTH];
+	char DERIV_1[DERIV_1_LENGTH];
+	char DERIV_2[DERIV_2_LENGTH];
+	char BSTAR[BSTAR_LENGTH];
 
 	// 2nd line
 
-	string INCLI[INCLINATION_LENGTH];
-	string AN[ASC_NODE_LENGTH];
-	string ECC[ECC_LENGTH];
-	string ARG_PE[ARG_PE_LENGTH];
-	string MEAN_ANO[MEAN_ANO_LENGTH];
-	string MEAN_MOTION[MEAN_MOTION_LENGTH];
-	string REVOLUTIONS[REVS_LENGTH];
+	char INCLI[INCLINATION_LENGTH];
+	char AN[ASC_NODE_LENGTH];
+	char ECC[ECC_LENGTH];
+	char ARG_PE[ARG_PE_LENGTH];
+	char MEAN_ANO[MEAN_ANO_LENGTH];
+	char MEAN_MOTION[MEAN_MOTION_LENGTH];
+	char REVOLUTIONS[REVS_LENGTH];
 
 	// --------------------------- 1-ST LINE PARSING ---------------------------
 
@@ -189,20 +186,4 @@ TLE parse_block(string lines[][70]) {
 	output.Revolutions = (uint32_t)strint(REVOLUTIONS);
 
 	return output;
-}
-
-TLE parse_lines(string NAME_LINE[25], string FIRST_LINE[70], string SECOND_LINE[70]) {
-	string lines[3][70];
-
-	for (int8_t l = 0; l < 3; l++) {
-		for (int8_t col = 0; col < 70; col++) {
-			lines[l][col] = 0;
-		}
-	}
-
-	strcpy(lines[0], NAME_LINE);
-	strcpy(lines[1], FIRST_LINE);
-	strcpy(lines[2], SECOND_LINE);
-
-	return parse_block(lines);
 }

@@ -27,7 +27,7 @@
 #define COSPAR_LENGTH (YR_LENGTH + LAUNCH_NB_LENGTH + LAUNCH_PART_LENGTH - 2)
 
 struct TLE {
-	string name[NAME_LENGTH];
+	char name[NAME_LENGTH];
 
 	// First line
 
@@ -36,7 +36,7 @@ struct TLE {
 
 	uint8_t COSPAR_YR : 7; // Max value : 99
 	uint16_t COSPAR_LN : 10;
-	string COSPAR_ID[LAUNCH_PART_LENGTH];
+	char COSPAR_ID[LAUNCH_PART_LENGTH];
 
 	uint8_t EPOCH_YR : 7; // Max value : 99
 	double EPOCH;
@@ -61,8 +61,6 @@ struct TLE {
 
 typedef struct TLE TLE;
 
-TLE parse_block(string lines[][70]);
-
-TLE parse_lines(string NAME_LINE[25], string FIRST_LINE[70], string SECOND_LINE[70]);
+TLE parse_lines(char NAME_LINE[25], char FIRST_LINE[70], char SECOND_LINE[70]);
 
 #endif

@@ -10,7 +10,7 @@ uint32_t ipow(uint32_t a, uint32_t b) {
 	return result;
 }
 
-uint32_t strint(string value) {
+uint32_t strint(char* value) {
 	uint32_t output_value = 0;
 	uint32_t length = strlen(value);
 
@@ -29,6 +29,7 @@ uint32_t strint(string value) {
 	return output_value;
 }
 
+/*
 double strtoscinotd(string original) {
 	// Converts a string to a scientific notation and then converts it to a double
 
@@ -95,4 +96,4 @@ string intstr(uint32_t x) {
 	}
 
 	return output;
-}
+}*/
