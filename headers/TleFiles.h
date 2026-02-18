@@ -12,11 +12,15 @@ typedef struct {
 
 tle_block getBlockByIndex(FILE* fp, long index);
 
-int32_t GetTLENumber(string filename);
+long GetTLENumber(FILE* fp);
 
-TLE GetSingleTLE(string filename, uint32_t NORAD_ID);
+TLE parse_block(tle_block* block);
 
+TLE GetSingleTLE(FILE* fp, uint32_t NORAD_ID);
+
+/*
 void PrintContentAsAscii(string filename);
 
 void exportSingleTLE(string filename, TLE* tlePtr);
 void importSingleTLE(string filename, TLE* tlePtr);
+*/

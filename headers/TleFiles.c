@@ -1,25 +1,18 @@
 #include "TleFiles.h"
+#include "Conversions.h"
 
 #include <sys/stat.h>
 
 const uint8_t block_size = 165;
 
-int32_t GetTLENumber(string filename) {
-	FILE* file = fopen(filename, "r");
-	char c = 'a';
+long GetTLENumber(FILE* fp) {
+	long curr_pos = ftell(fp);
 
-	int32_t line_count = 0;
+	fseek(fp, 0, SEEK_END);
+	long filesize = ftell(fp);
+	fseek(fp, curr_pos, SEEK_SET);
 
-	while (c != EOF) {
-		c = getc(file);
-		if (c == '\n') {
-			line_count++;
-		}
-	}
-
-	fclose(file);
-
-	return line_count / 3;
+	return filesize / TLE_BLOCK_SIZE;
 }
 
 tle_block getBlockByIndex(FILE* fp, long index) {
