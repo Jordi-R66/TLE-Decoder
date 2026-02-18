@@ -7,5 +7,6 @@ TLE_DECODER_SRCS = main.c headers/TleFiles.c headers/Conversions.c
 ALL_SRCS = $(TLE_DECODER_SRCS)
 
 compile:
+	clear
 	$(CC) $(CFLAGS) $(TLE_DECODER_SRCS) -o newTLE.out
 	$(CC) $(CFLAGS) $(TLE_DECODER_SRCS) -S
