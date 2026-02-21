@@ -1,0 +1,38 @@
+#include "Common.h"
+#include "OrbMaths.h"
+
+#pragma region Static Phase
+
+/**
+ * @brief Converts mean motion from revolutions per day to radians per second
+ * 
+ * @param meanMotion in revolutions per day
+ * @return meanMotion in radians per second 
+ */
+double convertMeanMotion(double meanMotion) {
+	static const double CONVERSION_FACTOR = (2.0 * M_PI) / MEAN_SOLAR_DAY;
+	return meanMotion * CONVERSION_FACTOR;
+}
+
+/**
+ * @brief Finds the orbital period by using the Mean Motion (rev / day)
+ * 
+ * @param meanMotion in revolutions per day
+ * @return orbital period in seconds 
+ */
+double orbPeriod(double meanMotion) {
+	return MEAN_SOLAR_DAY / meanMotion;
+}
+
+/**
+ * @brief Finds the semi major axis using the mean motion in radians per second
+ * 
+ * @param meanMotion in radians per second
+ * @return semi major axis in meters
+ */
+double semiMajorAxis(double meanMotion) {
+	//double temp = MEAN_SOLAR_DAY / (2.0 * M_PI);
+	return cbrt(MU_EARTH / pow(meanMotion, 2.0));
+}
+
+#pragma endregion
