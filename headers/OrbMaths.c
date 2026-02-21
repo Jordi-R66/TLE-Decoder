@@ -32,7 +32,7 @@ double orbPeriod(double meanMotion) {
  */
 double semiMajorAxis(double meanMotion) {
 	//double temp = MEAN_SOLAR_DAY / (2.0 * M_PI);
-	return cbrt(MU_EARTH / pow(meanMotion, 2.0));
+	return cbrt(MU_EARTH / (meanMotion * meanMotion));
 }
 
 #pragma endregion
