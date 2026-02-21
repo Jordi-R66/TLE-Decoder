@@ -6,6 +6,7 @@ StaticValues staticPhase(TLE tle) {
 	output.n = convertMeanMotion(tle.MeanMotion);
 	output.a = semiMajorAxis(output.n);
 	output.T = orbPeriod(tle.MeanMotion);
+	output.epoch_timestamp = getEpochTimestampFromTLE(tle);
 
 	return output;
 }
