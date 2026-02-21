@@ -27,7 +27,7 @@ Date CurrentDate() {
 	uint8_t m = utc->tm_min;
 	uint8_t s = utc->tm_sec;
 
-	Date Epoch = {Y, M, D, utc->tm_yday+1, h, m, s};
+	Date Epoch = { Y, M, D, utc->tm_yday + 1, h, m, s };
 
 	return Epoch;
 }
@@ -56,27 +56,55 @@ int64_t JulianDayInt(uint32_t Y, uint32_t M, uint32_t D) {
 Date tleToDate(uint16_t EPOCH_YEAR, double EPOCH_DAY) {
 	Date output;
 
+	// 1. Resolve 2-Digit Year Windowing (US Space Force Standard)
+	if (EPOCH_YEAR < 100) {
+		EPOCH_YEAR += (EPOCH_YEAR >= 57) ? 1900 : 2000;
+	}
 	output.Year = EPOCH_YEAR;
-	output.DayOfYear = (uint16_t)ENT(EPOCH_DAY);
 
-	double dayFraction = EPOCH_DAY - (double)output.DayOfYear;
+	// 2. Extract Day of Year and fractional time
+	uint16_t dayOfYearInt = (uint16_t)ENT(EPOCH_DAY);
+	double dayFraction = EPOCH_DAY - (double)dayOfYearInt;
 
-	double h = dayFraction * 24;
-	double m = (h - ENT(h)) * 60;
-	double s = (m - ENT(m)) * 60;
+	// Assign to the double field in your struct to preserve the exact epoch
+	output.DayOfYear = EPOCH_DAY;
+
+	// 3. Calculate Hours, Minutes, Seconds with rounding protection
+	double h = dayFraction * 24.0;
+	double m = (h - ENT(h)) * 60.0;
+	double s = (m - ENT(m)) * 60.0;
 
 	output.Hour = (uint8_t)ENT(h);
 	output.Minute = (uint8_t)ENT(m);
-	output.Second = (uint8_t)ENT(s);
 
-	int64_t JJ_YEAR = JulianDayInt(EPOCH_YEAR, 1, 1);
-	int64_t JJ_EPOCH = JJ_YEAR + output.DayOfYear - 1;
+	// Add 0.5 to prevent floating-point truncation from stealing a second
+	output.Second = (uint8_t)ENT(s + 0.5);
 
-	Date translatedJJ = JJToReadable(JJ_EPOCH);
+	// Handle micro-edge-case: rounding pushes seconds to 60
+	if (output.Second == 60) {
+		output.Second = 0;
+		output.Minute++;
+		if (output.Minute == 60) {
+			output.Minute = 0;
+			output.Hour++;
+		}
+	}
 
-	output.Day = translatedJJ.Day;
-	output.Month = translatedJJ.Month;
-	output.DayOfYear = translatedJJ.DayOfYear;
+	// 4. Calculate Month and Day using the Meeus algorithm
+	// We calculate the Midnight Julian Date of the target day directly.
+	int64_t JJ_YEAR = JulianDayInt(output.Year, 1, 1);
+	double Z = (double)(JJ_YEAR + dayOfYearInt - 1);
+
+	double a = ENT((Z - 1867216.25) / 36524.25);
+	double S = Z + 1.0 + a - ENT(a / 4.0);
+
+	double B = S + 1524.0;
+	double C = ENT((B - 122.1) / CALENDAR_YEAR);
+	double D = ENT(CALENDAR_YEAR * C);
+	double E = ENT((B - D) / 30.6001);
+
+	output.Day = (uint8_t)(B - D - ENT(30.6001 * E));
+	output.Month = (uint8_t)(E >= 14.0 ? E - 13.0 : E - 1.0);
 
 	return output;
 }
@@ -87,25 +115,25 @@ Date JJToReadable(double JJ) {
 	Z = (double)ENT(JJ);
 	F = JJ - Z;
 
-	double a = ENT( (Z - 1867216.25)  / 36524.25);
-	double S = Z + 1 + a - (double)ENT(a/4.0);
+	double a = ENT((Z - 1867216.25) / 36524.25);
+	double S = Z + 1 + a - (double)ENT(a / 4.0);
 
 	double B = S + 1524;
-	double C = (double)ENT( (B - 122.1) / CALENDAR_YEAR);
+	double C = (double)ENT((B - 122.1) / CALENDAR_YEAR);
 	double D = (double)ENT(CALENDAR_YEAR * C);
-	double E = (double)ENT((B-D)/30.6001);
+	double E = (double)ENT((B - D) / 30.6001);
 
 	uint8_t Day = (uint8_t)(B - D - (double)ENT(30.6001 * E));
 	uint8_t Month = E >= 14 ? E - 13 : E - 1;
 	uint16_t Year = Month > 2 ? C - 4716 : C - 4715;
 
 	uint8_t Hour = (uint8_t)ENT(F * 24.0);
-	uint8_t Minute = (uint8_t)ENT(1440.0 * (F - (double)Hour/24.0));
-	uint8_t Second = ENT(86400.0 * (F - (double)Hour/24.0 - (double)Minute/1440));
+	uint8_t Minute = (uint8_t)ENT(1440.0 * (F - (double)Hour / 24.0));
+	uint8_t Second = ENT(86400.0 * (F - (double)Hour / 24.0 - (double)Minute / 1440));
 
 	uint16_t DayOfYear = ENT(JJ) - JulianDayInt(Year, 1, 1) + 1;
 
-	Date date = {Year, Month, Day, DayOfYear, Hour, Minute, Second};
+	Date date = { Year, Month, Day, DayOfYear, Hour, Minute, Second };
 
 	return date;
 }
