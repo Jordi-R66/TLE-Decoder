@@ -36,3 +36,7 @@ double semiMajorAxis(double meanMotion) {
 }
 
 #pragma endregion
+
+#pragma region Dynamic Phase
+
+#pragma endregion
