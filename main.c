@@ -1,4 +1,4 @@
-#include "headers/StaticPhase.h"
+#include "headers/DynamicPhase.h"
 
 TLE initPhase(char* filename, uint32_t noradId) {
 	FILE* fp = fopen(filename, "r");
@@ -15,11 +15,18 @@ int main(int argc, char** argv) {
 	TLE tle = initPhase(filename, noradId);
 	StaticValues staticVals = staticPhase(tle);
 
-	double* vals = (double*)&staticVals;
+	time_t epoch_ts = getEpochTimestampFromTLE(tle);
+	time_t now = time(NULL);
 
-	for (int i = 0; i < 3; i++) {
-		printf("%lf\n", vals[i]);
-	}
+	char epoch_string[DATE_STRING_LENGTH], now_string[DATE_STRING_LENGTH];
+
+	timestampToDateString(epoch_ts, epoch_string);
+	timestampToDateString(now, now_string);
+
+	printf("Timestamp epoch : %ld (%s)\n", epoch_ts, epoch_string);
+	printf("Timestamp actuel : %ld (%s)\n", now, now_string);
+
+	printf("DeltaT : %ld\n", now - epoch_ts);
 
 	return 0;
 }
