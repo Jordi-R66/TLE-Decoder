@@ -1,0 +1,3 @@
+[submodule "libs/Calendar"]
+	path = libs/Calendar
+	url = git@github.com:Jordi-R66/Calendar.git
