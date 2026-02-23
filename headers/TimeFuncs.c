@@ -42,3 +42,25 @@ void timestampToDateString(time_t timestamp, char string[DATE_STRING_LENGTH]) {
 
 	sprintf(string, "%04hu-%02u-%02u %02u:%02u:%02u UTC", Year, Month, Day, Hour, Minute, Seconds);
 }
+
+void deltaTimeToString(time_t deltaTime, char string[DELTA_TIME_STRING_LENGTH]) {
+	memset(string, 0, DELTA_TIME_STRING_LENGTH);
+
+	uint16_t Days;
+	uint8_t Hours, Minutes, Seconds;
+
+	Days = deltaTime / 86400;
+	deltaTime %= 86400;
+
+	Hours = deltaTime / 3600;
+	deltaTime %= 3600;
+
+	Minutes = deltaTime / 60;
+	deltaTime %= 60;
+
+	Seconds = deltaTime;
+
+	sprintf(string, "%ud %02uh %02um %02us", Days, Hours, Minutes, Seconds);
+
+	return;
+}
