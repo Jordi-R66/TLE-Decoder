@@ -41,7 +41,7 @@ double semiMajorAxis(double meanMotion) {
 
 #pragma region Dynamic Phase
 
-double EccentricAnomaly(double e, double MA) {
+double EccentricAnomaly(double MA, double e) {
 	double E_Approx = MA + e * sin(MA);
 	double E = NewtonRaphson(
 		MA, e, *KeplerEquation, *KeplerPrime, E_Approx, 1E-6, 1000
@@ -65,7 +65,7 @@ double AltFromTA(double a, double e, double nu) {
 }
 
 double orbSpeed(double a, double r) {
-	return sqrt(MU_EARTH * (2.0 / r - 1.0 / a));
+	return sqrt(MU_EARTH * ((2.0 / r) - (1.0 / a)));
 }
 
 #pragma endregion
