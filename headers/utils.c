@@ -10,3 +10,11 @@ void sleep_ms(unsigned int milliseconds) {
 		nanosleep(&ts, NULL); // POSIX prend des secondes et nanosecondes
 	#endif
 }
+
+void clear_screen(void) {
+	#if defined(_WIN32)
+		system("cls");   // Commande pour Windows
+	#else
+		system("clear"); // Commande pour Linux/macOS
+	#endif
+}

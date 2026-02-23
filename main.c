@@ -16,9 +16,17 @@ int main(int argc, char** argv) {
 	TLE tle = initPhase(filename, noradId);
 	StaticValues staticVals = staticPhase(tle);
 
+	char now_string[DATE_STRING_LENGTH];
+
 	while (true) {
 		time_t current_ts = time(NULL);
 		DynamicValues dynVals = dynamicPhase(tle, staticVals, current_ts);
+
+		timestampToDateString(current_ts, now_string);
+
+		clear_screen();
+		printf("%s\nnu: %.5e rads\nDist: %.15f meters\n", now_string, dynVals.nu, dynVals.distanceToFocal);
+
 		sleep_ms(20); // Pause 20ms soit 50Hz
 	}
 

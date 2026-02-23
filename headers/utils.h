@@ -7,3 +7,4 @@
 #endif
 
 void sleep_ms(unsigned int milliseconds);
+void clear_screen(void);
