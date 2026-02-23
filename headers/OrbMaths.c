@@ -6,9 +6,9 @@
 
 /**
  * @brief Converts mean motion from revolutions per day to radians per second
- * 
+ *
  * @param meanMotion in revolutions per day
- * @return meanMotion in radians per second 
+ * @return meanMotion in radians per second
  */
 double convertMeanMotion(double meanMotion) {
 	static const double CONVERSION_FACTOR = (2.0 * M_PI) / MEAN_SOLAR_DAY;
@@ -17,9 +17,9 @@ double convertMeanMotion(double meanMotion) {
 
 /**
  * @brief Finds the orbital period by using the Mean Motion (rev / day)
- * 
+ *
  * @param meanMotion in revolutions per day
- * @return orbital period in seconds 
+ * @return orbital period in seconds
  */
 double orbPeriod(double meanMotion) {
 	return MEAN_SOLAR_DAY / meanMotion;
@@ -27,7 +27,7 @@ double orbPeriod(double meanMotion) {
 
 /**
  * @brief Finds the semi major axis using the mean motion in radians per second
- * 
+ *
  * @param meanMotion in radians per second
  * @return semi major axis in meters
  */
@@ -48,6 +48,16 @@ double EccentricAnomaly(double e, double MA) {
 
 	return E;
 }
-double TrueAnomaly(double E, double e);
+
+double TrueAnomaly(double E, double e) {
+	double beta = e / (1.0 + sqrt(1.0 - e * e));
+	double nu = E + 2.0 * atan(
+		beta * sin(E) /
+		(1 - beta * cos(E))
+	);
+
+	return nu;
+}
+
 
 #pragma endregion
