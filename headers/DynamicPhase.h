@@ -1,8 +1,11 @@
 #pragma once
 
 #include "StaticPhase.h"
+#include "Coords2D.h"
 
 typedef struct dynamicValues {
+	Coords2D coords_2d;
+
 	time_t deltaTime;
 	double true_ano, mean_ano, ecc_ano;
 

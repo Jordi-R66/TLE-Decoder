@@ -25,7 +25,9 @@ int main(int argc, char** argv) {
 		timestampToDateString(current_ts, now_string);
 
 		clear_screen();
-		printf("%s\nnu: %.5e rads\nDist: %.15f meters\n", now_string, dynVals.true_ano, dynVals.distanceToFocal);
+
+		printf("%s\nnu: %.5e rads\nDist: %.5f meters\n", now_string, dynVals.true_ano, dynVals.distanceToFocal);
+		printf("X: %lf m\nY: %lf m\n", dynVals.coords_2d.x, dynVals.coords_2d.y);
 
 		sleep_ms(20); // Pause 20ms soit 50Hz
 	}

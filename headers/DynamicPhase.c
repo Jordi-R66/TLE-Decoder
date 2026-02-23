@@ -13,11 +13,15 @@ DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp) 
 	double r = AltFromTA(init.a, tle.Eccentricity, true_ano);
 	double spd = orbSpeed(init.a, tle.Eccentricity);
 
+	Coords2D coords_2d = getPlaneCoords(true_ano, r);
+
 	output.ecc_ano = E;
 	output.mean_ano = M;
 	output.true_ano = true_ano;
 	output.distanceToFocal = r;
 	output.speed = spd;
+
+	output.coords_2d = coords_2d;
 
 	output.deltaTime = currentTimestamp;
 
