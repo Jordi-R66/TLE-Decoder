@@ -64,4 +64,8 @@ double AltFromTA(double a, double e, double nu) {
 	return a * (1 - e * e) / (1.0 + e * cos(nu));
 }
 
+double orbSpeed(double a, double r) {
+	return sqrt(MU_EARTH * (2.0 / r - 1.0 / a));
+}
+
 #pragma endregion

@@ -4,9 +4,10 @@
 
 typedef struct dynamicValues {
 	time_t deltaTime;
-	double nu, mean_ano, ecc_ano;
+	double true_ano, mean_ano, ecc_ano;
 
 	double distanceToFocal;
+	double speed;
 } DynamicValues;
 
 DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp);

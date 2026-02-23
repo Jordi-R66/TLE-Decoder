@@ -37,5 +37,6 @@ double EccentricAnomaly(double MA, double e);
 double TrueAnomaly(double E, double e);
 
 double AltFromTA(double a, double e, double nu);
+double orbSpeed(double a, double r);
 
 #pragma endregion
