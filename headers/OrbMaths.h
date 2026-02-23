@@ -36,4 +36,6 @@ double semiMajorAxis(double meanMotion);
 double EccentricAnomaly(double MA, double e);
 double TrueAnomaly(double E, double e);
 
+double AltFromTA(double a, double e, double nu);
+
 #pragma endregion

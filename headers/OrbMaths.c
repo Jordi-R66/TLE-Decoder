@@ -59,5 +59,8 @@ double TrueAnomaly(double E, double e) {
 	return nu;
 }
 
+double AltFromTA(double a, double e, double nu) {
+	return a * (1 - e * e) / (1.0 + e * cos(nu));
+}
 
 #pragma endregion
