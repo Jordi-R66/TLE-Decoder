@@ -1,8 +1,5 @@
 #include "DynamicPhase.h"
 
-#include "Algos.h"
-#include "Kepler.h"
-
 DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp) {
 	DynamicValues output = { 0 };
 
