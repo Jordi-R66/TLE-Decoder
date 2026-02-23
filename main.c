@@ -73,15 +73,14 @@ int main(int argc, char** argv) {
 	periodToString(staticVals.T, period_string);
 
 	while (true) {
-		time_t current_ts = staticVals.epoch_timestamp + 38654;
-		//time_t current_ts = time(NULL);
+		time_t current_ts = time(NULL);
 		DynamicValues dynVals = dynamicPhase(tle, staticVals, current_ts);
 
 		clear_screen();
 
 		printValues(tle, staticVals, dynVals);
 
-		sleep_ms(8); // Pause 20ms soit 50Hz
+		sleep_ms(17); // Pause 17ms soit ~60Hz
 	}
 
 	return 0;
