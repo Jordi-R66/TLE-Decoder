@@ -23,7 +23,7 @@ DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp) 
 
 	output.coords_2d = coords_2d;
 
-	output.deltaTime = currentTimestamp;
+	output.deltaTime = deltaTime;
 
 	return output;
 }
