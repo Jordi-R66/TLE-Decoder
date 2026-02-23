@@ -87,7 +87,7 @@ void deltaTimeToString(time_t deltaTime, char string[DELTA_TIME_STRING_LENGTH]) 
 
 	Seconds = deltaTime;
 
-	sprintf(string, "%hud %uh %um %us", Days, Hours, Minutes, Seconds);
+	sprintf(string, "%hud %02uh %02um %02us", Days, Hours, Minutes, Seconds);
 
 	return;
 }

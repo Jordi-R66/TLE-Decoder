@@ -26,7 +26,7 @@ void printValues(TLE tle, StaticValues init, DynamicValues instant) {
 	printf("----------------------------------- TLE -----------------------------------\n");
 
 	printf("NORAD ID : %u%c\n", tle.NORAD_ID, tle.Classification);
-	printf("COSPAR : %u %hu %s\n", tle.COSPAR_YR, tle.COSPAR_LN, tle.COSPAR_ID);
+	printf("COSPAR : %u %03hu %s\n", tle.COSPAR_YR, tle.COSPAR_LN, tle.COSPAR_ID);
 	printf("EPOCH : %s\n", epoch_string);
 	printf("TLE AGE : %s\n", age_string);
 	printf("(MEAN MOTION)' = %.4e\n", tle.FIRST_DERIV_MEAN_MOTION);
