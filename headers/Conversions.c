@@ -1,5 +1,7 @@
 #include "Conversions.h"
 
+const double DEGS2RADS = M_PI / 180.0;
+const double RADS2DEGS = 180.0 / M_PI;
 
 uint32_t ipow(uint32_t a, uint32_t b) {
 	uint32_t result = 1;

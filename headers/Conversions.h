@@ -12,7 +12,7 @@ double strtoscinotd(char*);
 
 string secstohms(double secs);
 
-#define DEGS2RADS M_PI/180.0
-#define RADS2DEGS 180.0/M_PI
+extern const double DEGS2RADS;
+extern const double RADS2DEGS;
 
 #endif
