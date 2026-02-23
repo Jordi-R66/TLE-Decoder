@@ -30,3 +30,10 @@ double orbPeriod(double meanMotion);
 double semiMajorAxis(double meanMotion);
 
 #pragma endregion
+
+#pragma region Dynamic Phase
+
+double EccentricAnomaly(double MA, double e);
+double TrueAnomaly(double E, double e);
+
+#pragma endregion

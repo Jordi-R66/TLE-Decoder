@@ -40,4 +40,14 @@ double semiMajorAxis(double meanMotion) {
 
 #pragma region Dynamic Phase
 
+double EccentricAnomaly(double e, double MA) {
+	double E_Approx = MA + e * sin(MA);
+	double E = NewtonRaphson(
+		MA, e, *KeplerEquation, *KeplerPrime, E_Approx, 1E-6, 1000
+	);
+
+	return E;
+}
+double TrueAnomaly(double E, double e);
+
 #pragma endregion
