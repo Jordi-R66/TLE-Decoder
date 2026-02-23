@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 		timestampToDateString(current_ts, now_string);
 
 		clear_screen();
-		printf("%s\nnu: %.5e rads\nDist: %.15f meters\n", now_string, dynVals.nu, dynVals.distanceToFocal);
+		printf("%s\nnu: %.5e rads\nDist: %.15f meters\n", now_string, dynVals.true_ano, dynVals.distanceToFocal);
 
 		sleep_ms(20); // Pause 20ms soit 50Hz
 	}
