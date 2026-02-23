@@ -10,6 +10,8 @@ typedef struct staticValues {
 	double n;				// Moyen Mouvement en rad/s
 	double a;				// Demi grand-axe en mètres
 	double M;				// Moyenne anomalie en radians
+	double p;				// p = a * (1.0 - e^2)
+
 	time_t epoch_timestamp;	// Timestamp de la TLE
 } StaticValues;
 
