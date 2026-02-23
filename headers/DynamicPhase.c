@@ -1,3 +1,4 @@
 #include "DynamicPhase.h"
 
-DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp);
+#include "Algos.h"
+#include "Kepler.h"
