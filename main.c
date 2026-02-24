@@ -57,8 +57,8 @@ void printValues(TLE tle, StaticValues init, DynamicValues instant) {
 	printf("Y Coord : %.0lf m\n", instant.coords_3d.y);
 	printf("Z Coord : %.0lf m\n", instant.coords_3d.z);
 	printf("\n");
-	printf("LATITUDE : %.4lf°\n", instant.geo_coords.latitude);
-	printf("LONGITUDE : %.4lf°\n", instant.geo_coords.longitude);
+	printf("LATITUDE : %.4lf\n", instant.geo_coords.latitude);
+	printf("LONGITUDE : %.4lf\n", instant.geo_coords.longitude);
 	printf("ALTITUDE : %.0lf m\n", instant.geo_coords.altitude);
 	printf("\n");
 	printf("VELOCITY : %.2lf m/s\n", instant.speed);
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 
 		printValues(tle, staticVals, dynVals);
 
-		sleep_hz(30); // Pause 17ms soit ~60Hz
+		sleep_hz(5); // Pause 17ms soit ~60Hz
 	}
 
 	return 0;
