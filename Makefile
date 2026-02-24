@@ -10,13 +10,13 @@ CALENDAR_SRCS = $(CALENDAR_DIR)/Converters.c
 
 ALL_SRCS = $(TLE_DECODER_SRCS) $(CALENDAR_SRCS)
 
-all: clean compile asm
+all: clean compile assemble
 
 compile:
 	clear
 	$(CC) $(CFLAGS) $(ALL_SRCS) -flto -o newTLE.out -lm
 
-asm:
+assemble:
 	mkdir -p asm
 	$(CC) $(CFLAGS) $(ALL_SRCS) -S -lm
 	mv *.s asm/
