@@ -67,24 +67,30 @@ void printValues(TLE tle, StaticValues init, DynamicValues instant) {
 }
 
 int main(int argc, char** argv) {
-	char* filename = argv[1];
-	uint32_t noradId = strint(argv[2]);
 
-	TLE tle = initPhase(filename, noradId);
-	StaticValues staticVals = staticPhase(tle);
+	if (argc == 3) {
+		char* filename = argv[1];
+		uint32_t noradId = strint(argv[2]);
 
-	timestampToDateString(staticVals.epoch_timestamp, epoch_string);
-	periodToString(staticVals.T, period_string);
+		TLE tle = initPhase(filename, noradId);
+		StaticValues staticVals = staticPhase(tle);
 
-	while (true) {
-		time_t current_ts = time(NULL);
-		DynamicValues dynVals = dynamicPhase(tle, staticVals, current_ts);
+		timestampToDateString(staticVals.epoch_timestamp, epoch_string);
+		periodToString(staticVals.T, period_string);
 
-		clear_screen();
+		while (true) {
+			time_t current_ts = time(NULL);
+			DynamicValues dynVals = dynamicPhase(tle, staticVals, current_ts);
 
-		printValues(tle, staticVals, dynVals);
+			clear_screen();
 
-		sleep_hz(60); // Pause 17ms soit ~60Hz
+			printValues(tle, staticVals, dynVals);
+
+			sleep_hz(120);
+		}
+	} else {
+		fprintf(stderr, "Please provide 2 arguments\n\t%s TLE_FILE NORAD_ID\n", argv[0]);
+		return -1;
 	}
 
 	return 0;
