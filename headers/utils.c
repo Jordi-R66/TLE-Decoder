@@ -66,7 +66,7 @@ void clear_screen(void) {
 			FillConsoleOutputCharacter(hOut, (TCHAR)' ', cellCount, homeCoords, &count);
 			// Réinitialise les couleurs/attributs
 			FillConsoleOutputAttribute(hOut, csbi.wAttributes, cellCount, homeCoords, &count);
-			
+
 			// Met à jour les dimensions connues
 			last_width = current_width;
 			last_height = current_height;
