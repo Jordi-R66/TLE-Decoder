@@ -7,4 +7,7 @@
 #endif
 
 void sleep_ms(unsigned int milliseconds);
+void sleep_ns(uint64_t nanoseconds);
+void sleep_hz(unsigned int hz);
+
 void clear_screen(void);
