@@ -5,7 +5,7 @@ CFLAGS = $(OPT_FLAGS) -Wall -Wextra
 LIBS_DIR=libs
 CALENDAR_DIR=$(LIBS_DIR)/Calendar
 
-TLE_DECODER_SRCS = main.c headers/Coords2D.c headers/Coords3D.c headers/utils.c headers/Algos.c headers/TimeFuncs.c headers/Kepler.c headers/OrbMaths.c headers/StaticPhase.c headers/DynamicPhase.c headers/TleFiles.c headers/TleParser.c headers/Conversions.c
+TLE_DECODER_SRCS = main.c headers/Geography.c headers/Coords2D.c headers/Coords3D.c headers/utils.c headers/Algos.c headers/TimeFuncs.c headers/Kepler.c headers/OrbMaths.c headers/StaticPhase.c headers/DynamicPhase.c headers/TleFiles.c headers/TleParser.c headers/Conversions.c
 CALENDAR_SRCS = $(CALENDAR_DIR)/Converters.c
 
 ALL_SRCS = $(TLE_DECODER_SRCS) $(CALENDAR_SRCS)

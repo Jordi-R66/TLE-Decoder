@@ -15,16 +15,17 @@ DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp) 
 
 	Coords2D coords_2d = getPlaneCoords(true_ano, r);
 	Coords3D coords_3d = getECICoords(coords_2d, &tle);
+	GeoCoords geo_coords = getGeoCoords(coords_3d, currentTimestamp);
 
 	output.ecc_ano = E;
 	output.mean_ano = M;
 	output.true_ano = true_ano;
 	output.distanceToFocal = r;
-	output.altitude = getWGS84Altitude(coords_3d);
 	output.speed = spd;
 
 	output.coords_2d = coords_2d;
 	output.coords_3d = coords_3d;
+	output.geo_coords = geo_coords;
 
 	output.deltaTime = deltaTime;
 
