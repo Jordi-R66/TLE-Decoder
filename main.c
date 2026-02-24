@@ -53,12 +53,12 @@ void printValues(TLE tle, StaticValues init, DynamicValues instant) {
 	printf("-------------------------------- CURRENTLY --------------------------------\n");
 
 	printf("DATE : %s\n", instant_string);
-	printf("X Coord : %.0lf m\n", instant.coords_3d.x);
-	printf("Y Coord : %.0lf m\n", instant.coords_3d.y);
-	printf("Z Coord : %.0lf m\n", instant.coords_3d.z);
+	printf("X Coord : %.2lf m\n", instant.coords_3d.x);
+	printf("Y Coord : %.2lf m\n", instant.coords_3d.y);
+	printf("Z Coord : %.2lf m\n", instant.coords_3d.z);
 	printf("\n");
-	printf("LATITUDE : %.4lf\n", instant.geo_coords.latitude);
-	printf("LONGITUDE : %.4lf\n", instant.geo_coords.longitude);
+	printf("LATITUDE : %.5lf\n", instant.geo_coords.latitude);
+	printf("LONGITUDE : %.5lf\n", instant.geo_coords.longitude);
 	printf("ALTITUDE : %.0lf m\n", instant.geo_coords.altitude);
 	printf("\n");
 	printf("VELOCITY : %.2lf m/s\n", instant.speed);

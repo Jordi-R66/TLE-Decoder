@@ -39,7 +39,7 @@ GeoCoords getGeoCoords(Coords3D eciCoords, time_t timestamp) {
 	double N = 0.0;
 
 	// Boucle de convergence (4 itérations pour une précision millimétrique)
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 5; i++) {
 		N = WGS84_A / sqrt(1.0 - e2 * sin(lat) * sin(lat));
 		lat = atan2(eciCoords.z + N * e2 * sin(lat), p);
 	}
