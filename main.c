@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 
 		printValues(tle, staticVals, dynVals);
 
-		sleep_hz(5); // Pause 17ms soit ~60Hz
+		sleep_hz(60); // Pause 17ms soit ~60Hz
 	}
 
 	return 0;
