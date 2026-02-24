@@ -1,5 +1,5 @@
 CC = gcc
-OPT_FLAGS = -O3 -march=native -masm=intel 
+OPT_FLAGS =  -std=c17 -O3 -march=native -masm=intel 
 CFLAGS = $(OPT_FLAGS) -Wall -Wextra
 
 LIBS_DIR=libs
@@ -10,10 +10,16 @@ CALENDAR_SRCS = $(CALENDAR_DIR)/Converters.c
 
 ALL_SRCS = $(TLE_DECODER_SRCS) $(CALENDAR_SRCS)
 
+all: clean compile asm
+
 compile:
 	clear
 	$(CC) $(CFLAGS) $(ALL_SRCS) -flto -o newTLE.out -lm
+
+asm:
+	mkdir -p asm
 	$(CC) $(CFLAGS) $(ALL_SRCS) -S -lm
+	mv *.s asm/
 
 clean:
-	rm *.s
+	rm asm/*.s
