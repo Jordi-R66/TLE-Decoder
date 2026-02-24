@@ -41,9 +41,42 @@ void sleep_hz(unsigned int hz) {
 }
 
 void clear_screen(void) {
-#if defined(_WIN32)
-	system("cls");   // Commande pour Windows
-#else
-	system("clear"); // Commande pour Linux/macOS
+	#if defined(_WIN32)
+		static int last_width = 0;
+		static int last_height = 0;
+
+		HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+		// Récupère les infos actuelles de la console
+		if (!GetConsoleScreenBufferInfo(hOut, &csbi)) return;
+
+		// Calcule la largeur et la hauteur de la fenêtre VISIBLE
+		int current_width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+		int current_height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+
+		// 1. Détection du redimensionnement
+		if (current_width != last_width || current_height != last_height) {
+			// La taille a changé ! On fait un VRAI clear instantané de l'API Windows.
+			DWORD count;
+			DWORD cellCount = csbi.dwSize.X * csbi.dwSize.Y; // Taille totale du buffer
+			COORD homeCoords = { 0, 0 };
+
+			// Remplit tout le buffer avec des espaces
+			FillConsoleOutputCharacter(hOut, (TCHAR)' ', cellCount, homeCoords, &count);
+			// Réinitialise les couleurs/attributs
+			FillConsoleOutputAttribute(hOut, csbi.wAttributes, cellCount, homeCoords, &count);
+			
+			// Met à jour les dimensions connues
+			last_width = current_width;
+			last_height = current_height;
+		}
+
+		// 2. On place le curseur en haut à gauche de la fenêtre VISIBLE 
+		// (et non pas au {0,0} absolu qui pourrait être caché dans l'historique)
+		COORD pos = { csbi.srWindow.Left, csbi.srWindow.Top };
+		SetConsoleCursorPosition(hOut, pos);
+	#else
+		system("clear"); // Commande pour Linux/macOS
 #endif
 }
