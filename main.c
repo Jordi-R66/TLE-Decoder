@@ -56,7 +56,7 @@ void printValues(TLE tle, StaticValues init, DynamicValues instant) {
 	printf("X Coord : %.0lf m\n", instant.coords_3d.x);
 	printf("Y Coord : %.0lf m\n", instant.coords_3d.y);
 	printf("Z Coord : %.0lf m\n", instant.coords_3d.z);
-	printf("ALTITUDE : %.0lf m\n", instant.distanceToFocal);
+	printf("ALTITUDE : %.0lf m\n", instant.altitude);
 	printf("VELOCITY : %.2lf m/s\n", instant.speed);
 
 	printf("---------------------------------------------------------------------------\n");

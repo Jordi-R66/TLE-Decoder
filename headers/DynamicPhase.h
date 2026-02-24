@@ -11,6 +11,7 @@ typedef struct dynamicValues {
 	time_t deltaTime;
 	double true_ano, mean_ano, ecc_ano;
 
+	double altitude;
 	double distanceToFocal;
 	double speed;
 } DynamicValues;

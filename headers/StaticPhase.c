@@ -1,4 +1,5 @@
 #include "StaticPhase.h"
+#include "Coords3D.h"
 
 StaticValues staticPhase(TLE tle) {
 	StaticValues output = {0};
@@ -12,13 +13,19 @@ StaticValues staticPhase(TLE tle) {
 	double E = EccentricAnomaly(output.M, tle.Eccentricity);
 	double epoch_nu = TrueAnomaly(E, tle.Eccentricity);
 
-	output.apo_alt = AltFromTA(output.a, tle.Eccentricity, M_PI);
-	output.peri_alt = AltFromTA(output.a, tle.Eccentricity, 0.0);
-	output.epoch_alt = AltFromTA(output.a, tle.Eccentricity, epoch_nu);
+	double apo_r, peri_r, epoch_r;
 
-	output.apo_spd = orbSpeed(output.a, output.apo_alt);
-	output.peri_spd = orbSpeed(output.a, output.peri_alt);
-	output.epoch_spd = orbSpeed(output.a, output.epoch_alt);
+	apo_r = AltFromTA(output.a, tle.Eccentricity, M_PI);
+	peri_r = AltFromTA(output.a, tle.Eccentricity, 0.0);
+	epoch_r = AltFromTA(output.a, tle.Eccentricity, epoch_nu);
+
+	output.apo_alt = getWGS84AltitudeFromTA(M_PI, output.a, &tle);
+	output.peri_alt = getWGS84AltitudeFromTA(0.0, output.a, &tle);
+	output.epoch_alt = getWGS84AltitudeFromTA(epoch_nu, output.a, &tle);
+
+	output.apo_spd = orbSpeed(output.a, apo_r);
+	output.peri_spd = orbSpeed(output.a, peri_r);
+	output.epoch_spd = orbSpeed(output.a, epoch_r);
 
 	output.epoch_timestamp = getEpochTimestampFromTLE(tle);
 

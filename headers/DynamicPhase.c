@@ -20,6 +20,7 @@ DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp) 
 	output.mean_ano = M;
 	output.true_ano = true_ano;
 	output.distanceToFocal = r;
+	output.altitude = getWGS84Altitude(coords_3d);
 	output.speed = spd;
 
 	output.coords_2d = coords_2d;

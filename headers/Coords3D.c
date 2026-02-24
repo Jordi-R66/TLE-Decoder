@@ -22,7 +22,8 @@ Coords3D getECICoords(Coords2D planeCoords, TLE* tle) {
 	return (Coords3D) { .x = x, .y = y, .z = z };
 }
 
-Coords3D getECICoordsFromTA(double nu, double a, double e, TLE* tle) {
+Coords3D getECICoordsFromTA(double nu, double a, TLE* tle) {
+	double e = tle->Eccentricity;
 	double r = AltFromTA(a, e, nu);
 	Coords2D intermediaire = getPlaneCoords(nu, r);
 	return getECICoords(intermediaire, tle);
@@ -62,8 +63,8 @@ double getWGS84Altitude(Coords3D coords) {
 	return r - earth_radius;
 }
 
-double getWGS84AltitudeFromTA(double nu, double a, double e, TLE* tle) {
-	Coords3D coords = getECICoordsFromTA(nu, a, e, tle);
+double getWGS84AltitudeFromTA(double nu, double a, TLE* tle) {
+	Coords3D coords = getECICoordsFromTA(nu, a, tle);
 
 	return getWGS84Altitude(coords);
 }
