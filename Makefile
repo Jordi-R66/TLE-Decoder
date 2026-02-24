@@ -14,7 +14,8 @@ all: clean compile assemble
 
 compile:
 	clear
-	$(CC) $(CFLAGS) $(ALL_SRCS) -flto -o newTLE.out -lm
+	mkdir -p build
+	$(CC) $(CFLAGS) $(ALL_SRCS) -flto -o build/TLE-Decoder -lm
 
 assemble:
 	mkdir -p asm
