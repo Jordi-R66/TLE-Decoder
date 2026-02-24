@@ -13,3 +13,5 @@
 
 // Rayon polaire (demi-petit axe de la Terre) en mètres
 #define WGS84_B 6356752.314245
+
+#define J2_EARTH 0.0010826359

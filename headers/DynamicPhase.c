@@ -5,6 +5,21 @@ DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp) 
 
 	time_t deltaTime = currentTimestamp - init.epoch_timestamp;
 
+	double i_rad = tle.Inclination * DEGS2RADS;
+	double j2_factor = 1.5 * J2_EARTH * (WGS84_A * WGS84_A) / (init.p * init.p) * init.n;
+
+	double dot_omega_node = -j2_factor * cos(i_rad);
+	double dot_omega_peri = j2_factor * 0.5 * (5.0 * cos(i_rad) * cos(i_rad) - 1.0);
+
+	tle.AscNodeLong += (dot_omega_node * deltaTime) * RADS2DEGS;
+	tle.PeriArg += (dot_omega_peri * deltaTime) * RADS2DEGS;
+
+	tle.AscNodeLong = fmod(tle.AscNodeLong, 360.0);
+	if (tle.AscNodeLong < 0.0) tle.AscNodeLong += 360.0;
+
+	tle.PeriArg = fmod(tle.PeriArg, 360.0);
+	if (tle.PeriArg < 0.0) tle.PeriArg += 360.0;
+
 	double deltaM = init.n * (double)deltaTime;
 	double M = fmod(deltaM + init.M, 2.0 * M_PI);
 
