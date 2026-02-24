@@ -47,8 +47,8 @@ void printValues(TLE tle, StaticValues init, DynamicValues instant) {
 
 	printf("ORBITAL PERIOD : %.4lf secs (%s)\n", init.T, period_string);
 	printf("SEMI MAJOR AXIS : %.0lf m\n", init.a);
-	printf("APOAPSIS : %.0lf m | PERIAPSIS : %.0lf m | EPOCH : %.0lf m\n", 0.0, 0.0, 0.0);
-	printf("SPEED @ AP : %.4lf m/s | PE : %.4lf m/s | EP : %.4lf m/s\n", 0.0, 0.0, 0.0);
+	printf("APOAPSIS : %.0lf m | PERIAPSIS : %.0lf m | EPOCH : %.0lf m\n", init.apo_alt, init.peri_alt, init.epoch_alt);
+	printf("SPEED @ AP : %.4lf m/s | PE : %.4lf m/s | EP : %.4lf m/s\n", init.apo_spd, init.peri_spd, init.epoch_spd);
 
 	printf("-------------------------------- CURRENTLY --------------------------------\n");
 

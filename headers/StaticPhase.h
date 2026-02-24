@@ -12,6 +12,9 @@ typedef struct staticValues {
 	double M;				// Moyenne anomalie en radians
 	double p;				// p = a * (1.0 - e^2)
 
+	double apo_alt, peri_alt, epoch_alt;
+	double apo_spd, peri_spd, epoch_spd;
+
 	time_t epoch_timestamp;	// Timestamp de la TLE
 } StaticValues;
 
