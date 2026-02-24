@@ -14,6 +14,7 @@ DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp) 
 	double spd = orbSpeed(init.a, r);
 
 	Coords2D coords_2d = getPlaneCoords(true_ano, r);
+	Coords3D coords_3d = getECICoords(coords_2d, &tle);
 
 	output.ecc_ano = E;
 	output.mean_ano = M;
@@ -22,6 +23,7 @@ DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp) 
 	output.speed = spd;
 
 	output.coords_2d = coords_2d;
+	output.coords_3d = coords_3d;
 
 	output.deltaTime = deltaTime;
 
