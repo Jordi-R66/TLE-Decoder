@@ -7,3 +7,9 @@
 
 #define MU_EARTH 3.986004415e14	// Earth µ (TT)
 #define EARTH_MASS MU_EARTH / G	// Earth mass
+
+// Rayon équatorial (demi-grand axe de la Terre) en mètres
+#define WGS84_A 6378137.0
+
+// Rayon polaire (demi-petit axe de la Terre) en mètres
+#define WGS84_B 6356752.314245
