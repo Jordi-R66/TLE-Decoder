@@ -1,4 +1,4 @@
-#include "Kepler.h"
+#include "../headers/Kepler.h"
 
 double KeplerEquation(double EccentricAnomaly, double Eccentricity) {
 	return EccentricAnomaly - Eccentricity * sin(EccentricAnomaly);

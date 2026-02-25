@@ -1,4 +1,4 @@
-#include "TimeFuncs.h"
+#include "../headers/TimeFuncs.h"
 
 time_t getEpochTimestampFromTLE(TLE tle) {
 	time_t output;

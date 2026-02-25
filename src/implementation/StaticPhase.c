@@ -1,5 +1,5 @@
-#include "StaticPhase.h"
-#include "Coords3D.h"
+#include "../headers/StaticPhase.h"
+#include "../headers/Coords3D.h"
 
 StaticValues staticPhase(TLE tle) {
 	StaticValues output = {0};

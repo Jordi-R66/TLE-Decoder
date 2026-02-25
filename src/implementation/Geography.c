@@ -1,6 +1,6 @@
-#include "Geography.h"
-#include "Constants.h"
-#include "Conversions.h"
+#include "../headers/Geography.h"
+#include "../headers/Constants.h"
+#include "../headers/Conversions.h"
 
 GeoCoords getGeoCoords(Coords3D eciCoords, time_t timestamp) {
 	GeoCoords geo = { 0 };

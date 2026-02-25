@@ -1,5 +1,5 @@
-#include "Coords3D.h"
-#include "OrbMaths.h"
+#include "../headers/Coords3D.h"
+#include "../headers/OrbMaths.h"
 
 Coords3D getECICoords(Coords2D planeCoords, TLE* tle) {
 	double an = (double)tle->AscNodeLong * DEGS2RADS;

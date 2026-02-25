@@ -1,7 +1,7 @@
-#include "Common.h"
-#include "OrbMaths.h"
-#include "Algos.h"
-#include "Kepler.h"
+#include "../headers/Common.h"
+#include "../headers/OrbMaths.h"
+#include "../headers/Algos.h"
+#include "../headers/Kepler.h"
 
 #pragma region Static Phase
 

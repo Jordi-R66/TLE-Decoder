@@ -1,4 +1,4 @@
-#include "Coords2D.h"
+#include "../headers/Coords2D.h"
 
 Coords2D getPlaneCoords(double nu, double r) {
 	return (Coords2D) { .x = r * cos(nu), .y = r * sin(nu) };

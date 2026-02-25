@@ -1,4 +1,4 @@
-#include "DynamicPhase.h"
+#include "../headers/DynamicPhase.h"
 
 DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp) {
 	DynamicValues output = { 0 };
