@@ -64,3 +64,6 @@ build/
 
 # TLEs
 TLEs/*
+
+other/*
+*.csv
