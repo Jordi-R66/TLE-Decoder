@@ -1,7 +1,7 @@
 #include "headers/Loops.h"
 
-
 int main(int argc, char** argv) {
+	int return_code = 0;
 
 	if (argc == 3) {
 		char* filename = argv[1];
@@ -10,8 +10,8 @@ int main(int argc, char** argv) {
 		realtimeLoop(filename, noradId, printValues, stdout);
 	} else {
 		fprintf(stderr, "Please provide 2 arguments\n\t%s TLE_FILE NORAD_ID\n", argv[0]);
-		return -1;
+		return_code = -1;
 	}
 
-	return 0;
+	return return_code;
 }
