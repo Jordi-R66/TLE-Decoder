@@ -18,4 +18,6 @@ typedef struct staticValues {
 	time_t epoch_timestamp;	// Timestamp de la TLE
 } StaticValues;
 
+#define STATIC_VALS_SIZE sizeof(StaticValues)
+
 StaticValues staticPhase(TLE tle);

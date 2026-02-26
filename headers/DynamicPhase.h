@@ -17,4 +17,6 @@ typedef struct dynamicValues {
 	double speed;
 } DynamicValues;
 
+#define DYN_VALS_SIZE sizeof(DynamicValues)
+
 DynamicValues dynamicPhase(TLE tle, StaticValues init, time_t currentTimestamp);

@@ -10,6 +10,8 @@ typedef struct coords_3d {
 	double x, y, z;
 } Coords3D;
 
+#define COORDS_3D_SIZE sizeof(Coords3D)
+
 Coords3D getECICoords(Coords2D planeCoords, TLE* tle);
 Coords3D getECICoordsFromTA(double nu, double a, TLE* tle);
 double getDistanceFromCoords3D(Coords3D coords);

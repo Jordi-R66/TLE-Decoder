@@ -61,6 +61,8 @@ struct TLE {
 
 typedef struct TLE TLE;
 
+#define TLE_SIZE sizeof(TLE)
+
 TLE parse_lines(char NAME_LINE[25], char FIRST_LINE[70], char SECOND_LINE[70]);
 
 #endif
