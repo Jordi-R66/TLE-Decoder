@@ -7,20 +7,15 @@ int main(int argc, char** argv) {
 		char* filename = argv[1];
 		uint32_t noradId = strint(argv[2]);
 
-		TLE tle = initPhase(filename, noradId);
-		StaticValues staticVals = staticPhase(tle);
+		AggregValues aggreg;
 
-		AggregValues aggreg = {.init = staticVals, .tle=tle};
+		preloadAggreg(filename, noradId, &aggreg);
 
 		while (true) {
 			time_t current_ts = time(NULL);
-			DynamicValues dynVals = dynamicPhase(tle, staticVals, current_ts);
-
-			aggreg.values_at_time = dynVals;
-			aggreg.timestamp = current_ts;
+			changeAggregTimestamp(&aggreg, current_ts);
 
 			clear_screen();
-
 			printValues(stdout, aggreg);
 
 			sleep_hz(60);
