@@ -1,4 +1,4 @@
-#include "headers/Aggreg.h"
+#include "headers/Loops.h"
 
 
 int main(int argc, char** argv) {
@@ -7,19 +7,7 @@ int main(int argc, char** argv) {
 		char* filename = argv[1];
 		uint32_t noradId = strint(argv[2]);
 
-		AggregValues aggreg;
-
-		preloadAggreg(filename, noradId, &aggreg);
-
-		while (true) {
-			time_t current_ts = time(NULL);
-			changeAggregTimestamp(&aggreg, current_ts);
-
-			clear_screen();
-			printValues(stdout, aggreg);
-
-			sleep_hz(60);
-		}
+		realtimeLoop(filename, noradId, printValues, stdout);
 	} else {
 		fprintf(stderr, "Please provide 2 arguments\n\t%s TLE_FILE NORAD_ID\n", argv[0]);
 		return -1;
