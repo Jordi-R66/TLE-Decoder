@@ -31,6 +31,16 @@ AggregValues getAggregAtTimestamp(char* filename, uint32_t norad_id, time_t time
 	return output;
 }
 
+void preloadAggreg(char* filename, uint32_t norad_id, AggregValues* aggreg) {
+	*aggreg = (AggregValues){ 0 };
+
+	TLE tle = initPhase(filename, norad_id);
+	aggreg->tle = tle;
+
+	StaticValues init = staticPhase(tle);
+	aggreg->init = init;
+}
+
 void changeAggregTimestamp(AggregValues* aggreg, time_t timestamp) {
 	aggreg->timestamp = timestamp;
 	aggreg->values_at_time = dynamicPhase(aggreg->tle, aggreg->init, timestamp);

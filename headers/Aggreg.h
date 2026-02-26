@@ -14,6 +14,7 @@ typedef struct {
 
 TLE initPhase(char* filename, uint32_t noradId);
 
+void preloadAggreg(char* filename, uint32_t norad_id, AggregValues* aggreg);
 AggregValues getAggregAtTimestamp(char* filename, uint32_t norad_id, time_t timestamp);
 void changeAggregTimestamp(AggregValues* aggreg, time_t timestamp);
 
