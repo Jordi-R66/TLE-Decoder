@@ -2,10 +2,11 @@ CC = gcc
 OPT_FLAGS = -s -std=c17 -O3 -march=native -masm=intel 
 CFLAGS = $(OPT_FLAGS) -Wall -Wextra
 
+SRC_DIR=src
 LIBS_DIR=libs
 CALENDAR_DIR=$(LIBS_DIR)/Calendar
 
-TLE_DECODER_SRCS = main.c headers/*.c
+TLE_DECODER_SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/headers/*.c
 CALENDAR_SRCS = $(CALENDAR_DIR)/Converters.c
 
 ALL_SRCS = $(TLE_DECODER_SRCS) $(CALENDAR_SRCS)
