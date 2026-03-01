@@ -58,6 +58,7 @@ dkms.conf
 
 # Build directory
 build/
+output/
 
 # Program Output
 *.tle_struct
