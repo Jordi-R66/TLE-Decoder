@@ -1,0 +1,298 @@
+@startuml
+skinparam linetype ortho
+'skinparam nodesep 60
+'skinparam ranksep 60
+'skinparam padding 5
+'left to right direction
+
+title Diagramme de Conception Exhaustif - TLE Decoder (Architecture C)
+
+' ========================================================================
+' ===================== MODELES DE DONNEES (ENTITIES) ====================
+' ========================================================================
+package "Modèles de Données (Entities)" <<Folder>> {
+    struct Coords2D <<entity>> {
+        + x : double
+        + y : double
+    }
+
+    struct Coords3D <<entity>> {
+        + x : double
+        + y : double
+        + z : double
+    }
+
+    struct GeoCoords <<entity>> {
+        + latitude : double
+        + longitude : double
+        + altitude : double
+    }
+
+    struct TLE <<entity>> {
+        + name : char[25]
+        + NORAD_ID : uint32_t
+        + Classification : char
+        + COSPAR_YR : uint8_t
+        + COSPAR_LN : uint16_t
+        + COSPAR_ID : char[4]
+        + EPOCH_YR : uint8_t
+        + EPOCH : double
+        + FIRST_DERIV_MEAN_MOTION : double
+        + SECOND_DERIV_MEAN_MOTION : double
+        + B_STAR : double
+        + Inclination : float
+        + AscNodeLong : float
+        + Eccentricity : float
+        + PeriArg : float
+        + MeanAnomaly : float
+        + MeanMotion : double
+        + Revolutions : uint32_t
+    }
+
+    struct tle_block <<entity>> {
+        + FIRST_LINE : char[25]
+        + SECOND_LINE : char[70]
+        + THIRD_LINE : char[70]
+    }
+
+    struct StaticValues <<entity>> {
+        + T : double
+        + n : double
+        + a : double
+        + M : double
+        + p : double
+        + apo_alt : double
+        + peri_alt : double
+        + epoch_alt : double
+        + apo_spd : double
+        + peri_spd : double
+        + epoch_spd : double
+        + epoch_timestamp : time_t
+    }
+
+    struct DynamicValues <<entity>> {
+        + deltaTime : time_t
+        + true_ano : double
+        + mean_ano : double
+        + ecc_ano : double
+        + distanceToFocal : double
+        + speed : double
+    }
+
+    struct AggregValues <<entity>> {
+        + timestamp : time_t
+    }
+
+    ' Compositions AVEC Navigabilité stricte
+    DynamicValues *--> "1" Coords2D : + coords_2d
+    DynamicValues *--> "1" Coords3D : + coords_3d
+    DynamicValues *--> "1" GeoCoords : + geo_coords
+
+    AggregValues *--> "1" TLE : + tle
+    AggregValues *--> "1" DynamicValues : + values_at_time
+    AggregValues *--> "1" StaticValues : + init
+}
+
+' ========================================================================
+' ================= MODULES UTILITAIRES (CONTROLS TRANSVERSES) ===========
+' ========================================================================
+package "Modules Utilitaires (Controls)" <<Folder>> {
+    class Algos <<control>> {
+        + checksum_algorithm(...) : int32_t
+        + AntecedentDroite(...) : double
+        + NewtonRaphson(...) : double
+    }
+
+    class Conversions <<control>> {
+        + ipow(...) : uint32_t
+        + strint(...) : uint32_t
+        + strtoscinotd(...) : double
+    }
+
+    class TimeFuncs <<control>> {
+        + getEpochTimestampFromTLE(tle: TLE) : time_t
+        + timestampToDateString(...) : void
+        + periodToString(...) : void
+        + deltaTimeToString(...) : void
+    }
+
+    class utils <<control>> {
+        + sleep_ms(...) : void
+        + sleep_ns(...) : void
+        + sleep_hz(...) : void
+        + clear_screen(...) : void
+    }
+
+    class TermFuncs <<control>> {
+        + clear() : void
+    }
+}
+
+' ========================================================================
+' ===================== MODULES METIER (CONTROLS) ========================
+' ========================================================================
+package "Modules Métier & Physique (Controls)" <<Folder>> {
+    
+    class TleParser <<control>> {
+        + parse_lines(...) : TLE
+    }
+    
+    class TleFiles <<control>> {
+        + getBlockByIndex(...) : tle_block
+        + GetTLENumber(...) : long
+        + parse_block(...) : TLE
+        + GetSingleTLE(...) : TLE
+    }
+
+    class StaticPhase <<control>> {
+        + staticPhase(tle: TLE) : StaticValues
+    }
+
+    class DynamicPhase <<control>> {
+        + dynamicPhase(...) : DynamicValues
+    }
+
+    class Geography <<control>> {
+        + getGeoCoords(...) : GeoCoords
+    }
+
+    class Coords2D_Mod <<control>> {
+        + getPlaneCoords(...) : Coords2D
+        + getDistanceFromCoords2D(...) : double
+    }
+
+    class Coords3D_Mod <<control>> {
+        + getECICoords(...) : Coords3D
+        + getECICoordsFromTA(...) : Coords3D
+        + getDistanceFromCoords3D(...) : double
+        + getWGS84Altitude(...) : double
+        + getWGS84AltitudeFromTA(...) : double
+    }
+
+    class Aggreg <<control>> {
+        + initPhase(...) : TLE
+        + preloadAggreg(...) : void
+        + getAggregAtTimestamp(...) : AggregValues
+        + changeAggregTimestamp(...) : void
+        + printValues(...) : void
+    }
+
+    class OrbMaths <<control>> {
+        + convertMeanMotion(...) : double
+        + orbPeriod(...) : double
+        + semiMajorAxis(...) : double
+        + EccentricAnomaly(...) : double
+        + TrueAnomaly(...) : double
+        + AltFromTA(...) : double
+        + orbSpeed(...) : double
+    }
+
+    class Kepler <<control>> {
+        + KeplerEquation(...) : double
+        + KeplerPrime(...) : double
+    }
+
+    class Loops <<control>> {
+        + realtimeLoop(...) : void
+        + sweepTimestamps(...) : void
+    }
+}
+
+' ========================================================================
+' ================= SOUS-MODULE EXTERNE: CALENDAR ========================
+' ========================================================================
+package "Librairie Externe (Calendar)" <<Folder>> {
+    
+    enum TimeFormats <<enumeration>> {
+        GREGORIAN_CAL
+        JULIAN_CAL
+        JULIAN_DAY
+        UNIX_TIME
+        NORAD_TIME
+        UNKNOWN
+    }
+
+    struct DateStruct <<entity>> {
+        + YEAR : int16_t
+        + MONTH : uint8_t
+        + DAY : uint8_t
+    }
+
+    struct TimeOfDay <<entity>> {
+        + HOUR : uint8_t
+        + MINUTE : uint8_t
+        + SECONDS : uint8_t
+    }
+
+    struct TimeStruct <<entity>> {
+        + TIMESTAMP : int64_t
+        + JD : double
+        + Norad : double
+    }
+
+    struct CompleteTimeStruct <<entity>> {
+        + TIMESTAMP : int64_t
+        + JD : double
+        + Norad : double
+    }
+
+    class Converters <<control>> {
+        + generalConverter(sourceTime: TimeStruct, source: TimeFormats, target: TimeFormats) : CompleteTimeStruct
+    }
+
+    ' Compositions internes au calendrier
+    TimeStruct *--> "1" DateStruct : + date
+    TimeStruct *--> "1" TimeOfDay : + timeOfDay
+
+    CompleteTimeStruct *--> "1" DateStruct : + GregDate
+    CompleteTimeStruct *--> "1" DateStruct : + JulianDate
+    CompleteTimeStruct *--> "1" TimeOfDay : + timeOfDay
+}
+
+' ========================================================================
+' ============================= DEPENDANCES ==============================
+' ========================================================================
+
+' ----- Dépendances vers Calendar -----
+TimeFuncs ..> Converters : <<call>>
+TimeFuncs ..> CompleteTimeStruct : <<use>>
+TimeFuncs ..> TimeStruct : <<create>>
+TimeFuncs ..> TimeFormats : <<use>>
+Converters ..> CompleteTimeStruct : <<create>>
+
+' ----- Dépendances vers les Utilitaires (Transverses) -----
+OrbMaths ..> Algos : <<call>>
+TleParser ..> Conversions : <<call>>
+TleFiles ..> Conversions : <<call>>
+StaticPhase ..> TimeFuncs : <<call>>
+Aggreg ..> TimeFuncs : <<call>>
+TimeFuncs ..> TLE : <<use>>
+Loops ..> utils : <<call>>
+
+' ----- Dépendances Métier Internes -----
+TleFiles ..> TleParser : <<call>>
+StaticPhase ..> OrbMaths : <<call>>
+StaticPhase ..> Coords3D_Mod : <<call>>
+DynamicPhase ..> OrbMaths : <<call>>
+DynamicPhase ..> Geography : <<call>>
+DynamicPhase ..> Coords3D_Mod : <<call>>
+DynamicPhase ..> Coords2D_Mod : <<call>>
+Coords3D_Mod ..> Coords2D_Mod : <<call>>
+Aggreg ..> StaticPhase : <<call>>
+Aggreg ..> DynamicPhase : <<call>>
+OrbMaths ..> Kepler : <<call>>
+Loops ..> Aggreg : <<call>>
+
+' ----- Dépendances vers les Entités (Création / Utilisation) -----
+TleParser ..> TLE : <<create>>
+TleFiles ..> tle_block : <<use>>
+TleFiles ..> TLE : <<create>>
+StaticPhase ..> StaticValues : <<create>>
+DynamicPhase ..> DynamicValues : <<create>>
+Geography ..> GeoCoords : <<create>>
+Geography ..> Coords3D : <<use>>
+Coords2D_Mod ..> Coords2D : <<create>>
+Coords3D_Mod ..> Coords3D : <<create>>
+Coords3D_Mod ..> Coords2D : <<use>>
+Aggreg ..> AggregValues : <<create>>
+@enduml

@@ -22,6 +22,10 @@ Le code est séparé en plusieurs modules pour isoler les responsabilités physi
 - `OrbMaths` & `Kepler` : Cœur mathématique (anomalies, équations de Kepler).
 - `Geography` & `Coords3D` : Changements de référentiels et calculs topographiques WGS84.
 
+### Diagramme UML du Projet
+
+![Diagramme PlantUML](ressources/uml.png)
+
 ## 🚀 Compilation & Exécution
 
 ### Prérequis
